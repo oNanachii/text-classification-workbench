@@ -1,0 +1,57 @@
+{
+  "scope": "CUA Chromium; actual localhost HTTP and numeric models; disposable var copy",
+  "original_training_data_modified": false,
+  "fixture": "two explicitly Codex-authored workflow messages, not real label corrections",
+  "import_review_snapshot": {
+    "first_preview_accepted": 1,
+    "first_preview_rejected_duplicate_header": 1,
+    "second_preview_accepted": 1,
+    "second_preview_invalid": 0,
+    "same_label_review_did_not_add_correction": true,
+    "snapshot_after_review_count": 3624,
+    "actual_loaded_model_snapshot_remained_3623": true
+  },
+  "repaired_and_retested": "pending-only list refreshes to0 after review; zero pagination0–0; selected saved detail retained",
+  "model_selection": {
+    "candidate_selection_does_not_change_loaded_model": true,
+    "rollback_selection_restores_previous_choice": true,
+    "process_restart_activation": "separate actual HTTP integration verified by owner"
+  },
+  "credential_clear_removes_private_content": true,
+  "desktop": {
+    "width": 1440,
+    "height": 900,
+    "overflow": 0
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "overflow": 0
+  },
+  "captured_js_csp_errors_warnings": 0,
+  "limits": [
+    "not physical touch device",
+    "not Safari/Firefox or screen reader",
+    "not user independent interview acceptance"
+  ],
+  "public_browser": {
+    "normal_dns_https": true,
+    "actual_prediction": "spam score .9950 for the built-in authored prize example, selected mlp16",
+    "read_only_review_gate": true,
+    "desktop": {
+      "width": 1280,
+      "height": 720,
+      "overflow": 0
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "overflow": 0
+    },
+    "captured_js_csp_errors_warnings": 0,
+    "screenshots": "full page at actual viewport width"
+  },
+  "temporary_private_server_stopped": true,
+  "temporary_private_workspace_removed": true,
+  "temporary_viewports_reset_and_mobile_tab_closed": true
+}

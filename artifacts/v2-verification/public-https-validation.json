@@ -1,0 +1,77 @@
+{
+  "date_utc": "2026-10-28T15:25:36.544055+00:00",
+  "public_url": "https://math.madokanun.top:8445",
+  "source_commit": "c0274dd",
+  "trusted_tls_normal_dns": true,
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "public": true,
+    "loaded": {
+      "dataset_id": "sms-v2-c2206636983886cfee78",
+      "kind": "mlp16",
+      "run_id": "v2-import-reviewed-seed42",
+      "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+      "threshold": 0.5,
+      "vocabulary_sha256": "3baedee047a4acfc70d9529e976e503b8d1659d3c98568f153319694979eb4da",
+      "weights_sha256": "ca92490975bb2e0c91330a5c6fbc186f2d6e1217eab1cb06cc732c3d458d61e8"
+    },
+    "runtime": "numpy numeric format; no torch or pickle inference"
+  },
+  "static_files": [
+    {
+      "path": "/workbench/THIRD_PARTY_LICENSES.txt",
+      "sha256": "3f5eea484583ac55395a9427690960d1bfd2fda0403550f042396aea6be75e6b",
+      "status": 200
+    },
+    {
+      "path": "/workbench/assets/index-C4Ysh7nj.css",
+      "sha256": "6d26a43811c76d42babf8363eb9943655fcd5b6b2b83ec4714870ab51f1b022c",
+      "status": 200
+    },
+    {
+      "path": "/workbench/assets/index-CA95Ktuk.js",
+      "sha256": "c3c4db8720e7378f11ffd5a2d1a7ba48ebb619d9dc569752f67ab062f77b5c5e",
+      "status": 200
+    },
+    {
+      "path": "/workbench/favicon.svg",
+      "sha256": "e9e25d8e9f5abb32f71c2027761641a96df1af233ecb5e06082ecd343b7e4102",
+      "status": 200
+    },
+    {
+      "path": "/workbench/",
+      "sha256": "6c0a2679b85ebad54574067e202a64d9752488a1a6d2d27b05ac0b017a799c79",
+      "status": 200
+    }
+  ],
+  "local_server_numeric_parity": [
+    {
+      "text_source": "independently authored smoke example",
+      "label": "ham",
+      "score_difference": 0.0,
+      "model_version": "v2-import-reviewed-seed42"
+    },
+    {
+      "text_source": "independently authored smoke example",
+      "label": "spam",
+      "score_difference": 0.0,
+      "model_version": "v2-import-reviewed-seed42"
+    },
+    {
+      "text_source": "independently authored smoke example",
+      "label": "ham",
+      "score_difference": 0.0,
+      "model_version": "v2-import-reviewed-seed42"
+    }
+  ],
+  "private_endpoints_denied": {
+    "/api/samples": 403,
+    "/api/dataset": 403,
+    "/api/snapshots": 401,
+    "/api/service/select": 401
+  },
+  "invalid_input_and_proxy_limit": "passed",
+  "final_report_matches_frozen_evaluation": true,
+  "scope": "small public smoke; not load or physical-device acceptance"
+}

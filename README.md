@@ -1,8 +1,12 @@
 # Text Model Lab
 
+[公开HTTPS演示](https://math.madokanun.top:8445/workbench/) · [GitHub源码](https://github.com/oNanachii/text-classification-workbench) · [交付与验收](docs/DELIVERY_2026-10-28.md)
+
 英文短信分类与数据纠错工作台。操作者导入同格式数据并复核标签，生成不可变训练快照，在本地CPU训练逻辑回归和小型MLP，再根据同一验证集选择服务版本。公开部署只提供明确版本的预测与只读结果。
 
 项目使用AI辅助开发。源码、软件检查、真实训练、公开部署与本人独立讲解分别记录。原v1实验与文件保留，v2结果来自另一份预先固定的分组划分，不能直接把两组指标作为提分对比。
+
+![公开推断示例 单条模型分数不代表整体准确率](artifacts/v2-verification/browser/public-desktop.png)
 
 ## 一次完整流程
 

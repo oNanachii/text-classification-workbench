@@ -1,0 +1,69 @@
+{
+  "published_at_utc": "2026-10-28T15:22:32.771202+00:00",
+  "public_url": "https://math.madokanun.top:8445",
+  "public_entry": "https://math.madokanun.top:8445/workbench/",
+  "source_commit": "c0274dd",
+  "release": "20261028-v2-01",
+  "repository": "https://github.com/oNanachii/text-classification-workbench",
+  "model": {
+    "run_id": "v2-import-reviewed-seed42",
+    "kind": "mlp16",
+    "threshold": 0.5,
+    "dataset_id": "sms-v2-c2206636983886cfee78",
+    "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37"
+  },
+  "deployment_mode": "public read-only artifacts and bounded numeric inference; no training worker",
+  "runtime": "NumPy; Torch, sklearn and joblib absent from deployment venv",
+  "validation": {
+    "trusted_tls_normal_dns": true,
+    "local_trusted_tls": true,
+    "certificate_bypass_used": false,
+    "static_files_byte_matched": 5,
+    "csp_noindex_nosniff": true,
+    "api_no_store": true,
+    "new_hsts_header_absent": true,
+    "real_prediction_succeeded": true,
+    "model_version_matches_loaded_artifact": true,
+    "invalid_inputs_denied": true,
+    "private_read_write_denied": true,
+    "oversized_request_status": 413,
+    "only_selected_public_run": true,
+    "final_report_served": true,
+    "app_proxy_and_certificate_watcher_enabled": true,
+    "manual_proxy_reload_same_pid_and_tls": true,
+    "external_health_after_reload": true
+  },
+  "resource_observation": {
+    "application_memory_current_bytes": 45158400,
+    "application_memory_peak_bytes": 45682688,
+    "application_memory_max_bytes": 268435456,
+    "proxy_memory_current_bytes": 15552512,
+    "proxy_memory_peak_bytes": 29724672,
+    "proxy_memory_max_bytes": 134217728,
+    "host_available_memory_kib_after": 1445992,
+    "scope": "startup and a small bounded smoke workload, not sustained load testing"
+  },
+  "coexistence": {
+    "original_four_system_service_pid_start_and_state_unchanged": true,
+    "old_and_shared_caddy_hash_unchanged": true,
+    "certificate_key_owner_mode_size_mtime_inode_unchanged": true,
+    "original_tcp_listeners_retained": true,
+    "added_tcp_listeners": [
+      3111,
+      8445
+    ],
+    "backend_binding": "127.0.0.1:3111",
+    "only_added_ufw_port": 8445,
+    "dns_changed": false,
+    "private_key_copied_or_permissions_widened": false
+  },
+  "new_training_or_model_api_calls_during_deployment": false,
+  "limits": [
+    "HTTP/TLS/permission/resource smoke checked here; browser UI validation remains with root",
+    "No sustained production or physical-device acceptance",
+    "Manual certificate reload tested; future actual ACME renewal not triggered",
+    "Final-test report is an existing frozen evaluation artifact, not a new deployment-time evaluation",
+    "English SMS demonstration with scoped UCI data and four labelled AI-authored smoke training rows; no live-traffic accuracy claim",
+    "Repository push status is handled separately by root"
+  ]
+}
