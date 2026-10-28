@@ -1,0 +1,23 @@
+{
+  "verified_date": "2026-10-28",
+  "command": ".venv/bin/python verify_training_snapshot.py",
+  "verification_scope": "7 disposable SQLite boundary tests plus a read-only export of the actual working database; no model training",
+  "status": "passed",
+  "isolated_test_count": 7,
+  "real_export": {
+    "snapshot_id": "train-c37a8815975060dae846ea027f6debe202533f1efc4d0fdfa75f91207932175f",
+    "sample_count": 3611,
+    "correction_count": 0,
+    "labels_and_history_unchanged": true,
+    "protected_file_count": 25,
+    "protected_files_unchanged": true,
+    "output_scope": "temporary directory, removed after verification"
+  },
+  "training_performed": false,
+  "held_out_text_parsed": false,
+  "test_set_evaluated": false,
+  "source_sha256": {
+    "training_snapshot.py": "5248d4f853a405e7ebb282e451e37ddd7235a890564d71b96e6a461426d9b18a",
+    "verify_training_snapshot.py": "5f2404decd9d37c8273f54c52e57a616331fb2e970db37a6218f97b9e2f0b527"
+  }
+}

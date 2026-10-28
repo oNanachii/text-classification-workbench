@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-21",
+  "status": "passed",
+  "transport": "Node native fetch -> real loopback HTTP -> existing FastAPI -> isolated SQLite",
+  "fault_injection": "client deliberately aborts response reading after successful response headers",
+  "browser_ui_verified": false,
+  "database": "disposable train-only database, removed after demonstration",
+  "real_working_labels_and_history_unchanged": true,
+  "frozen_data_and_models_unchanged": true,
+  "test_set_evaluated": false,
+  "observed": {
+    "sample_id": "00176f719fde04250b37dcf625f02023e56e98d7fde124314f711c1a963470c1",
+    "initial_label": "ham",
+    "submitted_label": "spam",
+    "received_http_status": 200,
+    "intentional_fault": "AbortController.abort after response headers, before response.json",
+    "client_read_error": "AbortError",
+    "client_confirmed_label_after_error": "ham",
+    "client_message_after_error": "未能确认保存成功，请重新读取核对",
+    "fresh_get": {
+      "label": "spam",
+      "revision": 1
+    },
+    "history_count_after_get": 1,
+    "repeated_same_label": {
+      "changed": false,
+      "label": "spam",
+      "revision": 1
+    },
+    "history_count_after_repeat": 1
+  },
+  "scope": "One sequential same-label retry without concurrent writers. Not proof of arbitrary safe retries."
+}

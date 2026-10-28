@@ -1,0 +1,192 @@
+{
+  "status": "passed",
+  "base_url": "http://127.0.0.1:8765",
+  "transport": "real local HTTP",
+  "test_set_evaluated": false,
+  "checks": [
+    {
+      "name": "health",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "model_list",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "saved_model_agreement_lr",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "saved_model_agreement_mlp32",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "saved_model_agreement_mlp16",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "normalization_agreement",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "threshold_0",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "threshold_1",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "text_at_max_length",
+      "status": 200,
+      "expected_status": 200
+    },
+    {
+      "name": "empty_text",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "blank_text",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "non_string_text",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "missing_text",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "missing_model",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "unknown_model",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "threshold_below_range",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "threshold_above_range",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "threshold_string",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "extra_field",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "text_over_max_length",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "non_finite_NaN",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "non_finite_Infinity",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "non_finite_-Infinity",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "malformed_json",
+      "status": 422,
+      "expected_status": 422
+    },
+    {
+      "name": "wrong_http_method",
+      "status": 405,
+      "expected_status": 405
+    },
+    {
+      "name": "openapi_schema",
+      "status": 200,
+      "expected_status": 200
+    }
+  ],
+  "models": [
+    {
+      "id": "lr",
+      "name": "TF-IDF + Logistic Regression",
+      "version": "baseline-v1-48b8c9a40293"
+    },
+    {
+      "id": "mlp32",
+      "name": "TF-IDF + MLP (32 hidden units)",
+      "version": "mlp_cpu_v1-epoch17-5bf383ff4fa0"
+    },
+    {
+      "id": "mlp16",
+      "name": "TF-IDF + MLP (16 hidden units)",
+      "version": "mlp_cpu_h16_v1-epoch20-abe039ccaa59"
+    }
+  ],
+  "blank_text_response": {
+    "detail": [
+      {
+        "loc": [
+          "body",
+          "text"
+        ],
+        "msg": "Value error, Text must not be blank",
+        "type": "value_error"
+      }
+    ]
+  },
+  "artifacts_unchanged": true,
+  "sample_predictions": {
+    "lr": {
+      "label": "ham",
+      "spam_score": 0.39741435472451453,
+      "threshold": 0.5,
+      "model": "lr",
+      "model_version": "baseline-v1-48b8c9a40293"
+    },
+    "mlp32": {
+      "label": "spam",
+      "spam_score": 0.7646746039390564,
+      "threshold": 0.5,
+      "model": "mlp32",
+      "model_version": "mlp_cpu_v1-epoch17-5bf383ff4fa0"
+    },
+    "mlp16": {
+      "label": "spam",
+      "spam_score": 0.7633897066116333,
+      "threshold": 0.5,
+      "model": "mlp16",
+      "model_version": "mlp_cpu_h16_v1-epoch20-abe039ccaa59"
+    }
+  },
+  "check_count": 26
+}

@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "transport": "real local HTTP",
+  "checks": [
+    "root_redirect",
+    "frontend_assets",
+    "experiment_provenance",
+    "real_training_curves"
+  ],
+  "test_set_evaluated": false
+}

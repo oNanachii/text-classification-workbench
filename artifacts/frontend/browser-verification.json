@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "date": "2026-10-21",
+  "browser": "in-app browser",
+  "isolated_origin": "http://127.0.0.1:18765",
+  "checks": [
+    "blank_prediction_disabled",
+    "prediction_real_score",
+    "prediction_threshold_changes_label_not_score",
+    "samples_empty_state",
+    "samples_real_pagination",
+    "samples_label_filter",
+    "draft_keeps_saved_label_unchanged",
+    "save_success_and_history",
+    "filtered_page_refilled_to_20",
+    "save_failure_no_false_success",
+    "failure_keeps_old_saved_label",
+    "failure_rollback_confirmed_in_sqlite",
+    "reload_persists_label_and_history",
+    "experiments_real_metrics_and_curves",
+    "mobile_prediction_390px_no_body_overflow",
+    "mobile_samples_and_experiments_no_body_overflow",
+    "no_uncaught_console_errors_observed"
+  ],
+  "check_count": 17,
+  "save_write_target": "disposable SQLite copy",
+  "loading_state": "reviewed in source; delayed browser capture not asserted",
+  "saved_artifacts": [
+    "save-failure.jpg",
+    "experiments.jpg",
+    "mobile.jpg"
+  ],
+  "frozen_models_data_unchanged": true,
+  "main_working_rows": 3611,
+  "main_working_revision_sum": 0,
+  "main_working_labels_unchanged": true
+}

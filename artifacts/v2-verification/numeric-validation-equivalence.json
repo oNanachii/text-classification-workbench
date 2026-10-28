@@ -1,0 +1,37 @@
+{
+  "scope": "existing fixed v2 validation only; reconstruct original sklearn/PyTorch computation from immutable trained weights, no retraining or test evaluation",
+  "results": [
+    {
+      "run_id": "v2-base-seed42",
+      "kind": "lr",
+      "validation_rows": 783,
+      "feature_values_match": true,
+      "threshold_0_5_predictions_identical": true,
+      "max_score_abs_difference": 3.3306690738754696e-16
+    },
+    {
+      "run_id": "v2-base-seed42",
+      "kind": "mlp16",
+      "validation_rows": 783,
+      "feature_values_match": true,
+      "threshold_0_5_predictions_identical": true,
+      "max_score_abs_difference": 1.1920928955078125e-07
+    },
+    {
+      "run_id": "v2-import-reviewed-seed42",
+      "kind": "lr",
+      "validation_rows": 783,
+      "feature_values_match": true,
+      "threshold_0_5_predictions_identical": true,
+      "max_score_abs_difference": 3.3306690738754696e-16
+    },
+    {
+      "run_id": "v2-import-reviewed-seed42",
+      "kind": "mlp16",
+      "validation_rows": 783,
+      "feature_values_match": true,
+      "threshold_0_5_predictions_identical": true,
+      "max_score_abs_difference": 5.960464477539063e-08
+    }
+  ]
+}

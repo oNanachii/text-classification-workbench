@@ -1,0 +1,7 @@
+{
+  "scope": "local Mac process loading selected NumPy model and running20 predictions; not server capacity or load benchmark",
+  "max_rss_bytes": 37879808,
+  "torch_imported": false,
+  "sklearn_imported": false,
+  "model": "lr"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "source": "UCI SMS Spam Collection",
+  "raw_sha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+  "normalization": "casefold + collapse whitespace + trim",
+  "rule": "predeclared template union + blocked character-5gram Jaccard>=0.85; deterministic group SHA256 seed42 70/15/15",
+  "near_duplicate_scope": "conservative blocked lexical/template audit, not all semantic paraphrases",
+  "counts": {
+    "train": {
+      "spam": 462,
+      "ham": 3157
+    },
+    "validation": {
+      "ham": 706,
+      "spam": 77
+    },
+    "test": {
+      "spam": 103,
+      "ham": 654
+    }
+  },
+  "raw_rows": 5574,
+  "unique_rows": 5159,
+  "duplicates_removed": 415,
+  "conflicts_quarantined": 0,
+  "mixed_group_rows_quarantined": 0,
+  "near_candidate_pairs_linked": 244,
+  "groups": 5004,
+  "test_model_evaluated": false,
+  "dataset_id": "sms-v2-c2206636983886cfee78"
+}

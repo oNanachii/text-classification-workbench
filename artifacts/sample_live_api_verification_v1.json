@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "transport": "real local HTTP",
+  "sample_count": 3611,
+  "checks": [
+    "paginated_list",
+    "sample_detail",
+    "empty_history",
+    "same_label_noop",
+    "readback_unchanged"
+  ],
+  "real_labels_changed": false,
+  "frozen_data_models_unchanged": true,
+  "test_set_evaluated": false
+}

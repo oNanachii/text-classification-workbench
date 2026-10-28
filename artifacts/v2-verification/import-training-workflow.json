@@ -1,0 +1,83 @@
+{
+  "scope": "actual import, review, immutable snapshot and CPU training; authored additions, not real error correction or quality gain",
+  "source": "examples/authored_sms.csv",
+  "preview_summary": {
+    "input_rows": 4,
+    "accepted_rows": 4,
+    "invalid_rows": 0,
+    "invalid_line_numbers": [],
+    "duplicate_rows": 0,
+    "conflict_groups": 0,
+    "heldout_overlap_rejected": 0,
+    "source": "AI-authored English SMS workflow smoke samples; internal review, not field data"
+  },
+  "confirmed": {
+    "import_id": "import-f63765aa2a20b417c051813cf0ae1a710ad3c726b95c55c3654d361c890533ad",
+    "created": true,
+    "count": 4
+  },
+  "reviews": [
+    {
+      "id": "adfbe060aee2ba8ef4ad85937218857f94915b42f4d540ac5eaee97c40afc657",
+      "label": "ham",
+      "changed": false
+    },
+    {
+      "id": "81f4a40f678a9b388aa46d6bd03def424b85cee313e213b675a13770d19d60c6",
+      "label": "spam",
+      "changed": false
+    },
+    {
+      "id": "4ac85a7f562cf4fc1660b094657fa703e5262b10d3d875bc69d7ed62064cd3d5",
+      "label": "spam",
+      "changed": false
+    },
+    {
+      "id": "2e6b1b2ad2132832ebb5e8cd0accc2059fcf1fe1ef321fec97f15b55e01f83b5",
+      "label": "ham",
+      "changed": false
+    }
+  ],
+  "snapshot": {
+    "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+    "sha256": "90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+    "count": 3623,
+    "corrections": 0,
+    "path": "var/snapshots/snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37.json"
+  },
+  "run_id": "v2-import-reviewed-seed42",
+  "model_called": false,
+  "test_set_evaluated": false,
+  "training_count": 3623,
+  "validation_count": 783,
+  "models": [
+    {
+      "kind": "lr",
+      "metrics": {
+        "true_positive": 64,
+        "true_negative": 706,
+        "false_positive": 0,
+        "false_negative": 13,
+        "precision": 1.0,
+        "recall": 0.8311688311688312,
+        "macro_f1": 0.9493393057110862,
+        "accuracy": 0.9833971902937421,
+        "count": 783
+      }
+    },
+    {
+      "kind": "mlp16",
+      "metrics": {
+        "true_positive": 72,
+        "true_negative": 704,
+        "false_positive": 2,
+        "false_negative": 5,
+        "precision": 0.972972972972973,
+        "recall": 0.935064935064935,
+        "macro_f1": 0.9743476938197646,
+        "accuracy": 0.9910600255427842,
+        "count": 783
+      }
+    }
+  ]
+}

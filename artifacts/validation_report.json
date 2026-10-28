@@ -1,0 +1,685 @@
+{
+  "evaluation_split": "validation",
+  "test_set_evaluated": false,
+  "threshold_selected": null,
+  "positive_class": "spam",
+  "sample_count": 774,
+  "class_counts": {
+    "ham": 677,
+    "spam": 97
+  },
+  "data_manifest": {
+    "seed": 42,
+    "raw_sha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+    "normalization": "casefold + collapse whitespace + trim",
+    "conflict_policy": "quarantine all records sharing normalized text but different labels",
+    "near_duplicate_check": "not performed; paraphrases/templates may cross splits",
+    "raw_rows": 5574,
+    "accepted_unique_rows": 5159,
+    "duplicate_rows_removed": 415,
+    "empty_rows_removed": 0,
+    "conflict_groups": 0,
+    "conflict_rows": 0,
+    "counts": {
+      "train": {
+        "ham": 3162,
+        "spam": 449
+      },
+      "validation": {
+        "ham": 677,
+        "spam": 97
+      },
+      "test": {
+        "ham": 678,
+        "spam": 96
+      }
+    }
+  },
+  "training": {
+    "split_sha256": "7761ad5094ad64e06a8464931cd723966696cbd63c57178a8e88c59c42d5195a",
+    "training_rows": 3611,
+    "training_seconds": 0.038948832981986925,
+    "seed": 42,
+    "normalization": "casefold + collapse whitespace + trim",
+    "majority_label": "ham",
+    "versions": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "joblib": "1.6.0"
+    }
+  },
+  "f1_zero_division_policy": "0 if undefined; undefined precision/recall are null",
+  "majority_baseline": {
+    "predicted_label": "ham",
+    "true_negative": 677,
+    "false_positive": 0,
+    "false_negative": 97,
+    "true_positive": 0,
+    "spam_precision": null,
+    "spam_recall": 0.0,
+    "spam_f1": 0.0,
+    "macro_f1": 0.4665747760165403,
+    "ham_precision": 0.8746770025839793,
+    "ham_recall": 1.0,
+    "accuracy": 0.8746770025839793
+  },
+  "thresholds": [
+    {
+      "threshold": 0.5,
+      "true_negative": 677,
+      "false_positive": 0,
+      "false_negative": 33,
+      "true_positive": 64,
+      "spam_precision": 1.0,
+      "spam_recall": 0.6597938144329897,
+      "spam_f1": 0.7950310559006211,
+      "macro_f1": 0.8856193491471382,
+      "ham_precision": 0.9535211267605633,
+      "ham_recall": 1.0,
+      "accuracy": 0.9573643410852714,
+      "examples": {
+        "false_positive": [],
+        "false_negative": [
+          {
+            "id": "09beb8816f7cb6f1f3e5d50a95b9d6b9480f681c2529ea4929a8eda92732afdf",
+            "text": "ur balance is now £600. next question: complete the landmark, big, a. bob, b. barry or c. ben ?. text a, b or c to 83738. good luck!",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.4374547496140327,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": -0.25149830497881354,
+              "positive_terms": [
+                {
+                  "term": "or",
+                  "tfidf": 0.39957350068896724,
+                  "coefficient": 1.812238510481486,
+                  "contribution": 0.724122485716447
+                },
+                {
+                  "term": "text",
+                  "tfidf": 0.23912147969071898,
+                  "coefficient": 2.847897226313895,
+                  "contribution": 0.6809933987632729
+                },
+                {
+                  "term": "ur",
+                  "tfidf": 0.21184154055718032,
+                  "coefficient": 1.4089154976324036,
+                  "contribution": 0.29846682953333475
+                },
+                {
+                  "term": "now",
+                  "tfidf": 0.18756372340048913,
+                  "coefficient": 1.5599445433662014,
+                  "contribution": 0.29258900685204053
+                },
+                {
+                  "term": "to",
+                  "tfidf": 0.11765191171623733,
+                  "coefficient": 2.4438447656793647,
+                  "contribution": 0.2875230086198973
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "good",
+                  "tfidf": 0.22483451706160032,
+                  "coefficient": -0.9412808657186843,
+                  "contribution": -0.21163242886318545
+                },
+                {
+                  "term": "big",
+                  "tfidf": 0.31703989591372533,
+                  "coefficient": -0.27668981148484,
+                  "contribution": -0.08772170903354196
+                },
+                {
+                  "term": "the",
+                  "tfidf": 0.1431689348042033,
+                  "coefficient": -0.2207390164317869,
+                  "contribution": -0.03160296985226646
+                }
+              ]
+            }
+          },
+          {
+            "id": "a99cccecc592d3e871d2bd566d011acccc884f95e6f5a68a23f8400473751687",
+            "text": "xclusive@clubsaisai 2morow 28/5 soiree speciale zouk with nichols from paris.free roses 2 all ladies !!! info: 07946746291/07880867867",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.4188627353680262,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": -0.3274437190731354,
+              "positive_terms": [
+                {
+                  "term": "free",
+                  "tfidf": 0.3181866612625282,
+                  "coefficient": 3.011298290388873,
+                  "contribution": 0.9581549490843946
+                },
+                {
+                  "term": "from",
+                  "tfidf": 0.305615246348033,
+                  "coefficient": 1.8244242469037177,
+                  "contribution": 0.5575718656608043
+                },
+                {
+                  "term": "with",
+                  "tfidf": 0.2944508515175184,
+                  "coefficient": 1.3465329107843915,
+                  "contribution": 0.3964877621768267
+                },
+                {
+                  "term": "info",
+                  "tfidf": 0.5308552558187608,
+                  "coefficient": 0.5629345231068997,
+                  "contribution": 0.2988367502731254
+                },
+                {
+                  "term": "ladies",
+                  "tfidf": 0.5842647144486599,
+                  "coefficient": 0.3699223464482895,
+                  "contribution": 0.2161325741157881
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "all",
+                  "tfidf": 0.3090027615647932,
+                  "coefficient": -0.14244168419759623,
+                  "contribution": -0.044014873778997404
+                }
+              ]
+            }
+          },
+          {
+            "id": "3fc510f2f87f711de79cd8f62731db0f3cc739a9b7465af420bd9b1201ad22d1",
+            "text": "as a valued customer, i am pleased to advise you that following recent review of your mob no. you are awarded with a £1500 bonus prize, call 09066364589",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.41449817090974395,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": -0.34540074521020303,
+              "positive_terms": [
+                {
+                  "term": "call",
+                  "tfidf": 0.1504342644950782,
+                  "coefficient": 4.007919146691956,
+                  "contribution": 0.6029283689883458
+                },
+                {
+                  "term": "prize",
+                  "tfidf": 0.2335785566430365,
+                  "coefficient": 2.080380737534404,
+                  "contribution": 0.4859323299412619
+                },
+                {
+                  "term": "awarded",
+                  "tfidf": 0.26400703244614737,
+                  "coefficient": 1.1331328091530142,
+                  "contribution": 0.2991550303118539
+                },
+                {
+                  "term": "customer",
+                  "tfidf": 0.2527718104030436,
+                  "coefficient": 1.1718470744454088,
+                  "contribution": 0.29620990652307616
+                },
+                {
+                  "term": "your",
+                  "tfidf": 0.14217895748887255,
+                  "coefficient": 1.9728501440440704,
+                  "contribution": 0.280497776761958
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "that",
+                  "tfidf": 0.14549366437780512,
+                  "coefficient": -1.5852605741721695,
+                  "contribution": -0.23064536992997225
+                },
+                {
+                  "term": "am",
+                  "tfidf": 0.18444539722233189,
+                  "coefficient": -1.1486402044586397,
+                  "contribution": -0.21186139877691432
+                },
+                {
+                  "term": "you",
+                  "tfidf": 0.19453134255154655,
+                  "coefficient": -0.8593843117108637,
+                  "contribution": -0.1671771839248511
+                },
+                {
+                  "term": "are",
+                  "tfidf": 0.1546182871403456,
+                  "coefficient": -0.23947553732269414,
+                  "contribution": -0.03702729739284887
+                },
+                {
+                  "term": "pleased",
+                  "tfidf": 0.3426635013512901,
+                  "coefficient": -0.10080273282111946,
+                  "contribution": -0.0345414173742634
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "threshold": 0.8,
+      "true_negative": 677,
+      "false_positive": 0,
+      "false_negative": 67,
+      "true_positive": 30,
+      "spam_precision": 1.0,
+      "spam_recall": 0.30927835051546393,
+      "spam_f1": 0.47244094488188976,
+      "macro_f1": 0.7126455252206775,
+      "ham_precision": 0.9099462365591398,
+      "ham_recall": 1.0,
+      "accuracy": 0.91343669250646,
+      "examples": {
+        "false_positive": [],
+        "false_negative": [
+          {
+            "id": "55d48048ed4e73a2446cbee150a6ee95f55894e118beb58dc4c57cafff1a83f5",
+            "text": "wanna get laid 2nite? want real dogging locations sent direct to ur mobile? join the uk's largest dogging network. txt park to 69696 now! nyt. ec2a. 3lp £1.50/msg",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.7940196291736766,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": 1.3493273058241546,
+              "positive_terms": [
+                {
+                  "term": "txt",
+                  "tfidf": 0.14657801024408032,
+                  "coefficient": 4.202395044839253,
+                  "contribution": 0.6159787039321204
+                },
+                {
+                  "term": "uk",
+                  "tfidf": 0.17392535272927948,
+                  "coefficient": 2.640377492599162,
+                  "contribution": 0.4592285867387597
+                },
+                {
+                  "term": "mobile",
+                  "tfidf": 0.15172687461124193,
+                  "coefficient": 2.7569299612065326,
+                  "contribution": 0.41830036653595964
+                },
+                {
+                  "term": "50",
+                  "tfidf": 0.17961570513279998,
+                  "coefficient": 1.9499669699073225,
+                  "contribution": 0.3502446922855731
+                },
+                {
+                  "term": "dogging",
+                  "tfidf": 0.4641223306847034,
+                  "coefficient": 0.7505674941732928,
+                  "contribution": 0.3483551347318862
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "park",
+                  "tfidf": 0.22401266136887507,
+                  "coefficient": -0.10889873216460402,
+                  "contribution": -0.024394694811889266
+                },
+                {
+                  "term": "the",
+                  "tfidf": 0.0852713922684709,
+                  "coefficient": -0.2207390164317869,
+                  "contribution": -0.018822723259111343
+                },
+                {
+                  "term": "want",
+                  "tfidf": 0.13589299768038238,
+                  "coefficient": -0.1137657573935786,
+                  "contribution": -0.01545996980559252
+                },
+                {
+                  "term": "sent",
+                  "tfidf": 0.17545067120844965,
+                  "coefficient": -0.0502326181349326,
+                  "contribution": -0.008813346568331664
+                }
+              ]
+            }
+          },
+          {
+            "id": "dd9e83f0642f4a0506c0c6ff9933d7f5be3cd4ae514bdf2cdf40e51db06fa301",
+            "text": "ur going 2 bahamas! callfreefone 08081560665 and speak to a live operator to claim either bahamas cruise of£2000 cash 18+only. to opt out txt x to 07786200117",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.7930606043203078,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": 1.343473666921724,
+              "positive_terms": [
+                {
+                  "term": "to",
+                  "tfidf": 0.38067477233784414,
+                  "coefficient": 2.4438447656793647,
+                  "contribution": 0.9303100498040242
+                },
+                {
+                  "term": "txt",
+                  "tfidf": 0.19907163286213306,
+                  "coefficient": 4.202395044839253,
+                  "contribution": 0.836577643507887
+                },
+                {
+                  "term": "claim",
+                  "tfidf": 0.2210037885828554,
+                  "coefficient": 2.6343809185042377,
+                  "contribution": 0.582208163559819
+                },
+                {
+                  "term": "18",
+                  "tfidf": 0.25980115054274017,
+                  "coefficient": 1.477630605378198,
+                  "contribution": 0.3838901313544215
+                },
+                {
+                  "term": "cash",
+                  "tfidf": 0.2362128119100895,
+                  "coefficient": 1.6201642808970982,
+                  "contribution": 0.3827035605469917
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "going",
+                  "tfidf": 0.19342549031821216,
+                  "coefficient": -1.0321877817138323,
+                  "contribution": -0.19965142777846576
+                }
+              ]
+            }
+          },
+          {
+            "id": "77981a6ea56261b6a2fe507a789f3f879dd558095202a3af55829490531f81b2",
+            "text": "do you want 750 anytime any network mins 150 text and a new video phone for only five pounds per week call 08002888812 or reply for delivery tomorrow",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.7839633650093204,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": 1.2889142912132168,
+              "positive_terms": [
+                {
+                  "term": "call",
+                  "tfidf": 0.12729490202552268,
+                  "coefficient": 4.007919146691956,
+                  "contribution": 0.510187675104369
+                },
+                {
+                  "term": "reply",
+                  "tfidf": 0.17775750247632052,
+                  "coefficient": 2.6801784567242763,
+                  "contribution": 0.4764218286581465
+                },
+                {
+                  "term": "text",
+                  "tfidf": 0.16519404640113267,
+                  "coefficient": 2.847897226313895,
+                  "contribution": 0.47045566654935456
+                },
+                {
+                  "term": "for",
+                  "tfidf": 0.23740868884342042,
+                  "coefficient": 1.7121250374575847,
+                  "contribution": 0.40647336027879727
+                },
+                {
+                  "term": "video",
+                  "tfidf": 0.23017086062302675,
+                  "coefficient": 1.2086498492357773,
+                  "contribution": 0.2781959759904904
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "tomorrow",
+                  "tfidf": 0.1912665287164537,
+                  "coefficient": -0.3817465315221462,
+                  "contribution": -0.07301533393378717
+                },
+                {
+                  "term": "do",
+                  "tfidf": 0.13848937305792366,
+                  "coefficient": -0.5131265092940782,
+                  "contribution": -0.07106256857153773
+                },
+                {
+                  "term": "you",
+                  "tfidf": 0.08230454768435645,
+                  "coefficient": -0.8593843117108637,
+                  "contribution": -0.07073123706239463
+                },
+                {
+                  "term": "want",
+                  "tfidf": 0.15762253958371875,
+                  "coefficient": -0.1137657573935786,
+                  "contribution": -0.017932047598041085
+                },
+                {
+                  "term": "any",
+                  "tfidf": 0.1742995104642772,
+                  "coefficient": -0.06920753986440971,
+                  "contribution": -0.012062840318803562
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "threshold": 0.9,
+      "true_negative": 677,
+      "false_positive": 0,
+      "false_negative": 89,
+      "true_positive": 8,
+      "spam_precision": 1.0,
+      "spam_recall": 0.08247422680412371,
+      "spam_f1": 0.1523809523809524,
+      "macro_f1": 0.5453519453519453,
+      "ham_precision": 0.8838120104438643,
+      "ham_recall": 1.0,
+      "accuracy": 0.8850129198966409,
+      "examples": {
+        "false_positive": [],
+        "false_negative": [
+          {
+            "id": "6074055639b67a5fc06f764a8f03b2b0ddb2afc480449794ab02e1b4c8c2b070",
+            "text": "urgent! last weekend's draw shows that you have won £1000 cash or a spanish holiday! call now 09050000332 to claim. t&c: rstm, sw7 3ss. 150ppm",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.8795968288902751,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": 1.988617782853098,
+              "positive_terms": [
+                {
+                  "term": "call",
+                  "tfidf": 0.16580457174175234,
+                  "coefficient": 4.007919146691956,
+                  "contribution": 0.6645313176928291
+                },
+                {
+                  "term": "claim",
+                  "tfidf": 0.24584755505660771,
+                  "coefficient": 2.6343809185042377,
+                  "contribution": 0.6476561079020474
+                },
+                {
+                  "term": "urgent",
+                  "tfidf": 0.2639047816450665,
+                  "coefficient": 1.7949229316636792,
+                  "contribution": 0.47368874435042585
+                },
+                {
+                  "term": "won",
+                  "tfidf": 0.2545106785905521,
+                  "coefficient": 1.7847591001577292,
+                  "contribution": 0.4542402497018068
+                },
+                {
+                  "term": "cash",
+                  "tfidf": 0.2627662749743779,
+                  "coefficient": 1.6201642808970982,
+                  "contribution": 0.4257245329378721
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "that",
+                  "tfidf": 0.1603591761110347,
+                  "coefficient": -1.5852605741721695,
+                  "contribution": -0.2542110795955549
+                },
+                {
+                  "term": "you",
+                  "tfidf": 0.1072035883924655,
+                  "coefficient": -0.8593843117108637,
+                  "contribution": -0.0921290820235937
+                },
+                {
+                  "term": "last",
+                  "tfidf": 0.25085729843800797,
+                  "coefficient": -0.02347886180300092,
+                  "contribution": -0.005889843842300148
+                }
+              ]
+            }
+          },
+          {
+            "id": "e5a4392ddc4dda5bd5501fed9c6fc5fde808e043526050ebbfac9f8a85a8a662",
+            "text": "had your mobile 11 months or more? u r entitled to update to the latest colour mobiles with camera for free! call the mobile update co free on 08002986030",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.8787216813482711,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": 1.9803801581056821,
+              "positive_terms": [
+                {
+                  "term": "mobile",
+                  "tfidf": 0.3299978403905315,
+                  "coefficient": 2.7569299612065326,
+                  "contribution": 0.9097809333061074
+                },
+                {
+                  "term": "free",
+                  "tfidf": 0.2876309267536962,
+                  "coefficient": 3.011298290388873,
+                  "contribution": 0.8661425179963725
+                },
+                {
+                  "term": "call",
+                  "tfidf": 0.11934613516617977,
+                  "coefficient": 4.007919146691956,
+                  "contribution": 0.47832966021621803
+                },
+                {
+                  "term": "to",
+                  "tfidf": 0.15240602438259704,
+                  "coefficient": 2.4438447656793647,
+                  "contribution": 0.3724566649454114
+                },
+                {
+                  "term": "co",
+                  "tfidf": 0.20285768464742493,
+                  "coefficient": 1.5819839425519935,
+                  "contribution": 0.32091759973550227
+                }
+              ],
+              "negative_terms": [
+                {
+                  "term": "had",
+                  "tfidf": 0.1781220849082265,
+                  "coefficient": -0.31711405538049636,
+                  "contribution": -0.05648501669807682
+                },
+                {
+                  "term": "the",
+                  "tfidf": 0.18546071925483612,
+                  "coefficient": -0.2207390164317869,
+                  "contribution": -0.04093841675504429
+                },
+                {
+                  "term": "months",
+                  "tfidf": 0.2436077809592836,
+                  "coefficient": -0.059482164770259104,
+                  "contribution": -0.014490318166337295
+                }
+              ]
+            }
+          },
+          {
+            "id": "534cb9562cf4407404643872785f889739e2c25120d310fc300e1364d48fdf47",
+            "text": "urgent! call 09066612661 from landline. your complementary 4* tenerife holiday or £10,000 cash await collection sae t&cs po box 3 wa14 2px 150ppm 18+ sender: hol offer",
+            "expected": "spam",
+            "predicted": "ham",
+            "spam_score": 0.8712233091462738,
+            "explanation": {
+              "bias": -2.710612746605077,
+              "logit": 1.9118185008188884,
+              "positive_terms": [
+                {
+                  "term": "call",
+                  "tfidf": 0.13507616112158174,
+                  "coefficient": 4.007919146691956,
+                  "contribution": 0.541374332420835
+                },
+                {
+                  "term": "urgent",
+                  "tfidf": 0.2149955482636929,
+                  "coefficient": 1.7949229316636792,
+                  "contribution": 0.3859004397841077
+                },
+                {
+                  "term": "18",
+                  "tfidf": 0.2354449897812341,
+                  "coefficient": 1.477630605378198,
+                  "contribution": 0.3479007227837086
+                },
+                {
+                  "term": "cash",
+                  "tfidf": 0.2140680399997624,
+                  "coefficient": 1.6201642808970982,
+                  "contribution": 0.34682539208926627
+                },
+                {
+                  "term": "from",
+                  "tfidf": 0.15633959457872812,
+                  "coefficient": 1.8244242469037177,
+                  "contribution": 0.2852297471005286
+                }
+              ],
+              "negative_terms": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "English SMS teaching dataset, not evidence of suitability for Chinese or live traffic",
+    "Normalized exact repeats removed; near-duplicates/templates not checked",
+    "Validation results are used for development, not final generalization claims"
+  ]
+}

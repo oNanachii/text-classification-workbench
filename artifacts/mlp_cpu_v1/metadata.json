@@ -1,0 +1,37 @@
+{
+  "config": {
+    "input_dim": 2000,
+    "hidden_units": 32,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "epochs": 20,
+    "seed": 42,
+    "cpu_threads": 2,
+    "device": "cpu",
+    "dtype": "float32",
+    "optimizer": "Adam",
+    "loss": "BCEWithLogitsLoss",
+    "activation": "ReLU",
+    "weight_decay": 0.0
+  },
+  "epoch": 17,
+  "seed": 42,
+  "split_sha256": "7761ad5094ad64e06a8464931cd723966696cbd63c57178a8e88c59c42d5195a",
+  "raw_sha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+  "vectorizer_file_sha256": "aa3d67dffeed7c31863f050381fa585d7d65c94b0dbc0a86fbc9da539600d8d5",
+  "normalization": "casefold + collapse whitespace + trim",
+  "label_mapping": {
+    "ham": 0,
+    "spam": 1
+  },
+  "best_validation_loss": 0.06140686960732059,
+  "versions": {
+    "torch": "2.14.1",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0"
+  },
+  "model_file_sha256": "5bf383ff4fa02d8641a8a5d1df38b49f8e9aa57d7add2d9765a7239d686371c0"
+}

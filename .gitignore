@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+frontend/node_modules/
+var/
+.env
+.env.*
+!.env.example
+artifacts/v2-verification/private/
+*.log
+data/*.sqlite3*
+data/raw/*.zip
+data/raw/SMSSpamCollection
+data/splits.json
+data/quarantine.json
+artifacts/*.joblib
+artifacts/mlp_*/model.pt
+artifacts/mlp_*/vectorizer.joblib
+
+# Keep content-bearing training snapshots private; publish only numeric inference and summaries.
+artifacts/training_snapshots/

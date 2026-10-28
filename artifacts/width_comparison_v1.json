@@ -1,0 +1,69 @@
+{
+  "controlled_change": {
+    "hidden_units": [
+      32,
+      16
+    ]
+  },
+  "same_data_and_baseline": true,
+  "test_set_evaluated": false,
+  "old_files_unchanged": true,
+  "threshold": 0.5,
+  "evaluation_split": "validation",
+  "checkpoint_selection": "minimum epoch-end validation BCEWithLogitsLoss",
+  "seed": 42,
+  "runs": [
+    {
+      "run_name": "mlp_cpu_v1",
+      "hidden_units": 32,
+      "parameter_count": 64065,
+      "best_epoch": 17,
+      "validation_metrics": {
+        "epoch": 17,
+        "validation_loss": 0.06140686960732059,
+        "true_negative": 676,
+        "false_positive": 1,
+        "false_negative": 15,
+        "true_positive": 82,
+        "spam_precision": 0.9879518072289156,
+        "spam_recall": 0.845360824742268,
+        "spam_f1": 0.9111111111111111,
+        "macro_f1": 0.9497076023391813,
+        "ham_precision": 0.9782923299565847,
+        "ham_recall": 0.9985228951255539,
+        "accuracy": 0.979328165374677
+      },
+      "report": "mlp_cpu_v1/report.json",
+      "first_step_audit_passed": true,
+      "reload_check_passed": true
+    },
+    {
+      "run_name": "mlp_cpu_h16_v1",
+      "hidden_units": 16,
+      "parameter_count": 32033,
+      "best_epoch": 20,
+      "validation_metrics": {
+        "epoch": 20,
+        "validation_loss": 0.06283081686773966,
+        "true_negative": 676,
+        "false_positive": 1,
+        "false_negative": 14,
+        "true_positive": 83,
+        "spam_precision": 0.9880952380952381,
+        "spam_recall": 0.8556701030927835,
+        "spam_f1": 0.9171270718232044,
+        "macro_f1": 0.953077069196167,
+        "ham_precision": 0.9797101449275363,
+        "ham_recall": 0.9985228951255539,
+        "accuracy": 0.9806201550387597
+      },
+      "report": "mlp_cpu_h16_v1/report.json",
+      "first_step_audit_passed": true,
+      "reload_check_passed": true
+    }
+  ],
+  "limits": [
+    "Single seed and one validation split; no general superiority claim",
+    "Near-duplicate text checks remain incomplete"
+  ]
+}

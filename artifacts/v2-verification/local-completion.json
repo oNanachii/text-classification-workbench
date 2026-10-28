@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-28",
+  "status": "local implementation verified; browser and external deployment handled by root",
+  "original_protected_files_unchanged": 30,
+  "test_scope": "19 isolated storage/API/numeric-registry/final-once guards; synthetic final guard does not evaluate actual heldout",
+  "python_tests": 22,
+  "real_cpu_runs": [
+    "v2-base-seed42",
+    "v2-import-reviewed-seed42"
+  ],
+  "v2_counts": {
+    "train": 3619,
+    "validation": 783,
+    "sealed_test": 757
+  },
+  "added_data": {
+    "source": "examples/authored_sms.csv",
+    "authored_rows": 4,
+    "genuine_label_corrections": 0,
+    "claim": "workflow evidence only, not genuine correction or field-data quality gain"
+  },
+  "actual_test_set_evaluated": false,
+  "live_model_api_called": false,
+  "frontend_build": "passed",
+  "limits": [
+    "no real touch-device or screen-reader acceptance",
+    "user interview and critical edits not assessed",
+    "public endpoint and repository publication not yet performed by this agent"
+  ],
+  "node_race_regressions": 5,
+  "review_repairs": [
+    "late import preview/file race",
+    "atomic no-overwrite immutable publication",
+    "full evaluation dependency freeze"
+  ],
+  "actual_http_integration": "passed against final readonly/private gate; 20 warm local calls and observed process memory, not capacity",
+  "current_service_selection_note": "root selected final candidate v2-import-reviewed-seed42/mlp16/0.5 based on validation; final evaluation belongs to root"
+}
