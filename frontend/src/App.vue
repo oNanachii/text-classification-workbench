@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import LossChart from './components/LossChart.vue'
+import DecisionPanel from './components/DecisionPanel.vue'
 import { createImportGuard, guardedPreview } from './importGuard.js'
 import { createSamplePageLoader } from './samplePage.js'
 const tab=ref('predict'), config=ref(null), health=ref(null), service=ref(null), token=ref(''), tokenDraft=ref(''), showAuth=ref(false)
-const error=ref(''), notice=ref(''), busy=ref(false), input=ref('Free entry in our weekly prize draw. Claim your reward now.'), result=ref(null)
+const error=ref(''), notice=ref(''), busy=ref(false)
 const finalReport=ref(null)
 const runs=ref([]), dataset=ref(null), samples=ref([]), total=ref(0), offset=ref(0), search=ref(''), pending=ref(false), selected=ref(null), draft=ref('ham'), note=ref('')
 const csv=ref('text,label\n'), source=ref(''), preview=ref(null), candidate=ref(''), kind=ref('lr'), threshold=ref(0.5)
@@ -33,7 +34,6 @@ async function act(fn){if(busy.value)return;busy.value=true;error.value='';notic
 async function refresh(){config.value=await api('/config');health.value=await api('/health');service.value=await api('/service');if(config.value.public||config.value.operator_authenticated){runs.value=(await api('/runs')).runs;finalReport.value=(await api('/final-report')).report;if(!candidate.value)candidate.value=runs.value.find(r=>r.state==='completed')?.run_id||''}}
 async function saveToken(){authEpoch++;token.value=tokenDraft.value;tokenDraft.value='';clearPrivate();showAuth.value=false;busy.value=false;await act(refresh)}
 async function clearToken(){authEpoch++;token.value='';tokenDraft.value='';clearPrivate();tab.value='predict';busy.value=false;await act(refresh)}
-async function predict(){await act(async()=>{result.value=await api('/predict',{method:'POST',body:JSON.stringify({text:input.value})})})}
 function sampleQuery(){return {limit:20,offset:offset.value,q:search.value,pending:pending.value}}
 async function refreshSampleList(){
  return samplePageLoader.refresh(sampleQuery,query=>api('/samples?'+new URLSearchParams({limit:String(query.limit),offset:String(query.offset),q:query.q,pending:String(query.pending)})),page=>{samples.value=page.items;total.value=page.total;offset.value=page.offset})
@@ -85,13 +85,8 @@ onMounted(()=>act(refresh))
   <nav class="tab-navigation" aria-label="工作台功能"><button v-for="[id,name] in [['predict','文本预测'],['samples','数据审核'],['experiments','实验对比'],['service','服务版本']]" :key="id" class="tab-button" :class="{active:tab===id}" :aria-current="tab===id?'page':undefined" @click="switchTab(id)">{{ name }}</button></nav>
   <main>
    <div v-if="error" class="notice error" role="alert">{{ error }}</div><div v-if="notice" class="notice info" role="status">{{ notice }}</div>
-   <div v-if="config?.public" class="notice info">公开只读演示 · 英文短信正常／垃圾二分类。导入、审核和CPU训练在操作者本地工作台进行；预测输入默认不保存。</div>
-   <section v-if="tab==='predict'">
-    <div class="page-heading"><div><p class="eyebrow">PREDICT</p><h1>使用明确版本的模型预测</h1><p>从数据快照到训练记录，再到当前实际加载的服务版本。</p></div></div>
-    <div class="prediction-layout"><form class="card prediction-form" @submit.prevent="predict"><div class="card-heading"><h2>英文短信</h2><span>{{ input.length }} / 2000</span></div><label class="field"><span class="sr-only">待分类文本</span><textarea v-model="input" maxlength="2000" rows="8" aria-label="待分类英文短信"></textarea></label><p>首版只支持英文短信场景；分数不是经过校准的真实概率。</p><div class="form-actions"><button class="button primary" :disabled="busy||!input.trim()||!health?.model_ready">{{ busy?'正在读取…':'开始预测' }}</button><button type="button" class="button secondary" @click="input='Are we still meeting for lunch tomorrow?'">填入正常短信示例</button></div></form>
-     <section class="card prediction-result" aria-live="polite"><p class="eyebrow">RESULT</p><template v-if="result"><h2>{{ result.label==='spam'?'预测为垃圾短信':'预测为正常短信' }}</h2><p class="v2-score">{{ pct(result.spam_score) }}</p><p>垃圾分类分数 · 阈值 {{ result.threshold }}</p><dl><dt>实际模型</dt><dd>{{ result.model }} / {{ result.model_version }}</dd><dt>训练快照</dt><dd>{{ result.snapshot_id }}</dd><dt>数据版本</dt><dd>{{ result.dataset_id }}</dd></dl></template><template v-else><h2>{{ health?.model_ready?'等待预测':'尚未加载模型' }}</h2><p>当前版本：{{ health?.loaded?.run_id||'未选择' }} / {{ health?.loaded?.kind||'—' }}</p></template></section>
-    </div>
-   </section>
+   <div v-if="config?.public" class="notice info">公开只读演示 · 英文短信正常／垃圾二分类。导入、审核和CPU训练在操作者本地工作台进行；本地预测不外发；Jev 仅在明确同意后使用自己的 Key 外发单条文本，输入不保存。</div>
+   <DecisionPanel v-if="tab==='predict'" :config="config" :health="health" :operator-token="token" />
    <section v-else-if="tab==='samples'">
     <div class="page-heading"><div><p class="eyebrow">REVIEW</p><h1>导入、复核与训练快照</h1><p>新数据先审核；标签保存不会自动改变旧模型。</p></div></div>
     <div v-if="!config?.operator_authenticated||config?.public" class="card empty-state"><h2>私有操作区</h2><p>请在本地工作台载入操作令牌。公开部署不展示私有样本、导入文件或纠错历史。</p></div>

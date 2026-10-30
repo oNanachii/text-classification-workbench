@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-29",
+  "status": "local_engineering_verified_no_live_provider_call",
+  "python_tests": {
+    "passed": 36,
+    "command": ".venv/bin/python -m unittest discover -s tests -v",
+    "fixture_scope": "Synthetic temporary datasets and hand-authored numeric weights only; no reads of real var/ data. Training failure is injected before fitting."
+  },
+  "node_tests": {
+    "passed": 19,
+    "command": "npm test --prefix frontend"
+  },
+  "frontend_build": {
+    "passed": true,
+    "command": "npm run build --prefix frontend"
+  },
+  "dry_run": {
+    "passed": true,
+    "network_requests": 0,
+    "command": ".venv/bin/python scripts/verify_jev.py"
+  },
+  "frozen_dependency_hash_matches": {
+    "data.py": true,
+    "dataflow.py": true,
+    "evaluation.py": true,
+    "experiments.py": true,
+    "safe_model.py": true
+  },
+  "live_provider_calls": 0,
+  "paid_quality_or_latency_evidence": false,
+  "deployed": false,
+  "private_dataset_or_key_read": false,
+  "existing_757_final_test_rerun": false,
+  "remaining": [
+    "User-authorized real TypeSafe credential/live smoke check",
+    "Independent/new-data quality evaluation",
+    "User-operated Claude frontend visual redesign and browser acceptance"
+  ],
+  "limitations": [
+    "Per-process in-memory rate/concurrency limits; production multi-process requires gateway quota",
+    "A timeout or cancellation cannot establish that TypeSafe did not process or bill a request",
+    "Python/JavaScript do not guarantee secret memory zeroization",
+    "Existing Starlette TestClient emits its dependency deprecation warning"
+  ],
+  "observed_repair": "Initial global-rate regression test counted 31 accepted calls against the specified 30; corrected test fixture count, then all 36 passed.",
+  "browser_credentials_transport": "Client blocks non-HTTPS before sending a key; only non-public loopback HTTP is allowed, with a matching backend guard."
+}

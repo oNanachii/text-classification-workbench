@@ -1,0 +1,11 @@
+{
+  "data_version": "jev-authored-smoke-v1",
+  "provenance": "AI-authored synthetic examples for functional smoke checks only; never drawn from the old corpus, private database, or held-out data.",
+  "scope": "English SMS ham/spam; expected labels are authored examples, not independent human labels or quality evidence.",
+  "examples": [
+    {"id": "authored-ham-01", "text": "Please bring the blue notebook to our meeting tomorrow.", "expected_label": "ham"},
+    {"id": "authored-ham-02", "text": "The dentist appointment you booked is confirmed for Monday at 10 AM.", "expected_label": "ham"},
+    {"id": "authored-spam-01", "text": "You have won an unclaimed cash prize! Send a processing payment now to claim it.", "expected_label": "spam"},
+    {"id": "authored-spam-02", "text": "Exclusive unsolicited offer: buy our miracle investment package today for guaranteed instant riches!", "expected_label": "spam"}
+  ]
+}

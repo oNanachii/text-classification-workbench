@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from dataflow import DataStore,Conflict,canonical,immutable,sha,atomic
 from app_v2 import create_app
 import experiments
+import numpy as np
 
 
 def row(text,label):return {'id':sha(text.encode()),'text':text,'label':label,'group_id':sha(('group:'+text).encode())}
@@ -79,31 +80,39 @@ class APITests(unittest.TestCase):
   with TestClient(create_app(self.root,'isolated-test-token',False)) as c:
    r=c.post('/api/predict',json={'text':'private marker', 'unexpected':'secret-extra'});self.assertEqual(r.status_code,422);self.assertNotIn('secret-extra',r.text);self.assertEqual(r.headers['cache-control'],'no-store')
 
+def numeric_fixture(root):
+ """Hand-authored numeric weights only; no training or reads of project var/."""
+ root=Path(root);store=seeded(root);snapshot=store.snapshot();run='test-numeric-fixture';directory=root/'runs'/run;directory.mkdir(parents=True)
+ words=['normal','meeting','reminder','project','tomorrow','afternoon','prize','claim']
+ immutable(directory/'vocabulary.json',{'vocabulary':{word:i for i,word in enumerate(words)},'idf':[1.0]*len(words)})
+ np.savez_compressed(directory/'weights.npz',lr_coef=np.array([-1.,-1.,-1.,-1.,-1.,-1.,1.,1.]),lr_intercept=np.zeros(1),mlp_w1=np.zeros((16,len(words))),mlp_b1=np.zeros(16),mlp_w2=np.zeros((1,16)),mlp_b2=np.zeros(1))
+ metadata={'run_id':run,'snapshot_id':snapshot['snapshot_id'],'dataset_id':'fixture-v2','weights_sha256':sha((directory/'weights.npz').read_bytes()),'vocabulary_sha256':sha((directory/'vocabulary.json').read_bytes())}
+ immutable(directory/'model.json',metadata)
+ immutable(directory/'report.json',{'run_id':run,'state':'completed','artifact':metadata,'config':{'threshold':.5},'code_sha256':'synthetic-no-training','validation_sha256':sha(canonical(store.require_prepared()['validation']))})
+ atomic(root/'heldout-test.json',{'dataset_id':'fixture-v2','rows':[row('synthetic final guard normal example','ham'),row('synthetic final guard prize example','spam')]})
+ return store
+
+
 class NumericArtifactTests(unittest.TestCase):
- @classmethod
- def setUpClass(cls):
-  cls.project=Path(__file__).resolve().parents[1];cls.run_path=cls.project/'var/runs/v2-base-seed42'
  def setUp(self):
-  if not self.run_path.exists() or json.loads((self.run_path/'report.json').read_text()).get('state')!='completed':self.skipTest('real training artifact not available')
-  self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);(self.root/'runs').mkdir();shutil.copytree(self.run_path,self.root/'runs/v2-base-seed42')
- def tearDown(self):
-  if hasattr(self,'temp'):self.temp.cleanup()
+  self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);numeric_fixture(self.root)
+ def tearDown(self):self.temp.cleanup()
  def test_select_loaded_version_restart_and_rollback(self):
-  first=experiments.select(self.root,'v2-base-seed42','lr',.5)
+  experiments.select(self.root,'test-numeric-fixture','lr',.5)
   with TestClient(create_app(self.root,'test-token',False)) as c:
-   self.assertEqual(c.get('/api/health').json()['loaded']['kind'],'lr');experiments.select(self.root,'v2-base-seed42','mlp16',.5)
+   self.assertEqual(c.get('/api/health').json()['loaded']['kind'],'lr');experiments.select(self.root,'test-numeric-fixture','mlp16',.5)
    self.assertTrue(c.get('/api/service').json()['restart_required']);self.assertEqual(c.post('/api/predict',json={'text':'normal meeting reminder'}).json()['model'],'lr')
   with TestClient(create_app(self.root,'test-token',False)) as c:self.assertEqual(c.get('/api/health').json()['loaded']['kind'],'mlp16')
   experiments.rollback(self.root)
   with TestClient(create_app(self.root,'test-token',False)) as c:self.assertEqual(c.get('/api/health').json()['loaded']['kind'],'lr')
  def test_corrupt_artifact_cannot_be_selected(self):
-  path=self.root/'runs/v2-base-seed42/weights.npz';path.write_bytes(path.read_bytes()+b'corrupt')
-  with self.assertRaises(ValueError):experiments.select(self.root,'v2-base-seed42')
+  path=self.root/'runs/test-numeric-fixture/weights.npz';path.write_bytes(path.read_bytes()+b'corrupt')
+  with self.assertRaises(ValueError):experiments.select(self.root,'test-numeric-fixture')
  def test_public_export_excludes_private_data(self):
-  experiments.select(self.root,'v2-base-seed42');destination=self.root/'export';experiments.export_public(self.root,destination)
+  experiments.select(self.root,'test-numeric-fixture');destination=self.root/'export';experiments.export_public(self.root,destination)
   self.assertFalse((destination/'review.sqlite3').exists());self.assertFalse((destination/'dataset.json').exists())
   with TestClient(create_app(destination,'',True)) as c:
-   r=c.post('/api/predict',json={'text':'project meeting tomorrow afternoon'});self.assertEqual(r.status_code,200);self.assertEqual(r.json()['model_version'],'v2-base-seed42');self.assertEqual(c.get('/api/samples').status_code,403)
+   r=c.post('/api/predict',json={'text':'project meeting tomorrow afternoon'});self.assertEqual(r.status_code,200);self.assertEqual(r.json()['model_version'],'test-numeric-fixture');self.assertEqual(c.get('/api/samples').status_code,403)
 
 
 class FailureAndFinalGuardTests(unittest.TestCase):
@@ -120,19 +129,15 @@ class FailureAndFinalGuardTests(unittest.TestCase):
   from unittest.mock import patch
   with tempfile.TemporaryDirectory() as t:
    store=seeded(t);s=store.snapshot()
-   with patch('sklearn.linear_model.LogisticRegression.fit',side_effect=RuntimeError('isolated training failure')):
+   with patch('sklearn.feature_extraction.text.TfidfVectorizer.fit_transform',side_effect=RuntimeError('isolated failure before any fitting')):
     with self.assertRaises(RuntimeError):experiments.train(t,s['snapshot_id'],'failed-fixture',epochs=1)
    report=json.loads((Path(t)/'runs/failed-fixture/report.json').read_text());self.assertEqual(report['state'],'failed');self.assertEqual(store.load_snapshot(s['snapshot_id'])['snapshot_id'],s['snapshot_id'])
  def test_final_evaluation_once_on_synthetic_fixture_only(self):
   from unittest.mock import patch
   from evaluation import freeze_final,evaluate_final
-  project=Path(__file__).resolve().parents[1]
-  if not (project/'var/runs/v2-base-seed42/report.json').exists():self.skipTest('real numeric artifact absent')
   with tempfile.TemporaryDirectory() as t:
-   root=Path(t)/'copy';shutil.copytree(project/'var',root,ignore=shutil.ignore_patterns('operator-token.txt','final-plan.json','final-attempt.json','final-test-report.json'))
-   dataset=json.loads((root/'dataset.json').read_text());rows=[row('synthetic final guard normal example','ham'),row('synthetic final guard prize example','spam')]
-   atomic(root/'heldout-test.json',{'dataset_id':dataset['manifest']['dataset_id'],'rows':rows})
-   freeze_final(root,'v2-base-seed42','lr',.5,'Isolated synthetic repeat guard; not actual heldout evaluation')
+   root=Path(t);numeric_fixture(root)
+   freeze_final(root,'test-numeric-fixture','lr',.5,'Isolated synthetic repeat guard; not actual heldout evaluation')
    with patch('evaluation.SafeModel') as cls:
     cls.return_value.scores.return_value=[.1,.9]
     result=evaluate_final(root)
@@ -169,11 +174,9 @@ class PublicationAndDependencyTests(unittest.TestCase):
  def test_final_plan_locks_metric_normalization_and_storage_dependencies(self):
   from unittest.mock import patch
   from evaluation import freeze_final,evaluate_final,source_fingerprints
-  project=Path(__file__).resolve().parents[1]
-  if not (project/'var/runs/v2-base-seed42/report.json').exists():self.skipTest('real numeric artifact absent')
   with tempfile.TemporaryDirectory() as t:
-   root=Path(t)/'copy';shutil.copytree(project/'var',root,ignore=shutil.ignore_patterns('operator-token.txt','final-plan.json','final-attempt.json','final-test-report.json'))
-   freeze_final(root,'v2-base-seed42','lr',.5,'Dependency guard only, no actual held-out evaluation')
+   root=Path(t);numeric_fixture(root)
+   freeze_final(root,'test-numeric-fixture','lr',.5,'Dependency guard only, no actual held-out evaluation')
    plan=json.loads((root/'final-plan.json').read_text());self.assertTrue({'data.py','experiments.py','dataflow.py'}.issubset(plan['source_sha256']))
    changed=source_fingerprints();changed['experiments.py']='0'*64
    with patch('evaluation.source_fingerprints',return_value=changed):

@@ -15,6 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,ConfigDict,Field
 from dataflow import DataStore,Conflict,MAX_CSV_BYTES,read_json
 import experiments
+from decision import DecisionRequest, DecisionService
 
 ROOT=Path(__file__).resolve().parent
 CSP="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
@@ -50,7 +51,7 @@ class Rollback(BaseModel):
     expected_revision:int=Field(strict=True,ge=0)
 
 
-def create_app(root=None,admin_token=None,public=None):
+def create_app(root=None,admin_token=None,public=None,decision_service=None):
     directory=Path(root or os.environ.get('SMS_LAB_ROOT',ROOT/'var')).resolve()
     token=admin_token if admin_token is not None else os.environ.get('SMS_LAB_ADMIN_TOKEN','')
     public=(os.environ.get('SMS_LAB_PUBLIC','false').lower()=='true') if public is None else public
@@ -63,6 +64,7 @@ def create_app(root=None,admin_token=None,public=None):
         app.state.model=None
     app=FastAPI(title='Text Model Lab',version='2.0.0',lifespan=lifespan,docs_url=None,redoc_url=None,openapi_url='/api/openapi.json')
     app.state.loaded=None;app.state.model=None
+    decisions=decision_service or DecisionService()
     rates=defaultdict(deque);rate_lock=threading.Lock();predict_slots=threading.BoundedSemaphore(2)
     def is_operator(request):
         return bool(token) and hmac.compare_digest(request.headers.get('authorization','').encode(),('Bearer '+token).encode())
@@ -75,24 +77,30 @@ def create_app(root=None,admin_token=None,public=None):
         if not store.prepared():raise HTTPException(503,'Prepare the local dataset first')
     @app.middleware('http')
     async def boundary(request,call_next):
+        def secured(response):
+            response.headers['Content-Security-Policy']=CSP
+            response.headers['X-Content-Type-Options']='nosniff';response.headers['Referrer-Policy']='no-referrer';response.headers['X-Robots-Tag']='noindex, nofollow'
+            if request.url.path.startswith('/api/'):response.headers['Cache-Control']='no-store'
+            return response
+        maximum=16*1024 if request.url.path=='/api/decision' else 10*1024*1024
         try:
             length=int(request.headers.get('content-length','0'))
-        except ValueError:return JSONResponse({'error':'Invalid request length'},400)
-        if length>10*1024*1024:return JSONResponse({'error':'Request too large'},413)
+        except ValueError:return secured(JSONResponse({'error':'Invalid request length'},400))
+        if length<0:return secured(JSONResponse({'error':'Invalid request length'},400))
+        if length>maximum:return secured(JSONResponse({'error':'Request too large'},413))
         if request.method in {'POST','PATCH'}:
-            if request.url.path!='/api/predict' and not is_operator(request):
-                return JSONResponse({'error':'Operator authentication required'},401)
+            if request.url.path not in {'/api/predict','/api/decision'} and not is_operator(request):
+                return secured(JSONResponse({'error':'Operator authentication required'},401))
+            if request.url.path=='/api/decision' and request.headers.get('content-type','').split(';')[0].strip().lower()!='application/json':
+                return secured(JSONResponse({'error':'JSON content type required'},415))
             chunks=[];size=0
             async for part in request.stream():
                 size+=len(part)
-                if size>10*1024*1024:return JSONResponse({'error':'Request too large'},413)
+                if size>maximum:return secured(JSONResponse({'error':'Request too large'},413))
                 chunks.append(part)
             request._body=b''.join(chunks)
         response=await call_next(request)
-        response.headers['Content-Security-Policy']=CSP
-        response.headers['X-Content-Type-Options']='nosniff';response.headers['Referrer-Policy']='no-referrer';response.headers['X-Robots-Tag']='noindex, nofollow'
-        if request.url.path.startswith('/api/'):response.headers['Cache-Control']='no-store'
-        return response
+        return secured(response)
     @app.exception_handler(RequestValidationError)
     async def validation_error(_r,_e):return JSONResponse({'error':'Fields do not match the request contract'},422)
     @app.exception_handler(Conflict)
@@ -103,7 +111,7 @@ def create_app(root=None,admin_token=None,public=None):
     async def missing(_r,_e):return JSONResponse({'error':'Record not found'},404)
     @app.get('/api/config')
     def config(request:Request):
-        return {'public':public,'operator_authenticated':is_operator(request),'operator_configured':bool(token),'dataset_prepared':bool(store and store.prepared()),'scope':'English SMS ham/spam; local CPU training; public inference only','version':'2.0.0'}
+        return {'public':public,'operator_authenticated':is_operator(request),'operator_configured':bool(token),'dataset_prepared':bool(store and store.prepared()),'scope':'English SMS ham/spam; local CPU training; public inference only','version':'2.1.0','decision':decisions.config(public=public,authenticated=is_operator(request))}
     @app.get('/api/health')
     def health():return {'status':'ok' if app.state.model is not None else 'model_not_selected','model_ready':app.state.model is not None,'public':public,'loaded':app.state.loaded,'runtime':'numpy numeric format; no torch or pickle inference'}
     @app.get('/api/service')
@@ -123,6 +131,15 @@ def create_app(root=None,admin_token=None,public=None):
         try:
             return app.state.model.predict(body.text,app.state.loaded['threshold'])|{'model_version':app.state.loaded['run_id'],'model':app.state.loaded['kind'],'snapshot_id':app.state.loaded['snapshot_id'],'dataset_id':app.state.loaded['dataset_id'],'scope':'English SMS example; no live-traffic accuracy guarantee'}
         finally:predict_slots.release()
+    @app.post('/api/decision')
+    async def decision(body:DecisionRequest,request:Request):
+        key=decisions.authorize(body,request,public=public,authenticated=is_operator(request))
+        decisions.acquire(request.client.host if request.client else 'unknown')
+        try:
+            return await decisions.decide(body,app.state.model,app.state.loaded,key)
+        finally:
+            key=None
+            decisions.release()
     @app.get('/api/final-report')
     def final_report(request:Request):
         if not public:operator(request)
