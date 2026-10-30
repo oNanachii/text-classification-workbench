@@ -20,6 +20,15 @@ export function createDecisionSession(state, { fetchImpl = fetch, operatorToken 
     state.text = ''
     state.consent = false
   }
+  // Stop waiting only. A request already sent upstream may still be processed and billed.
+  function cancel() {
+    if (!state.busy) return
+    const external = state.engine !== 'local'
+    invalidate()
+    state.error = external
+      ? '已停止等待。TypeSafe 可能已处理并计费；没有自动重试，请先核对用量再决定是否手动提交。'
+      : '已停止等待本地结果；没有自动重试。'
+  }
   async function submit() {
     if (state.busy || !state.text.trim() || state.text.length > 2000) return
     const external = state.engine !== 'local'
@@ -72,5 +81,5 @@ export function createDecisionSession(state, { fetchImpl = fetch, operatorToken 
       if (ticket === epoch) { state.busy = false; controller = null }
     }
   }
-  return { submit, invalidate, clear }
+  return { submit, invalidate, clear, cancel }
 }

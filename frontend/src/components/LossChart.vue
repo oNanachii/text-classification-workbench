@@ -31,16 +31,16 @@ const checkpointVisible = computed(() => Number.isFinite(props.checkpoint) && pr
 
 <template>
   <figure class="loss-chart">
-    <div v-if="!hasData" class="empty-state chart-empty"><p>暂无可绘制的训练记录。</p></div>
+    <div v-if="!hasData" class="chart-empty"><p>暂无可绘制的训练记录。</p></div>
     <template v-else>
       <div class="chart-legend"><span><i class="legend-line train"></i>训练损失</span><span><i class="legend-line validation"></i>验证损失</span></div>
       <svg viewBox="0 0 560 230" role="img" :aria-label="`${name}的训练与验证损失随轮次变化曲线`">
-        <g v-for="tick in yTicks" :key="tick"><line :x1="plot.left" :x2="plot.right" :y1="y(tick)" :y2="y(tick)" stroke="#e8ebf3" stroke-dasharray="3 4" /><text :x="plot.left - 10" :y="y(tick) + 4" text-anchor="end" class="chart-tick">{{ tick.toFixed(3) }}</text></g>
-        <line :x1="plot.left" :x2="plot.right" :y1="plot.bottom" :y2="plot.bottom" stroke="#d9deea" />
+        <g v-for="tick in yTicks" :key="tick"><line :x1="plot.left" :x2="plot.right" :y1="y(tick)" :y2="y(tick)" class="chart-grid-line" /><text :x="plot.left - 10" :y="y(tick) + 4" text-anchor="end" class="chart-tick">{{ tick.toFixed(3) }}</text></g>
+        <line :x1="plot.left" :x2="plot.right" :y1="plot.bottom" :y2="plot.bottom" class="chart-axis" />
         <g v-for="tick in xTicks" :key="tick"><text :x="x(tick)" :y="plot.bottom + 20" text-anchor="middle" class="chart-tick">{{ tick }}</text></g>
-        <line v-if="checkpointVisible" :x1="x(checkpoint)" :x2="x(checkpoint)" :y1="plot.top" :y2="plot.bottom" stroke="#a8b0c2" stroke-dasharray="4 4" />
-        <path :d="path('train_loss')" stroke="#6655d6" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-        <path :d="path('validation_loss')" stroke="#d9913e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        <line v-if="checkpointVisible" :x1="x(checkpoint)" :x2="x(checkpoint)" :y1="plot.top" :y2="plot.bottom" class="chart-checkpoint" />
+        <path :d="path('train_loss')" class="chart-line train" />
+        <path :d="path('validation_loss')" class="chart-line validation" />
         <text x="298" y="226" text-anchor="middle" class="chart-tick">训练轮次（epoch）</text>
       </svg>
       <figcaption>虚线标记保留的检查点：{{ Number.isFinite(checkpoint) ? `第${checkpoint}轮` : '—' }}。损失越低，说明在对应数据上的预测误差越小。</figcaption>

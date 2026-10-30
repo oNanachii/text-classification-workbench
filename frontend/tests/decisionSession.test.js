@@ -74,3 +74,15 @@ test('remote HTTP and public loopback cannot transmit a key even before backend 
   const session = createDecisionSession(state, { secureTransport: () => false, fetchImpl: () => { count++ } })
   await session.submit(); assert.equal(count, 0); assert.ok(state.error.includes('HTTPS')); assert.equal(state.key, 'synthetic-key-marker')
 })
+
+test('stopping the wait keeps no late result and never claims the call was free', async () => {
+  const state = initial(), pending = deferred(); let signal, count = 0
+  const session = createDecisionSession(state, { secureTransport: () => true, fetchImpl: (_, options) => { count++; signal = options.signal; return pending.promise } })
+  const task = session.submit(); assert.equal(state.busy, true)
+  session.cancel()
+  assert.equal(signal.aborted, true); assert.equal(state.busy, false); assert.match(state.error, /可能已处理并计费/)
+  assert.equal(state.key, 'synthetic-key-marker'); assert.equal(state.text, 'An authored normal meeting reminder.')
+  pending.resolve({ ok: true, json: async () => ({ late: true }) }); await task
+  assert.equal(state.result, null); assert.equal(count, 1)
+  session.cancel(); assert.match(state.error, /计费/)
+})
