@@ -8,7 +8,7 @@ import { setTimeout as sleep } from 'node:timers/promises'
 
 const args = Object.fromEntries(process.argv.slice(2).map(arg => arg.replace(/^--/, '').split(/=(.*)/s).slice(0, 2)))
 const CHROME = process.env.CHROME
-const OUT = resolve(args.out || 'artifacts/frontend-design-2026-10-30')
+const OUT = resolve(args.out || 'artifacts/v2-verification/private/design-browser-check')
 const STATE = args.state
 const PROFILE = args.profile
 const PRIVATE = 'http://127.0.0.1:8781', PUBLIC = 'http://127.0.0.1:8782', EMPTY = 'http://127.0.0.1:8783'
