@@ -2,11 +2,29 @@
 
 [公开HTTPS演示](https://math.madokanun.top:8445/workbench/) · [GitHub源码](https://github.com/oNanachii/text-classification-workbench) · [交付与验收](docs/DELIVERY_2026-10-28.md)
 
-英文短信分类与数据纠错工作台。操作者导入同格式数据并复核标签，生成不可变训练快照，在本地CPU训练逻辑回归和小型MLP，再根据同一验证集选择服务版本。公开部署只提供明确版本的预测与只读结果。
+英文短信判断与人工复核工作台。当前v2.1.0（运行源码`e70843e`）已上线：公开页面支持本地模型、Jev或同一文本并排对照；Jev使用自己的TypeSafe Key，公开服务不会借用服务器Key。数据导入、审核、训练快照和候选管理仍只在私有工作台进行。
 
 项目使用AI辅助开发。源码、软件检查、真实训练、公开部署与本人独立讲解分别记录。原v1实验与文件保留，v2结果来自另一份预先固定的分组划分，不能直接把两组指标作为提分对比。
 
 ![公开推断示例 单条模型分数不代表整体准确率](artifacts/v2-verification/browser/public-desktop.png)
+
+## 现在如何体验
+
+1. 在公开HTTPS页面输入一条英文短信，默认选择本地模型即可判断，不需要外部Key。真实任务仅为`ham/spam`，不是已经验证的中文留言分类器。
+2. 如选择Jev或并排对照，输入自己的TypeSafe Key，并明确同意文本由工作台转交TypeSafe、使用该Key额度。公开Jev BYOK已开启，服务器共享Key严格关闭；缺Key或缺同意不会回退到共享凭据。
+3. 查看两边的标签、实际版本、耗时及返回用量。单边失败或unknown仍保留另一边有效结果；双方一致不等于正确。清除Key、文本与结果，或离开判断面板后，旧响应不能回填。
+
+Key只在当前页面和单次请求内存，不保存到浏览器存储或数据库；外部判断必须通过HTTPS。取消、超时或连接失败仍可能已经消耗TypeSafe额度，不自动重试。本地分数未经校准，Jev confidence表示概率分布集中程度，均不能当作这条短信的正确率。模型建议不会自动成为人工标签或进入训练快照。
+
+固定Jev版本、错误状态与额度见[Jev接口契约](docs/JEV_API_CONTRACT.md)。尚未发起真实Jev调用，也没有新质量、耗时或成本效果结论；未来评测应按[新数据计划](docs/JEV_EVALUATION_PLAN.md)独立开展，不能重用旧757条最终测试。
+
+## 当前验证与设计交接
+
+本地36项Python、19项Node及生产构建通过，使用自编临时数据和模拟上游。[本地证据](artifacts/jev-verification/local-acceptance.json)记录的是部署前检查；随后v2.1.0已上线至`/opt/text-workbench/releases/20261029-jev-01`，原六个公开模型/报告文件未变。
+
+本轮HTTP验收摘要（原始记录保留在操作者本地）确认可信HTTPS、原本地数值模型真实判断、BYOK缺Key拒绝、缺外发同意拒绝及public服务器Key拒绝；本轮Jev网络请求为0，没有训练或重跑旧最终测试。接入可用不等于新增真实Jev质量证据。
+
+用户可用[Claude启动提示](docs/CLAUDE_START_PROMPT.txt)继续视觉设计，先读[根目录CLAUDE说明](CLAUDE.md)与[详细交接](docs/CLAUDE_FRONTEND_HANDOFF.md)。真正入口是`frontend/src/App.vue`；计划把体验、批量导入、人工审核、效果对照、模型与规则讲清楚。此交接不表示新视觉设计或浏览器验收已经完成，Claude由用户本人操作。
 
 ## 一次完整流程
 
@@ -19,7 +37,7 @@
 
 ## 本地启动
 
-Python 3.13，macOS/Linux。完整训练环境：
+Python 3.13，macOS/Linux。以下是独立训练环境的历史工作流，不是体验v2.1或前端设计的必做步骤；已有正式工作库不要重复初始化。创建新数据版本须使用独立工作目录，保留旧冻结文件和评估记录。
 
 ```sh
 python3.13 -m venv .venv
@@ -59,16 +77,11 @@ UCI初始训练行按公开源标签纳入基线，不表示已逐条人工复�
 
 v2预处理规则在新模型结果产生前固定：标准化完全重复去除、URL/数字等模板分组、按保守候选阻塞的字符5-gram Jaccard≥0.85连接分组，再按seed42的组哈希做70/15/15划分。该检查覆盖明确模板和词法候选，不声称识别所有语义改写。
 
-真实v2数据为3619条训练、783条验证、757条封存测试。向量器只拟合训练快照，两个模型使用同一份向量器；MLP默认20轮，按验证损失选择检查点。训练和实验页只读取验证集结果；原v1的774条验证和0.9531保持原义。
+真实v2数据为3619条训练、783条验证、757条当时封存的测试；最后一组已完成一次固定评估。向量器只拟合训练快照，两个模型使用同一份向量器；MLP默认20轮，按验证损失选择检查点。训练和实验页只读取验证集结果；原v1的774条验证和0.9531保持原义。
 
-最终测试由操作者在模型、阈值与实现冻结后明确执行一次：
+旧757条最终测试已在冻结模型、阈值与实现后执行过一次，当前只保留历史结果，**不得重跑或用于Jev调参**。`freeze-final`/`evaluate-final`是历史实现机制，不是当前体验步骤：前者固定选择与源码/运行时摘要，后者在读取测试内容前建立不可覆盖的尝试记录。未知结果也不能自动重试。
 
-```sh
-.venv/bin/python workbench.py freeze-final --run '<chosen_run>' --kind lr --threshold 0.5 --reason '根据已完成验证记录作出的选择'
-.venv/bin/python workbench.py evaluate-final
-```
-
-`freeze-final`只封存选择、评估/推断/归一化/指标等依赖源码摘要及运行时版本，不评价模型；`evaluate-final`在读测试内容和推断前创建不可覆盖的尝试记录。重复执行拒绝，失败或未知结果必须先检查原记录，不自动重试。报告不输出测试文本或误判原文，测试结果不能再用于选择该版本。
+五个冻结依赖`evaluation.py`、`safe_model.py`、`data.py`、`experiments.py`、`dataflow.py`及旧权重、阈值、报告保持不变。新任务或Jev质量比较需要独立的新数据版本和评测授权，不能把旧测试重新称为未见数据。
 
 ## 首轮最终测试记录
 
@@ -89,21 +102,20 @@ v2预处理规则在新模型结果产生前固定：标准化完全重复去除
 服务器使用独立Python虚拟环境按`requirements-inference.txt`安装，只监听回环并经HTTPS代理提供服务：
 
 ```sh
-SMS_LAB_ROOT=/绝对路径/public-bundle SMS_LAB_PUBLIC=true .venv/bin/python -m uvicorn app_v2:create_app --factory --host 127.0.0.1 --port 3111 --workers 1 --no-access-log
+SMS_LAB_ROOT=/绝对路径/public-bundle SMS_LAB_PUBLIC=true .venv/bin/python -m uvicorn app_v2:create_app --factory --host 127.0.0.1 --port 3111 --workers 1 --no-access-log --proxy-headers --forwarded-allow-ips=127.0.0.1
 ```
 
-`SMS_LAB_PUBLIC=true`时即使携带操作令牌也不能导入、审核、生成快照或切换模型。预测长度、频率和并发有上限，不保存访客文本。部署前实测目标服务器资源、端口和既有服务，不把本地内存观测当作服务器容量保证。
+`SMS_LAB_PUBLIC=true`时即使携带操作令牌也不能导入、审核、生成快照或切换模型。当前公网以`SMS_LAB_JEV_ENABLED=true`开启BYOK能力，`SMS_LAB_JEV_SERVER_KEY_ENABLED=false`关闭服务器Key；开关本身不调用模型。仅信任回环代理提供的协议信息，不信任任意客户端转发头。预测长度、频率和并发有上限，不保存访客文本。部署资源观测不构成容量保证。
 
 ## 复现与证据
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -v
-.venv/bin/python scripts/verify_v2_http.py
-npm ci --prefix frontend
 npm test --prefix frontend
 npm run build --prefix frontend
+.venv/bin/python scripts/verify_jev.py
 ```
 
-软件检查使用一次性数据库或明确标注的故障注入；实际HTTP检查复制v2工作空间与已完成数值模型，在回环端口验证导入审核、重启生效、回退和公开只读，不改原工作库。真实训练记录保存在`var/runs/`，公开摘要和验收记录位于`artifacts/v2-verification/`。尚未完成的设备/浏览器与本人验收应继续明确记录。
+上述软件检查使用自编临时数据、数值权重或明确标注的故障注入；Jev脚本默认dry-run、零网络，不要附加`--live`。历史`verify_v2_http.py`会复制真实v2工作库与模型，不能作为前端设计默认命令；新的视觉验收应使用隔离fixture与fake transport。真实训练记录保存在`var/runs/`，公开摘要和验收记录位于`artifacts/v2-verification/`。尚未完成的设备/浏览器与本人验收应继续明确记录。
 
 数据来源：Almeida与Hidalgo的[UCI SMS Spam Collection](https://archive.ics.uci.edu/dataset/228/sms+spam+collection)，DOI `10.24432/C5CC84`；原始压缩包、readme与来源hash保留在`data/`。项目保留归属说明，数据许可与源码许可分开。
