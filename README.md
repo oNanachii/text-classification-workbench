@@ -1,6 +1,8 @@
 # Text Model Lab
 
-[公开HTTPS演示](https://math.madokanun.top:8445/workbench/) · [GitHub源码](https://github.com/oNanachii/text-classification-workbench) · [交付与验收](docs/DELIVERY_2026-10-28.md)
+[公开HTTPS演示](https://textlab.madokanun.top/workbench/) · [GitHub源码](https://github.com/oNanachii/text-classification-workbench) · [交付与验收](docs/DELIVERY_2026-10-28.md)
+
+2026-10-31启用独立域名，无需输入端口；根网址会进入工作台。旧入口保留，应用、模型与数据未迁移或重训。新入口已核对可信HTTPS、页面资源、本地预测和同源权限限制，本次没有真实Jev调用。
 
 英文短信判断与人工复核工作台。当前v2.1.0（当前前端运行源码`bd7567a`，后端接口与模型实现未改）已上线：公开页面支持本地模型、Jev或同一文本并排对照；Jev使用自己的TypeSafe Key，公开服务不会借用服务器Key。数据导入、审核、训练快照和候选管理仍只在私有工作台进行。
 
