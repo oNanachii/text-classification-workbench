@@ -198,6 +198,36 @@ class LoadReportTests(unittest.TestCase):
         )
         self.assertIn("-m textlab.load_test --replay", document)
 
+    def test_nonmonotonic_drop_is_not_explained_away_by_a_tiny_rejection_count(self) -> None:
+        """Describe lower throughput without inventing a CPU or thread-pool cause."""
+        result = fixture()
+        high = deepcopy(result["scenarios"][1])
+        high.update(
+            concurrency=50,
+            qps=150 / 60,
+            successful_qps=149 / 60,
+            issued_requests=151,
+            completed_in_window=150,
+            successful_in_window=149,
+            completed_requests=151,
+            successful_requests=150,
+            error_requests=1,
+            error_rate=1 / 151,
+            status_counts={"200": 150, "429": 1},
+            error_counts={"capacity_busy": 1, "minute_rate_limit": 0},
+        )
+        high["latency_ms"]["successful"] = {"p50": 50, "p95": 100, "p99": 200}
+        high["cpu"].update(average_server_cores=0.2, average_client_cores=0.7)
+        high["server_metrics_after"]["thread_count"] = 10
+        result["scenarios"].append(high)
+        document, _chart, _files = self.render(result)
+        self.assertIn("成功吞吐呈非单调变化", document)
+        self.assertIn("低 62.75%", document)
+        self.assertIn("这些拒绝计数不足以", document)
+        self.assertIn("没有证明 CPU 饱和", document)
+        self.assertIn("不能据此断言线程池已经饱和", document)
+        self.assertIn("主瓶颈仍未定位", document)
+
     def test_resource_alias_and_numpy_build_identity_do_not_prove_thread_count(self) -> None:
         """Accept descriptor limits while separating build identity from runtime proof."""
         result = fixture()

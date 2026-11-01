@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-01T20:10:42.275916+00:00",
+  "source_commit": "2793a8dcabba93664f8d7cb0922b95ca044b455c",
+  "source_sha256": {
+    "textlab/load_test.py": "b2536ecad714c9cccee06014760feffd76daa02d16b5388a60154550b2801003",
+    "textlab/load_test_server.py": "800fbf3496c6f6e2d457cd908e177b41149942481c0dbfa56042e4c117d36320",
+    "textlab/app_v2.py": "288337004935e2ab86903ca39de69c67bd1a438c3c156473ffc6c28dbb871130",
+    "textlab/safe_model.py": "be2f29b2ba97c5c6e8b5b65b0ca1a9bc4ab41dcca26c0529ffcc599e3288a32a",
+    "textlab/dataflow.py": "083d6c9a572d4dfa29a32d839a3a44a6a98e3ffa4ce09c9a094a4b85fdc62f62",
+    "textlab/data.py": "12a848fffb0e6707319b50a1c59800ce6d9112303ced1101c09fa2a9a4371a39",
+    "textlab/experiments.py": "a926476d5bf0b6d08e22124776a2705eb40f1b4aac19753c23c1ac3acf19dbfc",
+    "textlab/decision.py": "42d493e488cb74f6ace0e95a08be54f8b2797b870d322b57817b531c3490105c"
+  },
+  "machine": {
+    "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+    "architecture": "arm64",
+    "cpu_model": "Apple M2 Max",
+    "hardware_model": "Mac14,5",
+    "physical_cores": 12,
+    "logical_cores": 12,
+    "memory_bytes": 34359738368
+  },
+  "versions": {
+    "python": "3.13.3",
+    "numpy": "2.5.4",
+    "fastapi": "0.152.0",
+    "starlette": "1.9.0",
+    "anyio": "4.15.1",
+    "uvicorn": "0.54.0",
+    "h11": "0.16.0",
+    "httpx": "0.28.1"
+  },
+  "server_config": {
+    "workers": 1,
+    "host": "127.0.0.1",
+    "loop": "asyncio",
+    "http": "h11",
+    "public": true,
+    "numeric_threads": 1,
+    "prediction_slots": 2,
+    "production_rate_limit": 30,
+    "test_rate_limit": 1000000000,
+    "rate_window_seconds": 60,
+    "production_resource_limits": {
+      "cpu_quota": "50%",
+      "memory_high_mib": 192,
+      "memory_max_mib": 256,
+      "tasks_max": 64,
+      "file_descriptors": 2048
+    },
+    "production_resource_limits_source": "deploy/text-workbench.service",
+    "local_resource_limits_replicated": false
+  },
+  "workload": {
+    "fixture_file": "examples/load_test_sms.json",
+    "fixture_sha256": "c0a82a1bf8b2b28ddc35084b4997e690f5e2f80b5ae0ed51c60ac438f8595edf",
+    "fixture_count": 6,
+    "text_min_chars": 65,
+    "text_max_chars": 147,
+    "pattern": "closed-loop keep-alive round-robin AI-authored English SMS",
+    "warmup_requests": 100,
+    "qps_definition": "Completions within exact duration / duration",
+    "latency_error_scope": "All requests issued inside the window, including drain",
+    "percentile_method": "linear interpolation at (N-1)*quantile"
+  },
+  "production_reference": {
+    "status": "ok",
+    "model_ready": true,
+    "public": true,
+    "loaded": {
+      "dataset_id": "sms-v2-c2206636983886cfee78",
+      "kind": "mlp16",
+      "run_id": "v2-import-reviewed-seed42",
+      "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+      "threshold": 0.5,
+      "vocabulary_sha256": "3baedee047a4acfc70d9529e976e503b8d1659d3c98568f153319694979eb4da",
+      "weights_sha256": "ca92490975bb2e0c91330a5c6fbc186f2d6e1217eab1cb06cc732c3d458d61e8"
+    },
+    "runtime": "numpy numeric format; no torch or pickle inference"
+  },
+  "scenarios": [
+    {
+      "issued_requests": 49617,
+      "completed_requests": 49617,
+      "completed_in_window": 49616,
+      "successful_in_window": 49616,
+      "successful_requests": 49617,
+      "error_requests": 0,
+      "qps": 826.9333333333333,
+      "successful_qps": 826.9333333333333,
+      "error_rate": 0.0,
+      "status_counts": {
+        "0": 0,
+        "200": 49617,
+        "429": 0
+      },
+      "error_counts": {
+        "capacity_busy": 0,
+        "minute_rate_limit": 0,
+        "other_429": 0,
+        "prediction_mismatch": 0,
+        "timeout": 0,
+        "transport_error": 0
+      },
+      "fixture_counts": {
+        "load-reminder": 8270,
+        "load-prize": 8270,
+        "load-appointment": 8270,
+        "load-delivery": 8269,
+        "load-project": 8269,
+        "load-promotion": 8269
+      },
+      "latency_ms": {
+        "successful": {
+          "p50": 1.1787500698119402,
+          "p95": 1.3744169846177101,
+          "p99": 1.6371347289532407
+        },
+        "all": {
+          "p50": 1.1787500698119402,
+          "p95": 1.3744169846177101,
+          "p99": 1.6371347289532407
+        }
+      },
+      "drained_requests": 1,
+      "concurrency": 1,
+      "duration_seconds": 60.0,
+      "wall_seconds": 60.000103833153844,
+      "drain_seconds": 0.0001038331538438797,
+      "memory": {
+        "server_peak_rss_mib": 64.390625,
+        "server_warmup_peak_rss_mib": 61.484375,
+        "peak_scope": "Fresh process lifecycle: startup, warmup, load and drain"
+      },
+      "cpu": {
+        "server_cpu_seconds": 26.439190999999997,
+        "average_server_cores": 0.4406524207611567,
+        "client_cpu_seconds": 27.890078,
+        "average_client_cores": 0.4648338289139588
+      },
+      "server_metrics_before": {
+        "pid": 26116,
+        "user_cpu_seconds": 0.284613,
+        "system_cpu_seconds": 0.047754,
+        "peak_rss_bytes": 64471040,
+        "peak_rss_scope": "OS process-lifecycle maximum, including startup and model loading",
+        "thread_count": 2,
+        "thread_count_scope": "darwin_proc_pidinfo",
+        "threadpool_info": [],
+        "threadpool_info_available": true,
+        "numpy_backend": {
+          "available": true,
+          "identity_scope": "NumPy build configuration only; not active BLAS thread measurement",
+          "runtime_threads_verified": false,
+          "numpy_version": "2.5.4",
+          "blas": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          },
+          "lapack": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          }
+        },
+        "limits": {
+          "test_only": true,
+          "host": "127.0.0.1",
+          "public_read_only": true,
+          "external_decision_enabled": false,
+          "requests_per_minute": 1000000000,
+          "production_requests_per_minute": 30,
+          "prediction_slots": 2,
+          "run_id": "v2-import-reviewed-seed42",
+          "binding_enforced_by": "Parent harness must launch uvicorn on 127.0.0.1 only"
+        }
+      },
+      "server_metrics_after": {
+        "pid": 26116,
+        "user_cpu_seconds": 24.209046,
+        "system_cpu_seconds": 2.562512,
+        "peak_rss_bytes": 67518464,
+        "peak_rss_scope": "OS process-lifecycle maximum, including startup and model loading",
+        "thread_count": 2,
+        "thread_count_scope": "darwin_proc_pidinfo",
+        "threadpool_info": [],
+        "threadpool_info_available": true,
+        "numpy_backend": {
+          "available": true,
+          "identity_scope": "NumPy build configuration only; not active BLAS thread measurement",
+          "runtime_threads_verified": false,
+          "numpy_version": "2.5.4",
+          "blas": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          },
+          "lapack": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          }
+        },
+        "limits": {
+          "test_only": true,
+          "host": "127.0.0.1",
+          "public_read_only": true,
+          "external_decision_enabled": false,
+          "requests_per_minute": 1000000000,
+          "production_requests_per_minute": 30,
+          "prediction_slots": 2,
+          "run_id": "v2-import-reviewed-seed42",
+          "binding_enforced_by": "Parent harness must launch uvicorn on 127.0.0.1 only"
+        }
+      },
+      "trace_file": "requests-c1.csv.gz",
+      "trace_sha256": "683257315c35e96540950a921f0b0f7d6b072db400ffb72c5eef2b92c817a6a0",
+      "warmup_requests": 100,
+      "fixture_preflight_requests": 6,
+      "local_pid": 26116
+    },
+    {
+      "issued_requests": 67549,
+      "completed_requests": 67549,
+      "completed_in_window": 67539,
+      "successful_in_window": 66900,
+      "successful_requests": 66910,
+      "error_requests": 639,
+      "qps": 1125.65,
+      "successful_qps": 1115.0,
+      "error_rate": 0.009459799552917142,
+      "status_counts": {
+        "0": 0,
+        "200": 66910,
+        "429": 639
+      },
+      "error_counts": {
+        "capacity_busy": 639,
+        "minute_rate_limit": 0,
+        "other_429": 0,
+        "prediction_mismatch": 0,
+        "timeout": 0,
+        "transport_error": 0
+      },
+      "fixture_counts": {
+        "load-reminder": 11259,
+        "load-prize": 11258,
+        "load-appointment": 11258,
+        "load-delivery": 11258,
+        "load-promotion": 11258,
+        "load-project": 11258
+      },
+      "latency_ms": {
+        "successful": {
+          "p50": 6.849791621789336,
+          "p95": 21.250170376151793,
+          "p99": 35.218688754830524
+        },
+        "all": {
+          "p50": 6.843582959845662,
+          "p95": 21.272441884502765,
+          "p99": 35.221578059718034
+        }
+      },
+      "drained_requests": 10,
+      "concurrency": 10,
+      "duration_seconds": 60.0,
+      "wall_seconds": 60.0042390411254,
+      "drain_seconds": 0.0042390411254018545,
+      "memory": {
+        "server_peak_rss_mib": 67.703125,
+        "server_warmup_peak_rss_mib": 63.578125,
+        "peak_scope": "Fresh process lifecycle: startup, warmup, load and drain"
+      },
+      "cpu": {
+        "server_cpu_seconds": 37.223698,
+        "average_server_cores": 0.6203511384335332,
+        "client_cpu_seconds": 51.083624,
+        "average_client_cores": 0.8513335860319563
+      },
+      "server_metrics_before": {
+        "pid": 26179,
+        "user_cpu_seconds": 0.305998,
+        "system_cpu_seconds": 0.053974999999999995,
+        "peak_rss_bytes": 66666496,
+        "peak_rss_scope": "OS process-lifecycle maximum, including startup and model loading",
+        "thread_count": 2,
+        "thread_count_scope": "darwin_proc_pidinfo",
+        "threadpool_info": [],
+        "threadpool_info_available": true,
+        "numpy_backend": {
+          "available": true,
+          "identity_scope": "NumPy build configuration only; not active BLAS thread measurement",
+          "runtime_threads_verified": false,
+          "numpy_version": "2.5.4",
+          "blas": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          },
+          "lapack": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          }
+        },
+        "limits": {
+          "test_only": true,
+          "host": "127.0.0.1",
+          "public_read_only": true,
+          "external_decision_enabled": false,
+          "requests_per_minute": 1000000000,
+          "production_requests_per_minute": 30,
+          "prediction_slots": 2,
+          "run_id": "v2-import-reviewed-seed42",
+          "binding_enforced_by": "Parent harness must launch uvicorn on 127.0.0.1 only"
+        }
+      },
+      "server_metrics_after": {
+        "pid": 26179,
+        "user_cpu_seconds": 33.712643,
+        "system_cpu_seconds": 3.871028,
+        "peak_rss_bytes": 70991872,
+        "peak_rss_scope": "OS process-lifecycle maximum, including startup and model loading",
+        "thread_count": 9,
+        "thread_count_scope": "darwin_proc_pidinfo",
+        "threadpool_info": [],
+        "threadpool_info_available": true,
+        "numpy_backend": {
+          "available": true,
+          "identity_scope": "NumPy build configuration only; not active BLAS thread measurement",
+          "runtime_threads_verified": false,
+          "numpy_version": "2.5.4",
+          "blas": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          },
+          "lapack": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          }
+        },
+        "limits": {
+          "test_only": true,
+          "host": "127.0.0.1",
+          "public_read_only": true,
+          "external_decision_enabled": false,
+          "requests_per_minute": 1000000000,
+          "production_requests_per_minute": 30,
+          "prediction_slots": 2,
+          "run_id": "v2-import-reviewed-seed42",
+          "binding_enforced_by": "Parent harness must launch uvicorn on 127.0.0.1 only"
+        }
+      },
+      "trace_file": "requests-c10.csv.gz",
+      "trace_sha256": "0fe1e98a98cf87489d46c3782d74f58a72c735ba484eb1dc03ce4d96b8be8e9f",
+      "warmup_requests": 100,
+      "fixture_preflight_requests": 6,
+      "local_pid": 26179
+    },
+    {
+      "issued_requests": 27602,
+      "completed_requests": 27602,
+      "completed_in_window": 27552,
+      "successful_in_window": 27546,
+      "successful_requests": 27596,
+      "error_requests": 6,
+      "qps": 459.2,
+      "successful_qps": 459.1,
+      "error_rate": 0.00021737555249619594,
+      "status_counts": {
+        "0": 0,
+        "200": 27596,
+        "429": 6
+      },
+      "error_counts": {
+        "capacity_busy": 6,
+        "minute_rate_limit": 0,
+        "other_429": 0,
+        "prediction_mismatch": 0,
+        "timeout": 0,
+        "transport_error": 0
+      },
+      "fixture_counts": {
+        "load-reminder": 4601,
+        "load-prize": 4601,
+        "load-appointment": 4600,
+        "load-project": 4600,
+        "load-delivery": 4600,
+        "load-promotion": 4600
+      },
+      "latency_ms": {
+        "successful": {
+          "p50": 62.85083293914795,
+          "p95": 352.47608297504485,
+          "p99": 591.6565829538736
+        },
+        "all": {
+          "p50": 62.871916918084025,
+          "p95": 352.4562201928344,
+          "p99": 591.6216712421735
+        }
+      },
+      "drained_requests": 50,
+      "concurrency": 50,
+      "duration_seconds": 60.0,
+      "wall_seconds": 60.19904379197396,
+      "drain_seconds": 0.19904379197396338,
+      "memory": {
+        "server_peak_rss_mib": 64.78125,
+        "server_warmup_peak_rss_mib": 61.484375,
+        "peak_scope": "Fresh process lifecycle: startup, warmup, load and drain"
+      },
+      "cpu": {
+        "server_cpu_seconds": 16.148089,
+        "average_server_cores": 0.268244941826683,
+        "client_cpu_seconds": 43.45037100000002,
+        "average_client_cores": 0.7217784247561926
+      },
+      "server_metrics_before": {
+        "pid": 26224,
+        "user_cpu_seconds": 0.296243,
+        "system_cpu_seconds": 0.057052,
+        "peak_rss_bytes": 64471040,
+        "peak_rss_scope": "OS process-lifecycle maximum, including startup and model loading",
+        "thread_count": 2,
+        "thread_count_scope": "darwin_proc_pidinfo",
+        "threadpool_info": [],
+        "threadpool_info_available": true,
+        "numpy_backend": {
+          "available": true,
+          "identity_scope": "NumPy build configuration only; not active BLAS thread measurement",
+          "runtime_threads_verified": false,
+          "numpy_version": "2.5.4",
+          "blas": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          },
+          "lapack": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          }
+        },
+        "limits": {
+          "test_only": true,
+          "host": "127.0.0.1",
+          "public_read_only": true,
+          "external_decision_enabled": false,
+          "requests_per_minute": 1000000000,
+          "production_requests_per_minute": 30,
+          "prediction_slots": 2,
+          "run_id": "v2-import-reviewed-seed42",
+          "binding_enforced_by": "Parent harness must launch uvicorn on 127.0.0.1 only"
+        }
+      },
+      "server_metrics_after": {
+        "pid": 26224,
+        "user_cpu_seconds": 14.649626,
+        "system_cpu_seconds": 1.851758,
+        "peak_rss_bytes": 67928064,
+        "peak_rss_scope": "OS process-lifecycle maximum, including startup and model loading",
+        "thread_count": 10,
+        "thread_count_scope": "darwin_proc_pidinfo",
+        "threadpool_info": [],
+        "threadpool_info_available": true,
+        "numpy_backend": {
+          "available": true,
+          "identity_scope": "NumPy build configuration only; not active BLAS thread measurement",
+          "runtime_threads_verified": false,
+          "numpy_version": "2.5.4",
+          "blas": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          },
+          "lapack": {
+            "name": "accelerate",
+            "version": "unknown",
+            "found": true
+          }
+        },
+        "limits": {
+          "test_only": true,
+          "host": "127.0.0.1",
+          "public_read_only": true,
+          "external_decision_enabled": false,
+          "requests_per_minute": 1000000000,
+          "production_requests_per_minute": 30,
+          "prediction_slots": 2,
+          "run_id": "v2-import-reviewed-seed42",
+          "binding_enforced_by": "Parent harness must launch uvicorn on 127.0.0.1 only"
+        }
+      },
+      "trace_file": "requests-c50.csv.gz",
+      "trace_sha256": "8f64826b2993335f3a938e05f3d9f0e7acf5d2c1504893356e76708ffcf8c803",
+      "warmup_requests": 100,
+      "fixture_preflight_requests": 6,
+      "local_pid": 26224
+    }
+  ],
+  "model": {
+    "dataset_id": "sms-v2-c2206636983886cfee78",
+    "kind": "mlp16",
+    "run_id": "v2-import-reviewed-seed42",
+    "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+    "threshold": 0.5,
+    "vocabulary_sha256": "3baedee047a4acfc70d9529e976e503b8d1659d3c98568f153319694979eb4da",
+    "weights_sha256": "ca92490975bb2e0c91330a5c6fbc186f2d6e1217eab1cb06cc732c3d458d61e8"
+  },
+  "integrity": {
+    "source_model_files_unchanged": true,
+    "source_model_fingerprints": {
+      "var/runs/v2-import-reviewed-seed42/model.json": {
+        "sha256": "a023d7157ef8eeec2961335161dc7bcb48f443de202829002892be349a82eebf",
+        "size": 364,
+        "mode": 33152,
+        "mtime_ns": 1793197647746870180
+      },
+      "var/runs/v2-import-reviewed-seed42/report.json": {
+        "sha256": "7787c6158fa20af544185c2db641fec6bb19d539e250c16e45191717cf98a885",
+        "size": 7164,
+        "mode": 33152,
+        "mtime_ns": 1793197647867086244
+      },
+      "var/runs/v2-import-reviewed-seed42/vocabulary.json": {
+        "sha256": "3baedee047a4acfc70d9529e976e503b8d1659d3c98568f153319694979eb4da",
+        "size": 60855,
+        "mode": 33152,
+        "mtime_ns": 1793197647726908697
+      },
+      "var/runs/v2-import-reviewed-seed42/weights.npz": {
+        "sha256": "ca92490975bb2e0c91330a5c6fbc186f2d6e1217eab1cb06cc732c3d458d61e8",
+        "size": 134130,
+        "mode": 33188,
+        "mtime_ns": 1793197647742998125
+      },
+      "var/service.json": {
+        "sha256": "12f4f65891bed9b896ae986258dca423bf6fc5bb8f3db7153c87d66642ab3053",
+        "size": 974,
+        "mode": 33152,
+        "mtime_ns": 1793198942410763329
+      }
+    },
+    "online_load_requests": 0,
+    "external_model_calls": 0
+  },
+  "load_generator": {
+    "peak_rss_mib": 60.171875
+  }
+}

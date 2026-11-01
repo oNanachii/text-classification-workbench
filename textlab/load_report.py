@@ -303,6 +303,72 @@ def _errors(result: Record) -> str:
     return "\n".join(lines)
 
 
+def _observed_findings(result: Record) -> str:
+    scenarios = {item.get("concurrency"): item for item in _scenarios(result)}
+    middle, high = scenarios.get(10), scenarios.get(50)
+    if middle is None or high is None:
+        return ""
+    q10, q50 = middle.get("successful_qps"), high.get("successful_qps")
+    if any(type(value) not in (int, float) or not math.isfinite(value) for value in (q10, q50)):
+        return ""
+    lines = []
+    q1 = _mapping(scenarios.get(1)).get("successful_qps")
+    if type(q1) in (int, float) and math.isfinite(q1) and q1 < q10 and q50 < q10:
+        lines.append(
+            "成功吞吐呈非单调变化：并发 1、10、50 的成功 QPS 分别为 "
+            f"{_number(q1, 2)}、{_number(q10, 2)}、{_number(q50, 2)}。"
+            "这只是本轮三档观测，不能将最高一档数值视为已定位的容量上限。"
+        )
+    if q10 > 0 and q50 < q10:
+        drop = (q10 - q50) / q10
+        p95_10 = _mapping(_mapping(middle.get("latency_ms")).get("successful")).get("p95")
+        p95_50 = _mapping(_mapping(high.get("latency_ms")).get("successful")).get("p95")
+        lines.append(
+            f"并发 50 的成功 QPS 比并发 10 低 {drop * PERCENT:.2f}%；"
+            f"成功 p95 从 {_number(p95_10)} ms 变为 {_number(p95_50)} ms。"
+            "低错误率不能替代等待时间指标。"
+        )
+        issued, errors = high.get("issued_requests"), high.get("error_requests")
+        if type(issued) is int and issued > 0 and type(errors) is int and errors / issued < drop:
+            lines.append(
+                f"并发 50 共 {_count(issued)} 次请求，仅 {_count(errors)} 次错误，"
+                f"错误率 {errors / issued * PERCENT:.5f}%；"
+                f"busy 拒绝 {_count(_busy_count(high))} 次。"
+                f"该档全部完成尝试 QPS {_number(high.get('qps'), 2)}，"
+                f"与成功 QPS {_number(q50, 2)} 接近。"
+                "这些拒绝计数不足以把档间的大幅吞吐回落直接解释为观察到的 429；"
+                "仍需区分客户端、服务处理及其间等待。"
+            )
+    cpu10, cpu50 = _mapping(middle.get("cpu")), _mapping(high.get("cpu"))
+    values = [
+        cpu10.get("average_server_cores"),
+        cpu50.get("average_server_cores"),
+        cpu10.get("average_client_cores"),
+        cpu50.get("average_client_cores"),
+    ]
+    if all(type(value) in (int, float) and math.isfinite(value) for value in values):
+        lines.append(
+            "从并发 10 到 50，应用平均占用核为 "
+            f"{_number(values[0])} → {_number(values[1])}，压测器为 "
+            f"{_number(values[2])} → {_number(values[3])}。"
+            "这是两个进程的平均 CPU 时间，既不是整机利用率，也不是瞬时热点或等待剖析。"
+            "本记录没有证明 CPU 饱和；同机其他进程和短时资源争用也未受控。"
+        )
+    threads10 = _metrics(middle, "after").get("thread_count")
+    threads50 = _metrics(high, "after").get("thread_count")
+    if type(threads10) is int and type(threads50) is int:
+        lines.append(
+            f"两个场景结束后的应用线程数快照为 {_count(threads10)} 和 {_count(threads50)}。"
+            "它们不是活动线程峰值、线程池上限或排队长度，不能据此断言线程池已经饱和。"
+        )
+    lines.append(
+        "本轮确认了端到端吞吐与尾延迟的变化，主瓶颈仍未定位。客户端调度、服务事件循环、"
+        "连接或线程等待、HTTP 处理是待区分的环节；没有分阶段等待与活动时间，"
+        "不能将下降归因于其中一个环节，也不据此更改生产槽位。"
+    )
+    return "\n\n".join(lines)
+
+
 def _bottlenecks(result: Record) -> str:
     scenarios = _scenarios(result)
     busy = sum(value for scenario in scenarios if type(value := _busy_count(scenario)) is int)
@@ -474,6 +540,18 @@ def render_report(result: dict[str, Any], *, docs_path: Path, artifact_dir: Path
         replay_file = result_file.as_posix()
     fixture = _text(workload.get("fixture_file"))
     scope = "、".join(_count(scenario.get("concurrency")) for scenario in scenarios) or "—"
+    preflight_counts = {
+        scenario["fixture_preflight_requests"]
+        for scenario in scenarios
+        if type(scenario.get("fixture_preflight_requests")) is int
+    }
+    preflight_note = ""
+    if len(preflight_counts) == 1:
+        count = next(iter(preflight_counts))
+        preflight_note = (
+            f"每轮另有 {count} 次自编 fixture 响应一致性预检，也不进入测量批次。"
+            "CPU 差值的基线在预检和预热之后取得，生命周期 RSS 仍包括这些阶段。"
+        )
     sections = [
         "# 本机 HTTP 负载测试",
         f"本轮在同一台机器的回环地址上，以单 Uvicorn worker、客户端并发 {scope} 测量公开只读的"
@@ -494,7 +572,7 @@ def render_report(result: dict[str, Any], *, docs_path: Path, artifact_dir: Path
         f"输入来自 `{fixture}` 的 {_count(workload.get('fixture_count'))} 条自编短信，"
         "使用 keep-alive、闭环并发和轮转输入；并发数表示最多同时等待的请求，不是固定到达率。"
         f"每轮先完成 {_count(workload.get('warmup_requests'))} 次预热，"
-        "预热请求不进入吞吐、时延和错误率。",
+        "预热请求不进入吞吐、时延和错误率。" + preflight_note,
         "每轮按记录的 duration_seconds 设定派发截止，窗口结束后停止新请求并等待已发出的请求结束。"
         "窗口 QPS 分别是 completed_in_window / duration_seconds 和 "
         "successful_in_window / duration_seconds；不把排空期间才完成的请求加进窗口吞吐。"
@@ -536,6 +614,9 @@ def render_report(result: dict[str, Any], *, docs_path: Path, artifact_dir: Path
         f"线上压测请求数 `{_count(integrity.get('online_load_requests'))}`。"
         "若附带 production_reference，它仅是只读元数据快照，不是对线上吞吐或资源容量的复核。",
     ]
+    findings = _observed_findings(result)
+    if findings:
+        sections[3:3] = ["## 本轮观测到的变化", findings]
     traces = []
     for scenario in scenarios:
         name = scenario.get("trace_file")
@@ -548,4 +629,13 @@ def render_report(result: dict[str, Any], *, docs_path: Path, artifact_dir: Path
         )
     if traces:
         sections.extend(["逐请求数值记录（不含短信内容）：", "\n".join(traces)])
+    sections.extend(
+        [
+            "独立复算可读取压缩轨迹、检查计数与分位数，不启动服务或发送请求：",
+            "```sh\n.venv/bin/python -B scripts/verify_load_test.py\n```",
+        ]
+    )
+    receipt = artifact_dir / "verification.json"
+    if receipt.is_file():
+        sections.append(f"[独立复算记录]({_relative(receipt, docs_path)})。")
     docs_path.write_text("\n\n".join(sections) + "\n", encoding="utf-8")

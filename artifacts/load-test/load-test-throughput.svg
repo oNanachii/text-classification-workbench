@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="510" viewBox="0 0 1080 510" role="img" aria-labelledby="title desc">
+<title id="title">Local HTTP load test: all attempts and valid successes</title>
+<desc id="desc">Window completion rates including errors are separate from valid-success rates. Each bar is a local loopback scenario, not deployed VPS capacity. Axis starts at zero.</desc>
+<rect width="1080" height="510" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#243044">
+<text x="44" y="38" font-size="23" font-weight="700">Local HTTP benchmark</text>
+<text x="44" y="66" font-size="14">Single worker | same-host load generator | local loopback</text>
+<path d="M 100 405.00 H 1010" stroke="#e6ebf2"/>
+<text x="88" y="409.00" text-anchor="end" font-size="12">0</text>
+<path d="M 100 328.75 H 1010" stroke="#e6ebf2"/>
+<text x="88" y="332.75" text-anchor="end" font-size="12">324</text>
+<path d="M 100 252.50 H 1010" stroke="#e6ebf2"/>
+<text x="88" y="256.50" text-anchor="end" font-size="12">647</text>
+<path d="M 100 176.25 H 1010" stroke="#e6ebf2"/>
+<text x="88" y="180.25" text-anchor="end" font-size="12">971</text>
+<path d="M 100 100.00 H 1010" stroke="#e6ebf2"/>
+<text x="88" y="104.00" text-anchor="end" font-size="12">1294</text>
+<rect x="176.67" y="210.16" width="70.00" height="194.84" fill="#8091aa"/>
+<text x="211.67" y="203.16" text-anchor="middle" font-size="13">826.93</text>
+<rect x="256.67" y="210.16" width="70.00" height="194.84" fill="#21777a"/>
+<text x="291.67" y="203.16" text-anchor="middle" font-size="13">826.93</text>
+<text x="251.67" y="430" text-anchor="middle" font-size="14">Concurrency 1</text>
+<rect x="480.00" y="139.78" width="70.00" height="265.22" fill="#8091aa"/>
+<text x="515.00" y="132.78" text-anchor="middle" font-size="13">1125.65</text>
+<rect x="560.00" y="142.29" width="70.00" height="262.71" fill="#21777a"/>
+<text x="595.00" y="135.29" text-anchor="middle" font-size="13">1115.00</text>
+<text x="555.00" y="430" text-anchor="middle" font-size="14">Concurrency 10</text>
+<rect x="783.33" y="296.81" width="70.00" height="108.19" fill="#8091aa"/>
+<text x="818.33" y="289.81" text-anchor="middle" font-size="13">459.20</text>
+<rect x="863.33" y="296.83" width="70.00" height="108.17" fill="#21777a"/>
+<text x="898.33" y="289.83" text-anchor="middle" font-size="13">459.10</text>
+<text x="858.33" y="430" text-anchor="middle" font-size="14">Concurrency 50</text>
+<text x="26" y="255" transform="rotate(-90 26 255)" text-anchor="middle" font-size="14">Completed attempts / second</text>
+<rect x="100" y="459" width="16" height="16" fill="#8091aa"/>
+<text x="125" y="472" font-size="13">All completed attempts, including errors</text>
+<rect x="485" y="459" width="16" height="16" fill="#21777a"/>
+<text x="510" y="472" font-size="13">Valid successful responses</text>
+</g></svg>

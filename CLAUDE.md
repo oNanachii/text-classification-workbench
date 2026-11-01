@@ -4,6 +4,14 @@
 
 涉及前端或 Jev 时，再读 `docs/process/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md` 与 `docs/JEV_EVALUATION_PLAN.md`。保持现有功能与证据边界。Claude Code 由用户本人操作。
 
+## 2026-11-01 本机接口压测
+
+已按仓库所有者要求完成本地回环压测。工具为 `textlab.load_test`，唯一发压目标是其自行启动、PID 与模型核对通过的 `127.0.0.1` 子进程。测试专用入口为 `textlab.load_test_server:create_app`，必须显式启用并提供独立临时公开数值模型包；不能用作线上入口。
+
+只在子进程内将每 IP 的 30 次/60 秒上限放宽为 1e9，保留生产 2 个推断槽、公开只读、禁用外部模型及单 Uvicorn worker；生产源码、部署文件和线上配置不改。输入只有 `examples/load_test_sms.json` 中 6 条自编短信，不读取真实短信、验证/测试语料、数据库、快照或旧最终报告，也不发 Jev/DeepSeek 请求。仅允许只读取得选定数值模型的服务清单和四个模型/报告文件，用于临时包。
+
+结果在 `docs/LOAD_TEST.md`、`artifacts/load-test/`，默认可离线重建：`python -m textlab.load_test --replay artifacts/load-test/results.json`。新的本地测量使用全新输出目录；禁止把工具指向任意远端服务或线上压力目标。该结果只属于本机本工作负载，不作为 VPS 或线上容量结论。
+
 ## 2026-11-01 冻结外部公开数据测试
 
 本次仓库所有者另行授权使用外部公开短信、费用上限人民币 4 元，沿用既有提示、`mlp16 / 0.5` 与包含端点的 `[0.2, 0.8]`。已在独立 `var/external-test-20261101/` 完成唯一一轮；该授权不扩展至任何重跑或新批次。

@@ -25,3 +25,6 @@ data/external/*
 
 # Offline report replay uses a local lock, never a published artifact.
 artifacts/external-test/.external-study.lock
+
+# Keep interrupted benchmark checkpoints local; completed results.json is published.
+artifacts/load-test/results.partial.json

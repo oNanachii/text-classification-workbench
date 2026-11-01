@@ -1,0 +1,142 @@
+{
+  "status": "passed",
+  "execution_commit": "2793a8dcabba93664f8d7cb0922b95ca044b455c",
+  "checked_at_utc": "2026-11-01T20:23:21.532297+00:00",
+  "independent_stdlib_verifier": "scripts/verify_load_test.py",
+  "results_sha256": "f725b91a58398124a6fae1f7f351cd67b40c3f8b2dd0af090bc23f097fb465f3",
+  "checks_passed": 1158492,
+  "scenario_count": 3,
+  "source_and_fixture": {
+    "verified_source_files": 8,
+    "fixture_count": 6,
+    "production_unit_sha256": "c49cbd4baab0338280ffadb6e9dcff8a6604bea005b8aca4c421625ff23d2357"
+  },
+  "scenarios": [
+    {
+      "concurrency": 1,
+      "duration_seconds": 60.0,
+      "issued_requests": 49617,
+      "completed_requests": 49617,
+      "completed_in_window": 49616,
+      "successful_in_window": 49616,
+      "successful_requests": 49617,
+      "error_requests": 0,
+      "drained_requests": 1,
+      "qps": 826.9333333333333,
+      "successful_qps": 826.9333333333333,
+      "error_rate": 0.0,
+      "maximum_inflight": 1,
+      "status_counts": {
+        "200": 49617
+      },
+      "error_counts": {},
+      "successful_latency_ms": {
+        "p50": 1.1787500698119402,
+        "p95": 1.3744169846177101,
+        "p99": 1.6371347289532407
+      },
+      "all_latency_ms": {
+        "p50": 1.1787500698119402,
+        "p95": 1.3744169846177101,
+        "p99": 1.6371347289532407
+      },
+      "resources": {
+        "pid": 26116,
+        "server_peak_rss_mib": 64.390625,
+        "server_cpu_seconds": 26.439190999999997,
+        "average_server_cores": 0.4406524207611567,
+        "client_cpu_seconds": 27.890078,
+        "average_client_cores": 0.4648338289139588
+      }
+    },
+    {
+      "concurrency": 10,
+      "duration_seconds": 60.0,
+      "issued_requests": 67549,
+      "completed_requests": 67549,
+      "completed_in_window": 67539,
+      "successful_in_window": 66900,
+      "successful_requests": 66910,
+      "error_requests": 639,
+      "drained_requests": 10,
+      "qps": 1125.65,
+      "successful_qps": 1115.0,
+      "error_rate": 0.009459799552917142,
+      "maximum_inflight": 10,
+      "status_counts": {
+        "200": 66910,
+        "429": 639
+      },
+      "error_counts": {
+        "capacity_busy": 639
+      },
+      "successful_latency_ms": {
+        "p50": 6.849791621789336,
+        "p95": 21.250170376151793,
+        "p99": 35.218688754830524
+      },
+      "all_latency_ms": {
+        "p50": 6.843582959845662,
+        "p95": 21.272441884502765,
+        "p99": 35.221578059718034
+      },
+      "resources": {
+        "pid": 26179,
+        "server_peak_rss_mib": 67.703125,
+        "server_cpu_seconds": 37.223698000000006,
+        "average_server_cores": 0.6203511384335333,
+        "client_cpu_seconds": 51.083624,
+        "average_client_cores": 0.8513335860319563
+      }
+    },
+    {
+      "concurrency": 50,
+      "duration_seconds": 60.0,
+      "issued_requests": 27602,
+      "completed_requests": 27602,
+      "completed_in_window": 27552,
+      "successful_in_window": 27546,
+      "successful_requests": 27596,
+      "error_requests": 6,
+      "drained_requests": 50,
+      "qps": 459.2,
+      "successful_qps": 459.1,
+      "error_rate": 0.00021737555249619594,
+      "maximum_inflight": 50,
+      "status_counts": {
+        "200": 27596,
+        "429": 6
+      },
+      "error_counts": {
+        "capacity_busy": 6
+      },
+      "successful_latency_ms": {
+        "p50": 62.85083293914795,
+        "p95": 352.47608297504485,
+        "p99": 591.6565829538736
+      },
+      "all_latency_ms": {
+        "p50": 62.871916918084025,
+        "p95": 352.4562201928344,
+        "p99": 591.6216712421735
+      },
+      "resources": {
+        "pid": 26224,
+        "server_peak_rss_mib": 64.78125,
+        "server_cpu_seconds": 16.148089,
+        "average_server_cores": 0.268244941826683,
+        "client_cpu_seconds": 43.45037100000002,
+        "average_client_cores": 0.7217784247561926
+      }
+    }
+  ],
+  "formal_files_opened": 0,
+  "model_files_reopened": 0,
+  "network_requests": 0,
+  "scope": {
+    "response_validity": "Harness-recorded flags only; response bodies were not retained",
+    "resources": "Recorded OS snapshots: unit conversions and arithmetic rechecked only",
+    "model_preservation": "Harness assertion plus saved digests; models not reopened",
+    "capacity": "Local loopback evidence; VPS resource limits were not replicated"
+  }
+}

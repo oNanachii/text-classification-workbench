@@ -1,0 +1,25 @@
+{
+  "python_unit_tests": {
+    "passed": 161,
+    "failed": 0
+  },
+  "legacy_synthetic_snapshot_tests": {
+    "passed": 7,
+    "failed": 0
+  },
+  "frontend_tests": {
+    "passed": 45,
+    "failed": 0
+  },
+  "frontend_build": "passed",
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "independent_numeric_verification": "passed",
+  "trace_requests": 144768,
+  "online_prediction_requests": 0,
+  "external_paid_model_calls": 0,
+  "production_rate_default": 30,
+  "production_prediction_slots": 2,
+  "source_model_files_unchanged": true,
+  "chart_visual_check": "local PyMuPDF rendering inspected; no clipping or overlapping labels"
+}
