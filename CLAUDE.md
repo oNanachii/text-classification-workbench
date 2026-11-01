@@ -2,7 +2,7 @@
 
 2026-10-30：本轮五分区设计已接回、修复并部署。后续先读PROJECT_STATUS.md，只执行用户新要求的增量任务；原设计交接与启动提示是历史任务依据。
 
-请先读 `docs/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md`、`docs/JEV_EVALUATION_PLAN.md` 和 `PROJECT_STATUS.md`。这轮工作是把已经可运行的 Vue 工作台设计成清楚、易演示的产品；保持现有功能与证据边界。Claude Code 由用户本人操作。
+请先读 `docs/process/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md`、`docs/JEV_EVALUATION_PLAN.md` 和 `PROJECT_STATUS.md`。这轮工作是把已经可运行的 Vue 工作台设计成清楚、易演示的产品；保持现有功能与证据边界。Claude Code 由用户本人操作。
 
 ## 目标与入口
 

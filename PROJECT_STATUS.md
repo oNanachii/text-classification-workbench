@@ -12,7 +12,7 @@
 
 Jev只使用固定官方端点和模型版本，返回固定标签与数值白名单；分数/概率未本地校准，confidence表示分布集中程度，不是正确率。超时、取消、断线不证明未处理或未计费，不自动重试。TLS前置、输出脱敏、public凭据隔离和迟到响应的独立审查及模拟回归已通过，不能据此声称真实Jev质量、时延或成本效果。
 
-用户已操作Claude完成设计，独立接回与部署结果见下节。[原启动提示](docs/CLAUDE_START_PROMPT.txt)和[设计交接](docs/CLAUDE_FRONTEND_HANDOFF.md)保留历史依据；真实入口仍为frontend/src/App.vue。
+用户已操作Claude完成设计，独立接回与部署结果见下节。[原启动提示](docs/process/CLAUDE_START_PROMPT.txt)和[设计交接](docs/process/CLAUDE_FRONTEND_HANDOFF.md)保留历史依据；真实入口仍为frontend/src/App.vue。
 
 ## 当前：Claude前端已接回并部署
 
@@ -59,6 +59,6 @@ v2预先分组后有3619条训练、783条验证、757条封存测试。它与v1
 
 最终22项Python、11项Node及构建通过；独立Chromium完成实际导入、审核、快照、候选选择/回退和凭据清除。审核后待审列表未刷新问题已修正并在浏览器重验0条/0–0。公网正常DNS/TLS、五个静态文件逐字节匹配、三条自编预测与本地数值一致、私有接口拒绝、CSP及请求上限通过；公开桌面1280×720、移动390×844页面无横向溢出。原有服务和证书元数据逐值对照通过。
 
-未完成实体设备、Safari/Firefox、屏幕阅读器、用户视觉或本人关键修改验收，也未将AI完成实现记为本人掌握。证据与本地/公开模式的区别见docs/DELIVERY_2026-10-28.md。
+未完成实体设备、Safari/Firefox、屏幕阅读器、用户视觉或本人关键修改验收，也未将AI完成实现记为本人掌握。证据与本地/公开模式的区别见docs/process/DELIVERY_2026-10-28.md。
 
 当前与后续均须保持五个冻结依赖evaluation.py、safe_model.py、data.py、experiments.py、dataflow.py及旧757条最终测试证据不变。新的Jev评测或中文任务遵循docs/JEV_EVALUATION_PLAN.md，需另立数据、标注、配置与授权，不以旧分数替代新证据。
