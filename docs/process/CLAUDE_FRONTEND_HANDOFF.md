@@ -40,7 +40,7 @@ Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使
 
 ## API与状态保留
 
-完整新增判断契约见 [JEV_API_CONTRACT.md](JEV_API_CONTRACT.md)。下面是设计需要知道的最小映射，字段与错误以当前实现为准。
+完整新增判断契约见 [JEV_API_CONTRACT.md](../JEV_API_CONTRACT.md)。下面是设计需要知道的最小映射，字段与错误以当前实现为准。
 
 | 接口 | 作用与权限 |
 | --- | --- |
@@ -76,7 +76,7 @@ Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使
 
 本地返回的是未校准`spam_score`及其补数，需标出实际阈值、模型和数据版本，不能称为该短信的正确率。Jev返回的概率分布没有经过本地校准；`confidence_kind=choice_distribution_concentration`是分布集中程度，不是准确率。双方标签一致也不能替代人工标签。
 
-旧英文短信最终测试是历史证据，当前代码/文档已记录757条的一次固定评估；它不能再用来为Jev挑提示、调阈值或反复比较。新Jev没有正式质量评测时，应显示“尚未评测”及已知工程状态。新的评测与中文任务要求见 [JEV_EVALUATION_PLAN.md](JEV_EVALUATION_PLAN.md)，本轮不执行。
+旧英文短信最终测试是历史证据，当前代码/文档已记录757条的一次固定评估；它不能再用来为Jev挑提示、调阈值或反复比较。新Jev没有正式质量评测时，应显示“尚未评测”及已知工程状态。新的评测与中文任务要求见 [JEV_EVALUATION_PLAN.md](../JEV_EVALUATION_PLAN.md)，本轮不执行。
 
 ## 不可变范围与隐私
 

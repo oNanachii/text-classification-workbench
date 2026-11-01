@@ -1,4 +1,4 @@
-请在 /Users/liuqi/Documents/ChatGPT/Work/工作技能/text_classification_lab 工作，先读根目录 CLAUDE.md、docs/CLAUDE_FRONTEND_HANDOFF.md、docs/JEV_API_CONTRACT.md、docs/JEV_EVALUATION_PLAN.md 和 PROJECT_STATUS.md，再检查真正入口 frontend/src/App.vue。
+请在 /Users/liuqi/Documents/ChatGPT/Work/工作技能/text_classification_lab 工作，先读根目录 CLAUDE.md、docs/process/CLAUDE_FRONTEND_HANDOFF.md、docs/JEV_API_CONTRACT.md、docs/JEV_EVALUATION_PLAN.md 和 PROJECT_STATUS.md，再检查真正入口 frontend/src/App.vue。
 
 把现有Vue工作台设计成清楚、易演示的产品，组织好判断体验、批量导入、人工审核、效果对照、模型与规则。视觉、版式、组件、颜色与导航形式由你根据产品目标决定；没有已确认的模板目录，不要虚构模板。当前实际任务是英文短信ham/spam，保留local / jev / compare三模式，不宣称中文或其他任务已经支持。
 
