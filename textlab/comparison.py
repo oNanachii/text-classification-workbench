@@ -389,7 +389,7 @@ def publish(
         write_json(destination / "budget.json", budget)
         content = b"\n".join(canonical(row) for row in rows) + b"\n"
         (destination / "results.jsonl").write_bytes(content)
-        if ledger is not None:
+        if ledger is not None and destination != workspace:
             write_json(
                 destination / "ledger.json",
                 {"identity_sha256": plan["identity_sha256"], "records": ledger.records},

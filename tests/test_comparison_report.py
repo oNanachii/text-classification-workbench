@@ -109,7 +109,17 @@ class ComparisonReportTests(unittest.TestCase):
         ]
         report, chart = self.render(rows)
         self.assertIn("4 条验证集开发比较", report)
-        self.assertIn("具有开发集选择优势", report)
+        self.assertIn("## 冻结配置\n", report)
+        self.assertIn(
+            "后续外部数据测试原样使用以下提示词、请求参数和推荐区间，不再依据测试结果调整。",
+            report,
+        )
+        self.assertIn("[frozen-config.json]", report)
+        self.assertIn("spam 漏判由 1 变为 1 条", report)
+        self.assertIn("<SMS_TEXT_ONLY>", report)
+        self.assertIn("并非原始短信字节", report)
+        self.assertIn("后续外部数据也先对同一输入调用 `textlab.data.normalize`", report)
+        self.assertIn("验证集曾用于挑选本地模型，对本地模型略有利", report)
         self.assertIn("757 条最终测试未读取、未推断、未评估", report)
         self.assertIn("macro-F1 仅完成", report)
         self.assertIn("macro-F1 全量保守", report)
@@ -127,6 +137,11 @@ class ComparisonReportTests(unittest.TestCase):
         )
         self.assertEqual(config["deepseek"]["prompt_sha256"], "c" * 64)
         self.assertEqual(config["cascade"]["recommended_band"], [0.45, 0.55])
+        self.assertEqual(config["text_preprocessing"]["function"], "textlab.data.normalize")
+        self.assertEqual(config["text_preprocessing"]["apply_to"], ["local", "deepseek"])
+        self.assertEqual(
+            config["text_preprocessing"]["steps"], ["casefold", "collapse whitespace", "trim"]
+        )
         self.assertFalse(config["cascade"]["auto_retry"])
         self.assertTrue(config["cascade"]["band_endpoints_included"])
         self.assertIn("../artifacts/llm-comparison/escalation-frontier.svg", report)
@@ -173,6 +188,38 @@ class ComparisonReportTests(unittest.TestCase):
         self.assertIn("incomplete/ineligible", chart)
         self.assertNotIn("nan", chart.lower())
 
+    def test_execution_provenance_and_usage_schema_are_preserved(self) -> None:
+        rows = [
+            authored_row("ham", "ham", 0.2, "ham"),
+            authored_row("spam", "spam", 0.8, "spam"),
+        ]
+        plan = authored_plan(2)
+        plan["execution_commit"] = "f" * 40
+        plan["post_execution_repairs"] = [
+            {
+                "file": "textlab/comparison.py",
+                "reason": "Persistence-only ledger schema correction",
+                "executed_sha256": "1" * 64,
+                "current_sha256": "2" * 64,
+                "live_requests_repeated": 0,
+            }
+        ]
+        budget = authored_budget()
+        budget["usage"] = budget.pop("usage_totals")
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            docs = root / "docs" / "LLM_VS_LOCAL.md"
+            render_report(
+                summarize(rows), plan, budget, docs_path=docs, artifact_dir=root / "artifacts"
+            )
+            report = docs.read_text()
+        self.assertIn("真实派发代码提交：`" + "f" * 40, report)
+        self.assertIn("没有重复联网请求", report)
+        self.assertIn("原始 source_sha256", report)
+        self.assertIn("缓存命中 320", report)
+        self.assertIn('"live_requests_repeated": 0', report)
+        self.assertIn('"user_message_template"', report)
+
     def test_repeated_render_is_deterministic_and_does_not_mutate_inputs(self) -> None:
         rows = [
             authored_row("ham", "ham", 0.2, "ham"),
@@ -187,9 +234,23 @@ class ComparisonReportTests(unittest.TestCase):
             docs = root / "docs" / "LLM_VS_LOCAL.md"
             artifacts = root / "artifacts" / "llm-comparison"
             render_report(summary, plan, budget, docs_path=docs, artifact_dir=artifacts)
-            first = docs.read_bytes(), (artifacts / CHART_NAME).read_bytes()
+            first = (
+                docs.read_bytes(),
+                (artifacts / CHART_NAME).read_bytes(),
+                (artifacts / "frozen-config.json").read_bytes(),
+            )
+            config_from_report = json.loads(
+                docs.read_text().split("```json\n")[-1].split("\n```", 1)[0]
+            )
+            self.assertEqual(
+                json.loads((artifacts / "frozen-config.json").read_text()), config_from_report
+            )
             render_report(summary, plan, budget, docs_path=docs, artifact_dir=artifacts)
-            second = docs.read_bytes(), (artifacts / CHART_NAME).read_bytes()
+            second = (
+                docs.read_bytes(),
+                (artifacts / CHART_NAME).read_bytes(),
+                (artifacts / "frozen-config.json").read_bytes(),
+            )
         self.assertEqual(first, second)
         self.assertEqual((summary, plan, budget), before)
 

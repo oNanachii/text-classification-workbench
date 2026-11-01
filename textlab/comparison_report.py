@@ -158,6 +158,62 @@ def _finding(summary: Record) -> str:
     return finding + "这些是验证集上的观察差异，未检验统计显著性，也不表示独立测试或线上收益。"
 
 
+def _operating_interpretation(summary: Record) -> str:
+    local = summary["local"]
+    remote = summary["deepseek"]
+    local_metric = _metrics(local)
+    remote_metric = _metrics(remote)
+    lines = [
+        f"本地 macro-F1 {_number(local_metric['macro_f1'], 5)}，"
+        f"正常短信误杀 {local_metric['false_positive_ham_count']} 条；"
+        f"纯 DeepSeek macro-F1 {_number(remote_metric['macro_f1'], 5)}，"
+        f"spam 召回率 {_number(remote_metric['spam_recall'], 5)}，"
+        f"正常短信误杀 {remote_metric['false_positive_ham_count']} 条。"
+        f"本地 p50 {_number(local['latency_ms']['completed']['p50'], 3)} ms，"
+        f"DeepSeek p50 {_number(remote['latency_ms']['completed']['p50'], 3)} ms。"
+    ]
+    selected = next(
+        (
+            item
+            for item in summary["cascades"]
+            if item["strategy_id"] == summary["recommendation"]["strategy_id"]
+        ),
+        None,
+    )
+    if selected is not None:
+        metric = _metrics(selected)
+        before = local_metric["confusion"]
+        after = metric["confusion"]
+        change = (
+            before["false_positive"]
+            + before["false_negative"]
+            - after["false_positive"]
+            - after["false_negative"]
+        )
+        difference = f"净少 {change}" if change >= 0 else f"净增 {-change}"
+        lines.append(
+            f"所选 {_band(selected['band'])} 仅计划升级 "
+            f"{selected['planned_escalation_count']} / {summary['requested_rows']} 条"
+            f"（{_percent(selected['planned_escalation_fraction'])}）。"
+            f"同批缓存回放的 spam 漏判由 {before['false_negative']} 变为 "
+            f"{after['false_negative']} 条，正常误杀由 {before['false_positive']} 变为 "
+            f"{after['false_positive']} 条，观察到的错误总数{difference} 条。"
+        )
+    if (
+        remote_metric["macro_f1"] is not None
+        and local_metric["macro_f1"] is not None
+        and remote_metric["macro_f1"] < local_metric["macro_f1"]
+        and remote_metric["false_positive_ham_count"] > local_metric["false_positive_ham_count"]
+    ):
+        lines.append(
+            "这组结果支持保留本地默认路径，先将外部升级限定在已列出的候选区间，"
+            "再用独立数据和人工复核核对误杀、漏判与时延代价；"
+            "没有支持将全部流量改发外部服务的证据。"
+        )
+    lines.append("净差异只属于这批开发验证样本，未证明泛化收益或统计显著性。")
+    return "\n\n".join(lines)
+
+
 def _budget_section(budget: Record, plan: Record) -> str:
     rows = [
         ("已确认 token 用量按实际时段费率估算", "known_cost_yuan"),
@@ -180,7 +236,7 @@ def _budget_section(budget: Record, plan: Record) -> str:
             "\n预算账本已停止后续派发；停止标记为 "
             f"`{budget.get('stop_reason') or 'unspecified'}`。未派发样本仍保留在全量分母中。"
         )
-    totals = budget.get("usage_totals")
+    totals = budget.get("usage_totals", budget.get("usage"))
     if isinstance(totals, Mapping):
         fields = (
             ("prompt_tokens", "输入"),
@@ -238,6 +294,14 @@ def _frozen_config(summary: Record, plan: Record) -> dict[str, Any]:
             "dataset_id": plan["dataset_id"],
             "validation_sha256": plan["validation_sha256"],
         },
+        "text_preprocessing": {
+            "function": "textlab.data.normalize",
+            "steps": ["casefold", "collapse whitespace", "trim"],
+            "apply_to": ["local", "deepseek"],
+            "observed_input": "Stored normalized validation text, not original raw SMS bytes",
+            "future_external_data_rule": "Normalize the same input before both classifiers",
+            "external_request_excludes": ["truth", "sample_id"],
+        },
         "local": plan["local_model"],
         "deepseek": {
             "endpoint": deepseek["endpoint"],
@@ -245,6 +309,8 @@ def _frozen_config(summary: Record, plan: Record) -> dict[str, Any]:
             "system_prompt": deepseek["system_prompt"],
             "prompt_sha256": deepseek["prompt_sha256"],
             "payload_parameters": deepseek["payload_parameters"],
+            "user_message_template": {"role": "user", "content": "<SMS_TEXT_ONLY>"},
+            "user_message_policy": "Replace the marker with the SMS alone; no truth or sample ID",
         },
         "cascade": {
             "recommended_strategy_id": recommendation["strategy_id"],
@@ -263,6 +329,8 @@ def _frozen_config(summary: Record, plan: Record) -> dict[str, Any]:
             "jev_status": plan["jev_status"],
             "identity_sha256": plan["identity_sha256"],
             "source_sha256": plan["source_sha256"],
+            "execution_commit": plan.get("execution_commit"),
+            "post_execution_repairs": plan.get("post_execution_repairs", []),
         },
     }
 
@@ -277,6 +345,17 @@ def _provenance(budget: Record, plan: Record) -> str:
         "`deepseek-flash` 是请求时使用的服务型号别名；保存别名、提示和返回型号，"
         "不等于冻结供应商权重。即使 temperature=0，未来重新联网请求也不保证逐条完全相同。",
     ]
+    commit = plan.get("execution_commit")
+    if commit:
+        lines.append(f"\n真实派发代码提交：`{commit}`。")
+    repairs = plan.get("post_execution_repairs", [])
+    if repairs:
+        lines.append(
+            "计划保留实际派发时的原始 source_sha256，以及执行后的修复前后摘要。"
+            "执行后仅修复私有账本与公开导出的持久化结构，便于重载与离线重放；"
+            "请求、提示、模型、token 用量和逐条预测未变，没有重复联网请求。"
+            "具体文件、原因、原执行摘要与当前摘要列于下方 post_execution_repairs。"
+        )
     online = plan.get("online_model_check")
     if isinstance(online, Mapping):
         lines.append(
@@ -468,18 +547,32 @@ def render_report(
     local_threshold = summary["local"].get("threshold", 0.5)
     artifacts = " · ".join(
         f"[{name}]({_relative(artifact_dir / name, docs_path)})"
-        for name in ("plan.json", "summary.json", "budget.json", "results.jsonl", "ledger.json")
+        for name in (
+            "plan.json",
+            "summary.json",
+            "budget.json",
+            "results.jsonl",
+            "ledger.json",
+            "frozen-config.json",
+        )
     )
-    frozen = json.dumps(_frozen_config(summary, plan), ensure_ascii=False, indent=2)
+    frozen_value = _frozen_config(summary, plan)
+    frozen = json.dumps(frozen_value, ensure_ascii=False, indent=2)
+    (artifact_dir / "frozen-config.json").write_text(frozen + "\n", encoding="utf-8")
     content = [
         f"# 本地模型与 DeepSeek：{count} 条验证集开发比较",
         _finding(summary),
+        _operating_interpretation(summary),
         "## 数据与比较口径",
         f"同一批 {count} 条验证样本、同一组样本 ID 与标签，比较固定阈值 "
         f"{local_threshold:g} 的本地 MLP16、纯 DeepSeek 与按本地分数升级的级联。"
-        f"本地模型曾用这批 {count} 条验证集选择模型和检查点，具有开发集选择优势；"
+        "验证集曾用于挑选本地模型，对本地模型略有利；也用于检查点选择。"
         "级联区间也在本批数据上比较。这不是未见数据上的公平泛化排名，"
         "不以它改写既有最终测试或声称线上提分。757 条最终测试不得读取、推断或评估。",
+        "本轮两条路径都接收数据集中已保存的验证文本：先 casefold，"
+        "再折叠空白并去掉首尾空白，并非原始短信字节。"
+        "后续外部数据也先对同一输入调用 `textlab.data.normalize`，"
+        "再分别送入本地与 DeepSeek；真实标签和样本 ID 不进入外部请求。",
         "“仅完成”指标只看有效返回；“全量保守”保持所有请求样本为分母，"
         "将 unknown 与未派发视作其真实类别的漏判，不虚构预测类别。"
         "未定义的精确率/召回率显示为 —。正常短信误杀只统计真实 ham 被预测为 spam。",
@@ -506,13 +599,15 @@ def render_report(
         "macro-F1 更高、区间更窄、下界更小排序。没有严格提升时继续本地。"
         "“最佳非零候选”另外按最高观察 F1 优先，仍需要独立评估；"
         "它不是已建议在生产启用的承诺。",
-        "## 冻结配置与来源",
+        "## 冻结配置",
         _provenance(budget, plan),
         "下面冻结的是本轮数据身份、提示、服务型号别名、请求参数和升级规则。"
         "temperature=0、thinking=disabled、max_tokens=32、JSON 对象输出；"
         f"单次整段调用超时 {plan['timeout_seconds']} 秒，响应不超过 16 KiB。"
-        "真实标签和样本 ID 不进入外部请求，user 消息只有该条短信。"
+        "真实标签和样本 ID 不进入外部请求。user 模板是 "
+        '`{"role":"user","content":"<SMS_TEXT_ONLY>"}`，替换占位符时只填该条短信原文。'
         f"Jev 状态：{plan['jev_status']}。",
+        "后续外部数据测试原样使用以下提示词、请求参数和推荐区间，不再依据测试结果调整。",
         "```json\n" + frozen + "\n```",
         "## 复现与证据文件",
         artifacts,

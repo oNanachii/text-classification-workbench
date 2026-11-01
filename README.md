@@ -166,6 +166,7 @@ npm run build --prefix frontend
 
 ## 文档
 
+- [本地模型、DeepSeek 与级联的验证集开发对比](docs/LLM_VS_LOCAL.md)：783 条真实 API 对比、费用、时延与冻结配置；不作为新的最终测试成绩。
 - [v1 兼容说明](docs/LEGACY.md)：旧命令、接口与历史运行说明
 - [Jev 接口约定](docs/JEV_API_CONTRACT.md)与 [Jev 评测计划](docs/JEV_EVALUATION_PLAN.md)
 - [版本历史与详细说明](docs/HISTORY.md)：域名变更、版本说明、各版本验收记录和详细的使用边界；当前状态见[项目状态](PROJECT_STATUS.md)

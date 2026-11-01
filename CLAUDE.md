@@ -4,6 +4,14 @@
 
 涉及前端或 Jev 时，再读 `docs/process/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md` 与 `docs/JEV_EVALUATION_PLAN.md`。保持现有功能与证据边界。Claude Code 由用户本人操作。
 
+## 2026-11-01 验证集开发比较
+
+本次仓库所有者另行授权真实 DeepSeek 对比：只用 v2 的 783 条验证集，以当前线上 `mlp16 / 0.5` 为本地对照；在独立 `var/llm-comparison-20261101/` 运行，整轮费用上限人民币 1 元，先 dry-run、逐次持久化预留、无自动重试。此授权覆盖该次已经完成的请求，不扩展到任何新批次或其他付费接口。不得读取 757 条测试或 heldout/exclusion 文件，正式数据、权重、阈值和历史报告保持不变。
+
+本轮禁止运行历史 `scripts/verify_refactor.py`：它会遍历正式 `var/` 的二进制文件，不适用于本任务的留出集拒读规则。
+
+结果见 `docs/LLM_VS_LOCAL.md` 与 `artifacts/llm-comparison/`。后续默认只执行 `python -m textlab.comparison --root artifacts/llm-comparison --replay`，从已保存的逐 ID 输出重新核算，不联网、不加载真实短信。提示词、参数和推荐区间以报告“冻结配置”为准，外部数据测试原样使用，不依据该测试结果继续调参；新的真实调用需新的明确授权。
+
 ## 目标与入口
 
 - 真实任务仍是英文短信 `ham/spam` 判断与人工复核。按“判断体验、批量导入、人工审核、效果对照、模型与规则”整理信息；这些是功能职责，可以合理合并、拆分或安排导航。

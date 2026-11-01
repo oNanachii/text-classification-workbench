@@ -1,0 +1,25 @@
+{
+  "python_unit_tests": {
+    "passed": 88,
+    "failed": 0,
+    "command": ".venv/bin/python -B -m unittest discover -s tests -q"
+  },
+  "legacy_synthetic_snapshot_tests": {
+    "passed": 7,
+    "failed": 0
+  },
+  "frontend_tests": {
+    "passed": 45,
+    "failed": 0
+  },
+  "frontend_build": "passed",
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "independent_numeric_verification": "passed",
+  "replay_network_requests": 0,
+  "full_private_ledger_reload": "passed",
+  "report_regeneration": "byte-identical",
+  "executed_source_snapshot": "acf62b2701840189d33ef9f3411c7d3ab5d37623",
+  "live_requests": 783,
+  "additional_or_retried_live_requests": 0
+}

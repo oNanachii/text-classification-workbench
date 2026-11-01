@@ -1,0 +1,14 @@
+
+> text-model-workbench@1.0.0 build
+> vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 27 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.75 kB │ gzip:  0.51 kB
+dist/assets/index-BKy2TIs3.css   31.51 kB │ gzip:  6.78 kB
+dist/assets/index-DiB8t81y.js   159.50 kB │ gzip: 57.46 kB
+
+✓ built in 130ms

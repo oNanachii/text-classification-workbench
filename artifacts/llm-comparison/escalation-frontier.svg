@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="680" viewBox="0 0 1280 680" role="img" aria-labelledby="title desc">
+<title id="title">Escalation fraction, macro-F1 and API cost</title>
+<desc id="desc">Cached validation replay, not new calls per band. All-row conservative macro-F1 includes abstentions. Costs are confirmed token-priced CNY per 1000 requested rows. Gray points are ineligible incomplete observations. Y axis may be truncated.</desc>
+<rect width="1280" height="680" rx="14" fill="#ffffff"/>
+<g font-family="Arial, sans-serif" fill="#243044">
+<text x="48" y="44" font-size="24" font-weight="700">Escalation fraction vs macro-F1</text>
+<text x="48" y="73" font-size="14">Fixed validation cohort | cached replay | full-denominator conservative F1</text>
+<path d="M 92.00 102 V 566" stroke="#dce3ed"/>
+<path d="M 92 566.00 H 830" stroke="#dce3ed"/>
+<text x="92.00" y="591" text-anchor="middle" font-size="13">0%</text>
+<text x="80" y="570.00" text-anchor="end" font-size="13">0.940</text>
+<path d="M 239.60 102 V 566" stroke="#dce3ed"/>
+<path d="M 92 473.20 H 830" stroke="#dce3ed"/>
+<text x="239.60" y="591" text-anchor="middle" font-size="13">20%</text>
+<text x="80" y="477.20" text-anchor="end" font-size="13">0.952</text>
+<path d="M 387.20 102 V 566" stroke="#dce3ed"/>
+<path d="M 92 380.40 H 830" stroke="#dce3ed"/>
+<text x="387.20" y="591" text-anchor="middle" font-size="13">40%</text>
+<text x="80" y="384.40" text-anchor="end" font-size="13">0.964</text>
+<path d="M 534.80 102 V 566" stroke="#dce3ed"/>
+<path d="M 92 287.60 H 830" stroke="#dce3ed"/>
+<text x="534.80" y="591" text-anchor="middle" font-size="13">60%</text>
+<text x="80" y="291.60" text-anchor="end" font-size="13">0.976</text>
+<path d="M 682.40 102 V 566" stroke="#dce3ed"/>
+<path d="M 92 194.80 H 830" stroke="#dce3ed"/>
+<text x="682.40" y="591" text-anchor="middle" font-size="13">80%</text>
+<text x="80" y="198.80" text-anchor="end" font-size="13">0.988</text>
+<path d="M 830.00 102 V 566" stroke="#dce3ed"/>
+<path d="M 92 102.00 H 830" stroke="#dce3ed"/>
+<text x="830.00" y="591" text-anchor="middle" font-size="13">100%</text>
+<text x="80" y="106.00" text-anchor="end" font-size="13">1.000</text>
+<polyline points="92.00,300.38 93.89,300.38 96.71,300.38 102.37,271.04 119.33,214.69 830.00,393.26" fill="none" stroke="#2169b0" stroke-width="2" opacity="0.5"/>
+<text x="461.00" y="620" text-anchor="middle" font-size="16">Planned external escalation fraction</text>
+<text x="25" y="330" transform="rotate(-90 25 330)" text-anchor="middle" font-size="16">Macro-F1 (all requested rows)</text>
+<text x="878" y="114" font-size="15" font-weight="700">Rule / known CNY per 1000</text>
+<circle cx="885" cy="145" r="6" fill="#176c66"/>
+<text x="900" y="150" font-size="14">L  Local  /  0</text>
+<text x="900" y="168" font-size="12" fill="#606d80">0.00% planned; F1 0.9743</text>
+<path d="M 92.00 300.38 L 109.00 282.38" stroke="#176c66" stroke-width="0.8" opacity="0.65"/>
+<circle cx="92.00" cy="300.38" r="6" fill="#176c66" stroke="white" stroke-width="2"/>
+<text x="101.00" y="287.38" font-size="13" font-weight="700" fill="#176c66">L</text>
+<circle cx="885" cy="193" r="6" fill="#8150ac"/>
+<text x="900" y="198" font-size="14">D  DeepSeek  /  0.16183397</text>
+<text x="900" y="216" font-size="12" fill="#606d80">100.00% planned; F1 0.9623</text>
+<path d="M 830.00 393.26 L 808.00 375.26" stroke="#8150ac" stroke-width="0.8" opacity="0.65"/>
+<circle cx="830.00" cy="393.26" r="6" fill="#8150ac" stroke="white" stroke-width="2"/>
+<text x="800.00" y="380.26" font-size="13" font-weight="700" fill="#8150ac">D</text>
+<circle cx="885" cy="241" r="6" fill="#2169b0"/>
+<text x="900" y="246" font-size="14">C1  [0.45, 0.55]  /  0</text>
+<text x="900" y="264" font-size="12" fill="#606d80">0.00% planned; F1 0.9743</text>
+<path d="M 92.00 300.38 L 140.00 282.38" stroke="#2169b0" stroke-width="0.8" opacity="0.65"/>
+<circle cx="92.00" cy="300.38" r="6" fill="#2169b0" stroke="white" stroke-width="2"/>
+<text x="132.00" y="287.38" font-size="13" font-weight="700" fill="#2169b0">C1</text>
+<circle cx="885" cy="289" r="6" fill="#2169b0"/>
+<text x="900" y="294" font-size="14">C2  [0.4, 0.6]  /  0.00038186</text>
+<text x="900" y="312" font-size="12" fill="#606d80">0.26% planned; F1 0.9743</text>
+<path d="M 93.89 300.38 L 110.89 317.38" stroke="#2169b0" stroke-width="0.8" opacity="0.65"/>
+<circle cx="93.89" cy="300.38" r="6" fill="#2169b0" stroke="white" stroke-width="2"/>
+<text x="102.89" y="322.38" font-size="13" font-weight="700" fill="#2169b0">C2</text>
+<circle cx="885" cy="337" r="6" fill="#2169b0"/>
+<text x="900" y="342" font-size="14">C3  [0.3, 0.7]  /  0.00101149</text>
+<text x="900" y="360" font-size="12" fill="#606d80">0.64% planned; F1 0.9743</text>
+<path d="M 96.71 300.38 L 144.71 317.38" stroke="#2169b0" stroke-width="0.8" opacity="0.65"/>
+<circle cx="96.71" cy="300.38" r="6" fill="#2169b0" stroke="white" stroke-width="2"/>
+<text x="136.71" y="322.38" font-size="13" font-weight="700" fill="#2169b0">C3</text>
+<circle cx="885" cy="385" r="6" fill="#2169b0"/>
+<text x="900" y="390" font-size="14">C4  [0.2, 0.8]  /  0.00227331</text>
+<text x="900" y="408" font-size="12" fill="#606d80">1.40% planned; F1 0.9781</text>
+<path d="M 102.37 271.04 L 119.37 253.04" stroke="#2169b0" stroke-width="0.8" opacity="0.65"/>
+<circle cx="102.37" cy="271.04" r="6" fill="#2169b0" stroke="white" stroke-width="2"/>
+<text x="111.37" y="258.04" font-size="13" font-weight="700" fill="#2169b0">C4</text>
+<circle cx="885" cy="433" r="6" fill="#2169b0"/>
+<text x="900" y="438" font-size="14">C5  [0.1, 0.9]  /  0.00598723</text>
+<text x="900" y="456" font-size="12" fill="#606d80">3.70% planned; F1 0.9854</text>
+<path d="M 119.33 214.69 L 136.33 196.69" stroke="#2169b0" stroke-width="0.8" opacity="0.65"/>
+<circle cx="119.33" cy="214.69" r="6" fill="#2169b0" stroke="white" stroke-width="2"/>
+<text x="128.33" y="201.69" font-size="13" font-weight="700" fill="#2169b0">C5</text>
+<circle cx="885" cy="481" r="6" fill="#2169b0"/>
+<text x="900" y="486" font-size="14">C6  [0, 1]  /  0.16183397</text>
+<text x="900" y="504" font-size="12" fill="#606d80">100.00% planned; F1 0.9623</text>
+<path d="M 830.00 393.26 L 777.00 375.26" stroke="#2169b0" stroke-width="0.8" opacity="0.65"/>
+<circle cx="830.00" cy="393.26" r="6" fill="#2169b0" stroke="white" stroke-width="2"/>
+<text x="769.00" y="380.26" font-size="13" font-weight="700" fill="#2169b0">C6</text>
+<text x="48" y="653" font-size="12" fill="#606d80">Y-axis bounds are explicit and may exclude zero. Gray = incomplete/ineligible. Costs exclude unknown charges and local hardware.</text>
+</g></svg>
