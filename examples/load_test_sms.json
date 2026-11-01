@@ -1,0 +1,11 @@
+{
+  "scope": "AI-authored English SMS fixtures for local performance testing, not accuracy evidence",
+  "samples": [
+    {"id": "load-reminder", "text": "Please bring the blue notebook to our project meeting tomorrow afternoon."},
+    {"id": "load-prize", "text": "Congratulations you won a free cash prize, claim your exclusive offer now!"},
+    {"id": "load-appointment", "text": "The appointment is confirmed for Friday, call me when you arrive."},
+    {"id": "load-delivery", "text": "Your delivery is scheduled for tomorrow afternoon. Please call the office if you need to change the time or leave the package with a neighbour."},
+    {"id": "load-project", "text": "The project meeting has moved to Thursday. Please review the notes, bring your notebook, and let the team know before lunch if you cannot attend."},
+    {"id": "load-promotion", "text": "Exclusive offer for a lucky winner: claim your free prize today. Reply now to receive details about this limited cash reward and special promotion."}
+  ]
+}
