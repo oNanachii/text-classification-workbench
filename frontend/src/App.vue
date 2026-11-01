@@ -5,6 +5,7 @@ import ImportPanel from './components/ImportPanel.vue'
 import ReviewPanel from './components/ReviewPanel.vue'
 import EvidencePanel from './components/EvidencePanel.vue'
 import ModelPanel from './components/ModelPanel.vue'
+import FirstVisitGuide from './components/FirstVisitGuide.vue'
 import Icon from './components/Icon.vue'
 import { createApiClient, isAbort } from './workbenchApi.js'
 
@@ -139,6 +140,8 @@ function go(id, focus = true) {
 }
 function onHash() { activate(fromHash()) }
 function focusMain() { document.getElementById('panel-title')?.focus() || document.getElementById('main')?.focus() }
+// The guide's close button disappears with it, so keyboard focus moves on to the panel heading.
+function guideDismissed() { nextTick(() => document.getElementById('panel-title')?.focus()) }
 
 onMounted(() => {
   window.addEventListener('hashchange', onHash)
@@ -208,6 +211,7 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', onHash))
           <span class="callout-body">{{ banner.text }}</span>
           <button type="button" class="icon-btn" aria-label="关闭提示" @click="banner = null"><Icon name="x" /></button>
         </div>
+        <FirstVisitGuide :sections="SECTIONS" @navigate="go" @close="guideDismissed" />
         <div v-if="config?.public" class="public-note"><Icon name="info" /><span>公开只读演示：可以试用本地判断；Jev 需你自己的 TypeSafe Key 与逐次同意，输入不保存。导入、审核与训练只在操作者本地工作台进行。</span></div>
 
         <div v-if="status === 'loading' && !config" class="state-card" role="status" aria-live="polite">
