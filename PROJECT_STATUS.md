@@ -1,5 +1,18 @@
 # Text Model Lab 当前状态
 
+## 2026-11-01：可读性重构与评估证据标记（本地完成，部署待确认）
+
+757 条最终测试对应这个 tag 的代码：`v2.0-final-eval`（`81feb90c5f55cb5706826c73e6950952d83af45c`）。最终评估证据冻结在 tag v2.0-final-eval；之后的改动必须通过等价校验。本次已由仓库所有者授权修改五个原冻结文件，只读访问正式数据进行 783 条验证集分数与原始数据划分归属比较；不得对 757 条测试集进行推断或评估，权重、阈值与历史报告保持原样。
+
+
+当前 Python 流程已移入 `textlab/`，v1 兼容实现已移入 `legacy/`；共享下载入口为 `python -m textlab.data download`，管理 CLI 为 `python -m textlab.workbench`，服务入口为 `textlab.app_v2:create_app`。默认数据、模型与产物仍使用原仓库根目录。`运行说明.txt` 已合并进 README 与 `docs/LEGACY.md`，部署模板为 `deploy/text-workbench.service`。
+
+本轮 Ruff 0.17.3 检查与格式校验通过，所有受维护 Python 文件每行不超过 100 字符。36 项现有 Python 测试、45 项 Node 测试、7 项 v1 合成快照检查和前端生产构建通过；Jev 仅 dry-run。原 HTTP 集成脚本在 `/tmp` 的隔离源码与数据副本中通过，历史集成报告未覆盖。v1、v2 完整 OpenAPI 与 tag 中实现逐值一致，新增类型和源码 docstring 不改变响应处理与已发布 schema。
+
+`artifacts/refactor-equivalence.json`：两次既有 run 的 LR、MLP16 共四组模型分别比较同一份 783 条验证样本，最大分数差值均为 0（要求 < 1e-9）；5159 条去重样本的重新划分归属全部相同，完整 manifest 相同。正式 `var/` 内容、权限与修改时间前后相同，验证进程另有写入审计保护。757 条测试没有模型推断或再次评估；权重、阈值、原评估证据及历史报告未改。
+
+部署前已保存三条自编短信的真实线上分数，发布包已校验，准备仅更新当前 Text Model Lab 服务并保留回退。自动审批两次拒绝上传该源码包和部署脚本，要求用户明确确认具体 VPS 与文件；当前未上传、未部署、未重启，部署后三条线上对比分数尚待完成。该状态与历史已上线版本严格区分。
+
 ## 2026-11-01：README与首次说明卡已合并上线
 
 现有完整检查36项Python、45项Node及生产构建通过；前端是纯JavaScript/Vue，无独立TypeScript检查配置，另已执行JavaScript语法检查。README逐项依据冻结评测、训练流程、数据审计和部署摘要核对，区分初始3619条与候选训练3623条（4条AI烟测新增），收窄近重复和Jev效果口径，明确Key经后端单次临时传输。
@@ -67,4 +80,4 @@ v2预先分组后有3619条训练、783条验证、757条封存测试。它与v1
 
 未完成实体设备、Safari/Firefox、屏幕阅读器、用户视觉或本人关键修改验收，也未将AI完成实现记为本人掌握。证据与本地/公开模式的区别见docs/process/DELIVERY_2026-10-28.md。
 
-当前与后续均须保持五个冻结依赖evaluation.py、safe_model.py、data.py、experiments.py、dataflow.py及旧757条最终测试证据不变。新的Jev评测或中文任务遵循docs/JEV_EVALUATION_PLAN.md，需另立数据、标注、配置与授权，不以旧分数替代新证据。
+最终评估证据冻结在 tag `v2.0-final-eval`；之后的改动必须通过等价校验。原五个依赖现在位于 `textlab/` 包中，757 条最终测试不得重新推断或评估，历史权重、阈值和报告不变。新的Jev评测或中文任务遵循docs/JEV_EVALUATION_PLAN.md，需另立数据、标注、配置与授权，不以旧分数替代新证据。

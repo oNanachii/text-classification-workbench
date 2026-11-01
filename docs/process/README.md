@@ -8,3 +8,5 @@ Text Model Lab 借助 AI 编程助手开发：前端改版由作者在 Claude Co
 | [CLAUDE_START_PROMPT.txt](CLAUDE_START_PROMPT.txt) | 启动提示 | 启动前端设计任务时使用的提示词 |
 | [DELIVERY_2026-10-28.md](DELIVERY_2026-10-28.md) | 交付记录 | v2 首次部署、最终测试与浏览器验收 |
 | [INTERVIEW_WALKTHROUGH.md](INTERVIEW_WALKTHROUGH.md) | 讲解准备 | 讲解顺序、关键代码入口和本人要完成的三个修改练习 |
+
+2026-11-01 已将 Python 当前流程移入 `textlab/`、v1 兼容入口移入 `legacy/`。这里的原始文件摘要和日期属于历史证据；最终评估代码以 `v2.0-final-eval` tag 为准，后续修改须通过等价校验。当前可执行命令见根目录 README，旧运行说明见 [v1 兼容说明](../LEGACY.md)。

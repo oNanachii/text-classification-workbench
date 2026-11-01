@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-01",
+  "evidence_tag": "v2.0-final-eval",
+  "moved": {
+    "app_v2.py": "textlab/app_v2.py",
+    "dataflow.py": "textlab/dataflow.py",
+    "experiments.py": "textlab/experiments.py",
+    "evaluation.py": "textlab/evaluation.py",
+    "safe_model.py": "textlab/safe_model.py",
+    "decision.py": "textlab/decision.py",
+    "workbench.py": "textlab/workbench.py",
+    "data.py": "textlab/data.py",
+    "app.py": "legacy/app.py",
+    "baseline.py": "legacy/baseline.py",
+    "train_mlp.py": "legacy/train_mlp.py",
+    "storage.py": "legacy/storage.py",
+    "training_snapshot.py": "legacy/training_snapshot.py",
+    "verify_api.py": "legacy/verify_api.py",
+    "verify_storage.py": "legacy/verify_storage.py",
+    "verify_training_snapshot.py": "legacy/verify_training_snapshot.py"
+  },
+  "merged": {
+    "运行说明.txt": [
+      "README.md",
+      "docs/LEGACY.md"
+    ]
+  },
+  "additional_changes": [
+    "CLAUDE.md",
+    "PROJECT_STATUS.md",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "pyproject.toml",
+    ".github/workflows/ci.yml",
+    "docs/HISTORY.md",
+    "docs/JEV_API_CONTRACT.md",
+    "docs/process/CLAUDE_FRONTEND_HANDOFF.md",
+    "docs/process/CLAUDE_START_PROMPT.txt",
+    "docs/process/INTERVIEW_WALKTHROUGH.md",
+    "docs/process/README.md",
+    "scripts/design_demo.py",
+    "scripts/verify_jev.py",
+    "scripts/verify_v2_http.py",
+    "tests/test_decision.py",
+    "tests/test_workbench_v2.py"
+  ],
+  "added": [
+    "textlab/__init__.py",
+    "legacy/__init__.py",
+    "scripts/verify_refactor.py",
+    "deploy/text-workbench.service",
+    "artifacts/refactor-equivalence.json",
+    "artifacts/refactor-verification/"
+  ],
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "python_unittest": {
+      "passed": 36,
+      "failed": 0
+    },
+    "legacy_synthetic_snapshot_tests": {
+      "passed": 7,
+      "failed": 0
+    },
+    "frontend_tests": {
+      "passed": 45,
+      "failed": 0
+    },
+    "frontend_build": "passed",
+    "jev": "dry-run only; zero paid calls",
+    "http_integration": "passed in isolated /tmp source and data copies",
+    "v1_openapi_unchanged": true,
+    "historical_reports_modified": false,
+    "evidence_directory": "artifacts/refactor-verification"
+  },
+  "deployment": {
+    "status": "pending_explicit_upload_approval",
+    "site": "https://textlab.madokanun.top",
+    "service": "text-workbench",
+    "entrypoint": "textlab.app_v2:create_app",
+    "candidate_archive_sha256": "0e360e6654caef6aaa80a922da4309dac07966b840ba16a9f6a16af0b3af7660",
+    "candidate_source_count": 9,
+    "model_weights_included": false,
+    "formal_data_included": false,
+    "credentials_included": false,
+    "uploaded": false,
+    "restarted": false
+  }
+}

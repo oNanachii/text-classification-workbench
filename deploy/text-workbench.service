@@ -1,0 +1,45 @@
+[Unit]
+Description=Text Workbench public numeric inference
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=textworkbench
+Group=textworkbench
+WorkingDirectory=/opt/text-workbench/current
+EnvironmentFile=/var/lib/text-workbench/.config/text-workbench/app.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=MKL_NUM_THREADS=1
+Environment=NUMEXPR_NUM_THREADS=1
+ExecStart=/opt/text-workbench/current/.venv/bin/python -m uvicorn textlab.app_v2:create_app --factory --host 127.0.0.1 --port 3111 --workers 1 --no-access-log
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/var/lib/text-workbench
+MemoryHigh=192M
+MemoryMax=256M
+CPUQuota=50%
+TasksMax=64
+LimitNOFILE=2048
+
+[Install]
+WantedBy=multi-user.target

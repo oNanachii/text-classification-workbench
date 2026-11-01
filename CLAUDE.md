@@ -1,15 +1,15 @@
-# Text Model Lab · Claude 前端入口
+# Text Model Lab · 项目协作入口
 
-2026-10-30：本轮五分区设计已接回、修复并部署。后续先读PROJECT_STATUS.md，只执行用户新要求的增量任务；原设计交接与启动提示是历史任务依据。
+2026-11-01：Python 源码整理到 `textlab/` 与 `legacy/`。先读 `PROJECT_STATUS.md`、`README.md`，只执行用户授权的增量任务。原前端设计已接回并部署，`docs/process/` 中的设计交接与启动提示保留历史依据，不覆盖当前任务授权。
 
-请先读 `docs/process/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md`、`docs/JEV_EVALUATION_PLAN.md` 和 `PROJECT_STATUS.md`。这轮工作是把已经可运行的 Vue 工作台设计成清楚、易演示的产品；保持现有功能与证据边界。Claude Code 由用户本人操作。
+涉及前端或 Jev 时，再读 `docs/process/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md` 与 `docs/JEV_EVALUATION_PLAN.md`。保持现有功能与证据边界。Claude Code 由用户本人操作。
 
 ## 目标与入口
 
 - 真实任务仍是英文短信 `ham/spam` 判断与人工复核。按“判断体验、批量导入、人工审核、效果对照、模型与规则”整理信息；这些是功能职责，可以合理合并、拆分或安排导航。
 - 判断体验保留 `local / jev / compare` 三模式。Jev 接入是单条外部判断，不是中文留言产品、批量外发、自动审核或训练系统。
 - 真正入口：`frontend/src/main.js` → `frontend/src/App.vue`；当前判断组件为 `components/DecisionPanel.vue`，曲线使用 `components/LossChart.vue`。`PredictionPanel.vue`、`SamplesPanel.vue`、`ExperimentsPanel.vue` 和旧 `api.js` 不是当前主流程入口，不能只改这些旧面板后声称交付。
-- 当前后端是 `app_v2:create_app` 与 `decision.py`，主页面路径 `/workbench/`，同源 API `/api/*`。旧 `app.py` 是 v1 兼容入口。
+- 当前后端是 `textlab.app_v2:create_app` 与 `textlab/decision.py`，主页面路径 `/workbench/`，同源 API `/api/*`。旧 `legacy/app.py` 是 v1 兼容入口。
 - 视觉、版式、颜色、组件和动效由你根据产品目标决定。没有确认的独立模板目录；如用户提供了模板，先查明再适配，否则直接设计，不虚构模板。
 
 ## 必须保留
@@ -21,12 +21,12 @@
 5. 已选择候选与实际加载版本分开展示，切版/回退需要重启后核对。模型建议不能写成人工真值或直接进入快照。
 6. 本地分数未经校准；Jev confidence 是分布集中程度，不是正确率。双方一致也不证明正确，失败/unknown 不能显示为有效对照。
 
-## 本轮边界
+## 证据冻结与任务边界
 
-- **不可改动五个冻结文件**：`evaluation.py`、`safe_model.py`、`data.py`、`experiments.py`、`dataflow.py`。不得改历史权重、阈值、冻结清单、报告或旧实验。
-- **禁止重新执行旧757条最终测试**。不运行 `freeze-final`、`evaluate-final`、`train` 或数据准备/下载；新 Jev 质量评估是另一个有独立授权、数据和预算的任务。
-- 不读真实 `.env`、`var/`、工作数据库、原始短信、旧数据快照或留出文本，不拿它们截图。设计默认用临时目录、自编数据、假令牌与 `httpx.MockTransport`。
-- 不发付费模型请求，不运行 `scripts/verify_jev.py --live`，不部署、不重启线上服务。`scripts/verify_v2_http.py` 会复制真实 `var/`，本轮不要运行。
+- **最终评估证据冻结在 tag `v2.0-final-eval`；之后的改动必须通过等价校验。** 757 条最终测试对应这个 tag 的代码（`81feb90c5f55cb5706826c73e6950952d83af45c`）。原五个依赖的当前路径为 `textlab/evaluation.py`、`textlab/safe_model.py`、`textlab/data.py`、`textlab/experiments.py`、`textlab/dataflow.py`。不得改历史权重、阈值、冻结计划、尝试记录、报告或旧实验。
+- **禁止重新执行旧 757 条最终测试**，不得用它做推断、调参或再次评估；不运行正式工作空间的 `freeze-final`、`evaluate-final`。新 Jev 质量评估需要独立授权、数据和预算。
+- 常规软件检查用临时目录、自编数据、假令牌与 `httpx.MockTransport`，不读真实 `.env`、工作数据库、原始短信或正式快照。2026-11-01 本次重构已由仓库所有者特别授权：只读访问正式数据，在 783 条验证集比较分数，并从原始数据在临时目录重建划分、比较样本 ID 归属；不得修改 `var/` 中任何文件或权限。脚本为 `scripts/verify_refactor.py`，结果为 `artifacts/refactor-equivalence.json`。
+- 不发付费模型请求，不运行 `scripts/verify_jev.py --live`。本次任务已授权等价校验通过后部署，并用 3 条自编英文短信比较部署前后线上预测分数；这不授权新训练、改权重或改阈值。常规前端演示仍不使用会复制真实工作库的 `scripts/verify_v2_http.py`。
 - 不弱化 CSP、鉴权、TLS、限流或数据边界；不添加外部脚本、广告 SDK、追踪或密钥持久化。若预留未来推广位置，只能默认隐藏且不接触工作数据。
 
 ## 交付检查
@@ -34,12 +34,15 @@
 使用现有依赖，不为视觉工作随意重装环境：
 
 ```sh
+ruff check .
+ruff format --check .
+.venv/bin/python -B scripts/verify_refactor.py
 .venv/bin/python -m unittest discover -s tests -v
 npm test --prefix frontend
 npm run build --prefix frontend
 .venv/bin/python scripts/verify_jev.py
 ```
 
-最后一项默认 dry-run，仅准备自编请求；不能附加 `--live`。这些软件测试使用自编/临时 fixture，不运行真实757条评估。
+最后一项默认 dry-run，仅准备自编请求；不能附加 `--live`。`unittest`、前端测试与 Jev dry-run 使用自编/临时 fixture；等价校验按本次授权只读正式验证集和划分来源。两类检查都不运行真实 757 条评估。
 
-必须实际打开隔离演示的生产构建，检查桌面和窄屏、键盘、焦点、空/加载/错误/保存未知/修订冲突/清除身份状态，并核对 CSP。保留截图与检查结果，注明全部为模拟数据；构建通过不等于视觉验收完成。具体状态清单、API和冻结文件摘要见交接文档。
+涉及前端交互或视觉变化时，必须实际打开隔离演示的生产构建，检查桌面和窄屏、键盘、焦点、空/加载/错误/保存未知/修订冲突/清除身份状态，并核对 CSP。保留截图与检查结果，注明全部为模拟数据；构建通过不等于视觉验收完成。具体状态清单、API和冻结文件摘要见交接文档。

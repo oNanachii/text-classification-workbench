@@ -1,9 +1,11 @@
+2026-11-01 归档说明：下文保留原前端任务的启动提示。当前源码在textlab/与legacy/，入口为textlab.app_v2:create_app。原五个文件的最终评估证据冻结在tag v2.0-final-eval；之后的修改必须通过等价校验。原任务的不读正式数据、不改文件、不部署限制不覆盖后续仓库所有者的明确授权；现行规则见CLAUDE.md与PROJECT_STATUS.md。
+
 请在 /Users/liuqi/Documents/ChatGPT/Work/工作技能/text_classification_lab 工作，先读根目录 CLAUDE.md、docs/process/CLAUDE_FRONTEND_HANDOFF.md、docs/JEV_API_CONTRACT.md、docs/JEV_EVALUATION_PLAN.md 和 PROJECT_STATUS.md，再检查真正入口 frontend/src/App.vue。
 
 把现有Vue工作台设计成清楚、易演示的产品，组织好判断体验、批量导入、人工审核、效果对照、模型与规则。视觉、版式、组件、颜色与导航形式由你根据产品目标决定；没有已确认的模板目录，不要虚构模板。当前实际任务是英文短信ham/spam，保留local / jev / compare三模式，不宣称中文或其他任务已经支持。
 
 保留现有API、public只读、BYOK仅内存、发送前TLS检查、外发同意、无自动重试、迟到响应失效、导入预览确认、人工审核revision与历史、候选和实际加载分离。分数与Jev confidence不是正确率，模型建议不能自动成为训练标签。请认真设计空、加载、失败、保存未知、修订冲突、凭据清除和身份切换状态。
 
-不要读取真实.env、var工作库、原始短信或正式数据，不发付费请求，不部署，不重跑757条最终测试，不改CLAUDE.md列出的五个冻结文件、权重、阈值或历史报告。默认只用临时目录、自编英文数据、假令牌与fake transport演示。不要运行verify_v2_http.py或verify_jev.py --live，不增加广告SDK、追踪或弱化CSP。
+不要读取真实.env、var工作库、原始短信或正式数据，不发付费请求，不部署，不重跑757条最终测试，当时不改列出的五个冻结文件、权重、阈值或历史报告。默认只用临时目录、自编英文数据、假令牌与fake transport演示。不要运行verify_v2_http.py或verify_jev.py --live，不增加广告SDK、追踪或弱化CSP。
 
 请直接完成已授权的前端实现和合适的状态测试，使用既有依赖运行软件检查和生产构建，然后在隔离演示中实际检查桌面、窄屏与键盘流程，并留有截图/结果。最后说明改动、验证、尚未验收的部分与冻结文件核对。不要把构建或模拟模型通过写成真实模型效果、视觉验收或上线完成。

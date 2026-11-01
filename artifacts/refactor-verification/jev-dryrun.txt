@@ -1,0 +1,11 @@
+{
+  "mode": "dry-run",
+  "data_version": "jev-authored-smoke-v1",
+  "sample_id": "authored-ham-01",
+  "model_version": "jev-1.14.0",
+  "prompt_sha256": "997de19e210fa83f0763e9d7eebf71c7e6b3d930c15e3795cc9ace8f002870aa",
+  "expected_label": "ham",
+  "quality_evaluation": false,
+  "network_requests": 0,
+  "status": "request_prepared_only"
+}

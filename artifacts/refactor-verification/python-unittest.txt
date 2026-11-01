@@ -1,0 +1,43 @@
+/Users/liuqi/Documents/ChatGPT/Work/工作技能/text_classification_lab/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_disabled_service_does_not_call_or_block_local (test_decision.DecisionAPITests.test_disabled_service_does_not_call_or_block_local) ... ok
+test_explicit_consent_tls_and_same_origin_are_required (test_decision.DecisionAPITests.test_explicit_consent_tls_and_same_origin_are_required) ... ok
+test_input_and_credentials_are_not_echoed_in_any_error (test_decision.DecisionAPITests.test_input_and_credentials_are_not_echoed_in_any_error) ... ok
+test_loopback_http_is_only_allowed_in_nonpublic_development (test_decision.DecisionAPITests.test_loopback_http_is_only_allowed_in_nonpublic_development) ... ok
+test_public_byok_has_no_fallback_and_keeps_private_writes_blocked (test_decision.DecisionAPITests.test_public_byok_has_no_fallback_and_keeps_private_writes_blocked) ... ok
+test_server_key_requires_nonpublic_authenticated_explicit_selection (test_decision.DecisionAPITests.test_server_key_requires_nonpublic_authenticated_explicit_selection) ... ok
+test_invalid_labels_probabilities_versions_usage_and_confidence_rejected (test_decision.DecisionSchemaTests.test_invalid_labels_probabilities_versions_usage_and_confidence_rejected) ... ok
+test_rate_limits_and_concurrency_release (test_decision.DecisionSchemaTests.test_rate_limits_and_concurrency_release) ... ok
+test_ties_and_missing_usage_are_represented_honestly (test_decision.DecisionSchemaTests.test_ties_and_missing_usage_are_represented_honestly) ... ok
+test_compare_keeps_local_result_on_provider_failure (test_decision.DecisionTransportTests.test_compare_keeps_local_result_on_provider_failure) ... ok
+test_non_json_and_oversized_responses (test_decision.DecisionTransportTests.test_non_json_and_oversized_responses) ... ok
+test_official_fixed_contract_and_only_whitelisted_response (test_decision.DecisionTransportTests.test_official_fixed_contract_and_only_whitelisted_response) ... ok
+test_provider_errors_are_sanitized_and_never_retried (test_decision.DecisionTransportTests.test_provider_errors_are_sanitized_and_never_retried) ... ok
+test_timeout_connection_and_late_response_are_unknown (test_decision.DecisionTransportTests.test_timeout_connection_and_late_response_are_unknown) ... ok
+test_anonymous_private_reads_and_writes_rejected (test_workbench_v2.APITests.test_anonymous_private_reads_and_writes_rejected) ... ok
+test_authorized_preview_review_snapshot_and_stale_revision (test_workbench_v2.APITests.test_authorized_preview_review_snapshot_and_stale_revision) ... ok
+test_input_is_not_echoed_in_errors (test_workbench_v2.APITests.test_input_is_not_echoed_in_errors) ... ok
+test_public_mode_remains_readonly_with_operator_token (test_workbench_v2.APITests.test_public_mode_remains_readonly_with_operator_token) ... ok
+test_bad_csv_rows_never_enter_database (test_workbench_v2.DataFlowTests.test_bad_csv_rows_never_enter_database) ... ok
+test_heldout_import_rejected (test_workbench_v2.DataFlowTests.test_heldout_import_rejected) ... ok
+test_preview_does_not_write_confirm_is_idempotent (test_workbench_v2.DataFlowTests.test_preview_does_not_write_confirm_is_idempotent) ... ok
+test_preview_stale_conflicting_import_is_atomic (test_workbench_v2.DataFlowTests.test_preview_stale_conflicting_import_is_atomic) ... ok
+test_revision_conflict_and_history_atomic (test_workbench_v2.DataFlowTests.test_revision_conflict_and_history_atomic) ... ok
+test_snapshot_changes_only_after_review (test_workbench_v2.DataFlowTests.test_snapshot_changes_only_after_review) ... ok
+test_tampered_snapshot_rejected (test_workbench_v2.DataFlowTests.test_tampered_snapshot_rejected) ... ok
+test_whole_conflicting_group_rejected (test_workbench_v2.DataFlowTests.test_whole_conflicting_group_rejected) ... ok
+test_failed_training_keeps_a_failed_report_and_old_snapshot (test_workbench_v2.FailureAndFinalGuardTests.test_failed_training_keeps_a_failed_report_and_old_snapshot) ... ok
+test_final_evaluation_once_on_synthetic_fixture_only (test_workbench_v2.FailureAndFinalGuardTests.test_final_evaluation_once_on_synthetic_fixture_only) ... ok
+test_offline_worker_without_lock_is_interrupted (test_workbench_v2.FailureAndFinalGuardTests.test_offline_worker_without_lock_is_interrupted) ... ok
+test_review_approval_advances_revision_without_fake_correction (test_workbench_v2.FailureAndFinalGuardTests.test_review_approval_advances_revision_without_fake_correction) ... ok
+test_corrupt_artifact_cannot_be_selected (test_workbench_v2.NumericArtifactTests.test_corrupt_artifact_cannot_be_selected) ... ok
+test_public_export_excludes_private_data (test_workbench_v2.NumericArtifactTests.test_public_export_excludes_private_data) ... ok
+test_select_loaded_version_restart_and_rollback (test_workbench_v2.NumericArtifactTests.test_select_loaded_version_restart_and_rollback) ... ok
+test_failed_publication_does_not_leave_partial_destination (test_workbench_v2.PublicationAndDependencyTests.test_failed_publication_does_not_leave_partial_destination) ... ok
+test_final_plan_locks_metric_normalization_and_storage_dependencies (test_workbench_v2.PublicationAndDependencyTests.test_final_plan_locks_metric_normalization_and_storage_dependencies) ... ok
+test_immutable_is_not_visible_until_complete_hardlink_publication (test_workbench_v2.PublicationAndDependencyTests.test_immutable_is_not_visible_until_complete_hardlink_publication) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 2.150s
+
+OK

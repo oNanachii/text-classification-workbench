@@ -1,3 +1,28 @@
+# v1 兼容入口与历史运行说明
+
+2026-11-01 已将原根目录的 v1 代码移到 `legacy/`，数据清洗与归一化仍共享 `textlab/data.py`。以下命令均从仓库根目录执行；完整当前流程请用 [README](../README.md) 的 `textlab.workbench`，公开服务使用 `textlab.app_v2:create_app`。
+
+## 兼容命令
+
+```sh
+.venv/bin/python -m legacy.baseline --help
+.venv/bin/python -m legacy.train_mlp --help
+.venv/bin/python -m uvicorn legacy.app:app --host 127.0.0.1 --port 8765
+.venv/bin/python -m legacy.training_snapshot
+.venv/bin/python -m legacy.verify_api
+.venv/bin/python -m legacy.verify_storage
+.venv/bin/python -m legacy.verify_training_snapshot
+```
+
+这些是原 v1 学习接口及检查，仍读取原 `data/` 与 `artifacts/` 路径，不能原样作为公开可写服务部署。`legacy.verify_api` 需要另一个终端中已有 v1 本地服务。下载是当前仍使用的共享功能，推荐 `python -m textlab.data download`；`python -m legacy.baseline download` 也保留兼容。
+
+不要为了核对目录迁移重新执行旧训练、初始化工作库或旧评估。新实验需要独立数据版本和新的 run 名。本次重构的验证使用 `scripts/verify_refactor.py` 与现有临时 fixture 测试，不运行下面的历史训练流程。
+
+## 原“运行说明.txt”（历史记录，命令路径已迁移）
+
+以下保留早期 v1 学习阶段的原说明，用于理解已有实验，不代表当前 v2 状态。其“测试集未评估”“近重复尚未检查”“训练尚未消费快照”等陈述仅属于当时的 v1：v2 后来已完成分组划分、快照驱动训练及一次 757 条最终测试，详情见 [版本历史](HISTORY.md)。所有模型成绩、检查数量与软件版本仍按原记录解释，不能视为本次重新验收。
+
+```text
 文本模型工作台：数据、训练、接口、标签纠错与Vue前端
 
 数据来源：UCI SMS Spam Collection，Almeida & Hidalgo (2011)，DOI 10.24432/C5CC84。
@@ -18,21 +43,21 @@ cd ..
 修改Vue后重新构建并刷新页面。开发模式npm run dev会将API代理到8765。
 
 按顺序执行：
-.venv/bin/python baseline.py download
-.venv/bin/python baseline.py prepare
-.venv/bin/python baseline.py train
-.venv/bin/python baseline.py validate --thresholds 0.5 0.8 0.9
-.venv/bin/python baseline.py predict "Free gift" --threshold 0.5
+.venv/bin/python -m legacy.baseline download
+.venv/bin/python -m legacy.baseline prepare
+.venv/bin/python -m legacy.baseline train
+.venv/bin/python -m legacy.baseline validate --thresholds 0.5 0.8 0.9
+.venv/bin/python -m legacy.baseline predict "Free gift" --threshold 0.5
 
 CPU小模型首次训练与加载预测：
-.venv/bin/python train_mlp.py train
-.venv/bin/python train_mlp.py predict "Free gift" --threshold 0.5
+.venv/bin/python -m legacy.train_mlp train
+.venv/bin/python -m legacy.train_mlp predict "Free gift" --threshold 0.5
 
 本轮mlp_cpu_v1已经完成；同名目录拒绝覆盖。再次独立实验时指定新的--run-name，
-例如：.venv/bin/python train_mlp.py train --run-name mlp_cpu_v2
+例如：.venv/bin/python -m legacy.train_mlp train --run-name mlp_cpu_v2
 隐藏宽度通过--hidden-units调整，两层Linear共享这个宽度，默认仍为32。
 16维对照已保存为mlp_cpu_h16_v1；再次运行需另取新名称，例如：
-.venv/bin/python train_mlp.py train --run-name mlp_cpu_h16_v2 --hidden-units 16
+.venv/bin/python -m legacy.train_mlp train --run-name mlp_cpu_h16_v2 --hidden-units 16
 两种宽度的本轮比较见artifacts/width_comparison_v1.json，测试集仍未评估。
 模型为2000维TF-IDF→32隐藏单元→ReLU→1个原始得分，默认20轮、每批64条、CPU。
 小模型复用基线的向量器，使用BCEWithLogitsLoss和Adam（学习率0.001）。
@@ -41,7 +66,7 @@ CPU小模型首次训练与加载预测：
 检查点仅支持加载推断，未保存优化器状态以支持精确断点续训。
 
 本地预测接口：
-.venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8765
+.venv/bin/python -m uvicorn legacy.app:app --host 127.0.0.1 --port 8765
 启动后可查看交互文档：http://127.0.0.1:8765/docs
 GET /health检查服务状态，GET /models列出模型，POST /predict进行预测。
 请求JSON示例：{"text":"Free gift","model":"mlp16","threshold":0.5}
@@ -50,7 +75,7 @@ text须为1..2000字符的字符串，规范化后为空白会被拒绝。
 有效请求返回200和label/spam_score/threshold/model/model_version。
 校验失败返回422；错误体给出字段位置和原因，不返回预测结果。
 模型启动时加载一次；每次请求只做预处理、特征转换与推断，不更新权重。
-在另一终端运行真实HTTP检查：.venv/bin/python verify_api.py
+在另一终端运行真实HTTP检查：.venv/bin/python -m legacy.verify_api
 验证报告：artifacts/api_verification_v1.json；本轮通过26项接口检查。
 该接口仅供本机学习。
 
@@ -64,7 +89,7 @@ SQLite工作库为data/working.sqlite3；首次启动只复制3611条train样本
 同一源版本重启时保留工作库中的标签和历史；版本不匹配会停止，不自动重置。
 固定splits.json、原始数据与模型产物不随纠错变化；验证/测试样本不进入可编辑工作副本。
 若要把纠错用于后续训练，应另建数据版本并显式训练。
-隔离存储检查：.venv/bin/python verify_storage.py
+隔离存储检查：.venv/bin/python -m legacy.verify_storage
 该检查使用临时SQLite副本验证修改、重连、重启与失败回滚，不改实际工作标签。
 报告为artifacts/storage_verification_v1.json；本轮通过24项检查。
 本机HTTP读取和同标签无改动保存验证见artifacts/sample_live_api_verification_v1.json。
@@ -79,7 +104,7 @@ SQLite工作库为data/working.sqlite3；首次启动只复制3611条train样本
 
 prepare固定数据划分；如果已有划分与新数据/规则不一致，会停止，需另建数据版本。
 向量器与逻辑回归保存在同一个artifacts/baseline.joblib中。
-预测入口先执行data.normalize，再复用保存的向量器和分类器。
+预测入口先执行textlab.data.normalize，再复用保存的向量器和分类器。
 不要直接把未经规范化的文本传给bundle中的Pipeline。
 validate更改阈值不重训模型，报告写入artifacts/validation_report.json。
 报告包括样本量、混淆计数、各类别指标、macro-F1、多数类基线及真实误判解释。
@@ -89,8 +114,8 @@ validate更改阈值不重训模型，报告写入artifacts/validation_report.js
 本地数据到模型、接口、前端预测和纠错闭环已运行。最终测试集、近重复处理、外部复现部署和学习者独立验收尚未完成。
 
 2026-10-28 新增：不可变训练数据快照
-.venv/bin/python training_snapshot.py
-.venv/bin/python verify_training_snapshot.py
+.venv/bin/python -m legacy.training_snapshot
+.venv/bin/python -m legacy.verify_training_snapshot
 
 导出会以只读事务取得工作库中的原train样本与纠错历史，核对来源和连续修订链，
 保存到artifacts/training_snapshots/train-<完整内容哈希>.json。
@@ -100,3 +125,4 @@ validate更改阈值不重训模型，报告写入artifacts/validation_report.js
 本轮7项隔离边界检查通过；实际3611条训练样本、0条纠错，记录见
 artifacts/training_snapshot_verification_v1.json。
 训练脚本尚未消费快照；本功能不能表述为已经完成“纠错后重新训练”。
+```

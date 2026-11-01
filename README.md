@@ -68,27 +68,31 @@ flowchart TB
 ```sh
 python3.13 -m venv .venv
 .venv/bin/python -m pip install -r requirements-backend.txt
-.venv/bin/python baseline.py download
-.venv/bin/python workbench.py prepare
-.venv/bin/python workbench.py create-token
-.venv/bin/python workbench.py snapshot
+.venv/bin/python -m textlab.data download
+.venv/bin/python -m textlab.workbench prepare
+.venv/bin/python -m textlab.workbench create-token
+.venv/bin/python -m textlab.workbench snapshot
 ```
 
 `snapshot` 会输出 `snapshot_id`。用它和一个新的 run 名训练（已存在的 run 不会被覆盖），再选择模型并启动：
 
 ```sh
-.venv/bin/python workbench.py train --snapshot '<snapshot_id>' --run my-first-run
-.venv/bin/python workbench.py select --run my-first-run --kind lr --threshold 0.5
-.venv/bin/python workbench.py serve --port 8765
+.venv/bin/python -m textlab.workbench train --snapshot '<snapshot_id>' --run my-first-run
+.venv/bin/python -m textlab.workbench select --run my-first-run --kind lr --threshold 0.5
+npm ci --prefix frontend
+npm run build --prefix frontend
+.venv/bin/python -m textlab.workbench serve --port 8765
 ```
 
-打开 <http://127.0.0.1:8765/workbench/>。管理令牌保存在被 Git 忽略的 `var/operator-token.txt`（权限 0600），需要时私下复制到页面的密码框，令牌只留在页面内存，不要贴到聊天或 Git；`serve` 会自己读取这个文件。数据和产物默认写在被 Git 忽略的 `var/`。`app.py` 和 `baseline.py` 是 v1 的兼容入口，完整新流程用 `app_v2:create_app` 和 `workbench.py`。
+修改 Vue 后需要重新构建；开发模式 `npm run dev --prefix frontend` 会把 API 代理到 8765。
+
+打开 <http://127.0.0.1:8765/workbench/>。管理令牌保存在被 Git 忽略的 `var/operator-token.txt`（权限 0600），需要时私下复制到页面的密码框，令牌只留在页面内存，不要贴到聊天或 Git；`serve` 会自己读取这个文件。数据和产物默认写在被 Git 忽略的 `var/`。`legacy/app.py` 和 `legacy/baseline.py` 保留 v1 兼容功能，完整新流程用 `textlab.app_v2:create_app` 和 `python -m textlab.workbench`；旧版命令见 [v1 兼容说明](docs/LEGACY.md)。
 
 **导入新数据。** CSV 列为 `text,label`，标签只能是 `ham` 或 `spam`；单个文件最多 5 MiB、10000 行，单条 2000 字符，待审核池累计最多 20000 行。预览会列出空值或非法标签、重复、标签冲突和与留出集重叠的数量，确认后只导入可接受的新行。命令行流程如下（`examples/authored_sms.csv` 是 AI 编写的 4 条流程测试样本，不是真实业务数据）：
 
 ```sh
-.venv/bin/python workbench.py preview examples/authored_sms.csv --source 'AI-authored workflow examples, not field data'
-.venv/bin/python workbench.py confirm '<preview_id>'
+.venv/bin/python -m textlab.workbench preview examples/authored_sms.csv --source 'AI-authored workflow examples, not field data'
+.venv/bin/python -m textlab.workbench confirm '<preview_id>'
 ```
 
 导入的行要逐条审核（网页“人工审核”，或 `review` 子命令带上样本 ID、标签、依据和当前 revision）后才进入新快照，之后用新的 run 名重新训练。
@@ -96,20 +100,24 @@ python3.13 -m venv .venv
 **公开部署（只读推断）。** 先选定模型再导出公开包，目标目录必须不存在：
 
 ```sh
-.venv/bin/python workbench.py export-public deploy/public-bundle
+.venv/bin/python -m textlab.workbench export-public deploy/public-bundle
 ```
 
 服务器用独立虚拟环境按 `requirements-inference.txt` 安装（不含 PyTorch 和 scikit-learn），只监听本机回环，由 HTTPS 反向代理对外：
 
 ```sh
-SMS_LAB_ROOT=/绝对路径/public-bundle SMS_LAB_PUBLIC=true .venv/bin/python -m uvicorn app_v2:create_app --factory --host 127.0.0.1 --port 3111 --workers 1 --no-access-log --proxy-headers --forwarded-allow-ips=127.0.0.1
+SMS_LAB_ROOT=/绝对路径/public-bundle SMS_LAB_PUBLIC=true .venv/bin/python -m uvicorn textlab.app_v2:create_app --factory --host 127.0.0.1 --port 3111 --workers 1 --no-access-log --proxy-headers --forwarded-allow-ips=127.0.0.1
 ```
+
+systemd 配置参考 [deploy/text-workbench.service](deploy/text-workbench.service)，启动入口同样使用 `textlab.app_v2:create_app`。
 
 公开包只有选定模型的数值权重、词表、来源报告和服务清单，不含数据库、快照、导入的 CSV 或留出集原文。`SMS_LAB_PUBLIC=true` 时，即使带着管理令牌也不能导入、审核、生成快照或切换模型。线上用 `SMS_LAB_JEV_ENABLED=true` 开放 Jev 对照、`SMS_LAB_JEV_SERVER_KEY_ENABLED=false` 关闭服务器 Key，访客只能用自己的 Key。
 
 **运行测试**（只用自编临时数据和模拟的外部接口；Jev 脚本默认不联网，不要加 `--live`）：
 
 ```sh
+ruff check .
+ruff format --check .
 .venv/bin/python -m unittest discover -s tests -v
 npm test --prefix frontend
 npm run build --prefix frontend
@@ -120,14 +128,49 @@ npm run build --prefix frontend
 
 [CI 工作流](.github/workflows/ci.yml)在每次推送和 Pull Request 时运行 Python 单元测试、前端测试及构建，也支持手动触发。测试只使用临时自编数据和模拟接口，不依赖 `var/`，不调用付费接口，也不运行旧的 757 条最终测试。CPU 版 PyTorch 仅用于既有失败路径测试的导入依赖，拟合阶段已被模拟为失败。
 
-`ruff check` 按 [pyproject.toml](pyproject.toml) 报告代码问题，本阶段历史违规不阻断 CI；配置错误、测试或构建失败仍会阻断。徽章展示 GitHub 实际运行结果，不把本地通过视为云端通过。
+`ruff check .` 与 `ruff format --check .` 按 [pyproject.toml](pyproject.toml) 检查 Python 代码，违规会阻断 CI。徽章展示 GitHub 实际运行结果，不把本地通过视为云端通过。
+
+## 源码与评估证据
+
+当前流程集中在 `textlab/`，v1 兼容代码集中在 `legacy/`；从仓库根目录用 `python -m` 运行模块。`data/` 是数据目录，`textlab/data.py` 是共享的下载、清洗与归一化模块，两者用途不同。
+
+```text
+重构前                         重构后
+./app_v2.py 等当前模块         textlab/
+                              ├── app_v2.py       # FastAPI 与静态页面
+                              ├── workbench.py    # 私有管理 CLI
+                              ├── data.py         # 下载、清洗、归一化
+                              ├── dataflow.py     # 分组划分、导入、审核、快照
+                              ├── experiments.py  # 训练、注册、发布包
+                              ├── safe_model.py   # 纯数值推断
+                              ├── evaluation.py   # 一次最终评估的保护机制
+                              └── decision.py     # 本地 / Jev 单条判断
+./app.py、baseline.py 等       legacy/
+                              ├── app.py、baseline.py、train_mlp.py
+                              ├── storage.py、training_snapshot.py
+                              └── verify_api.py、verify_storage.py、verify_training_snapshot.py
+./运行说明.txt                docs/LEGACY.md 与本 README
+./scripts/、tests/、frontend/  保留原位置
+./data/、var/、artifacts/      数据、模型与历史报告保留原位置
+```
+
+757 条最终测试对应 `v2.0-final-eval` tag 的代码（`81feb90`）。最终评估证据冻结在这个 tag；之后的改动必须通过等价校验，不能重新执行这 757 条测试或据其调参。权重、阈值、冻结计划、尝试记录与历史报告仍保持不变。
+
+本次重构的校验脚本从 tag 读取旧代码，与当前代码在同一份 783 条验证样本上逐条比较所有既有本地模型分数，并用同一原始数据在临时目录重新划分、比较每条样本 ID 的归属；只读访问正式数据，不对测试集推断或评估：
+
+```sh
+.venv/bin/python -B scripts/verify_refactor.py
+```
+
+结果记录在 [artifacts/refactor-equivalence.json](artifacts/refactor-equivalence.json)，包括分数最大差值、划分一致性与数据完整性检查。该结果证明这次代码整理的等价性，不是新一轮模型质量评测。
 
 ## 文档
 
+- [v1 兼容说明](docs/LEGACY.md)：旧命令、接口与历史运行说明
 - [Jev 接口约定](docs/JEV_API_CONTRACT.md)与 [Jev 评测计划](docs/JEV_EVALUATION_PLAN.md)
 - [版本历史与详细说明](docs/HISTORY.md)：域名变更、版本说明、各版本验收记录和详细的使用边界；当前状态见[项目状态](PROJECT_STATUS.md)
 - [AI 协作过程文件](docs/process/)：交接文档、启动提示和交付记录。本项目借助 AI 编程助手开发。
 
 ## 数据来源与许可
 
-短信数据来自 Almeida 与 Hidalgo 的 [UCI SMS Spam Collection](https://archive.ics.uci.edu/dataset/228/sms+spam+collection)（DOI `10.24432/C5CC84`，UCI 页面列出的许可为 CC BY 4.0）。仓库在 `data/` 保留原 readme 和来源哈希，原始数据用 `baseline.py download` 下载。数据许可与源码许可分开，见[第三方说明](THIRD_PARTY_NOTICES.md)；源码使用 MIT 许可。
+短信数据来自 Almeida 与 Hidalgo 的 [UCI SMS Spam Collection](https://archive.ics.uci.edu/dataset/228/sms+spam+collection)（DOI `10.24432/C5CC84`，UCI 页面列出的许可为 CC BY 4.0）。仓库在 `data/` 保留原 readme 和来源哈希，原始数据用 `python -m textlab.data download` 下载。数据许可与源码许可分开，见[第三方说明](THIRD_PARTY_NOTICES.md)；源码使用 MIT 许可。

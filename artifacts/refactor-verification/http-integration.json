@@ -1,0 +1,30 @@
+{
+  "scope": "actual localhost HTTP, disposable v2 database and artifact copies, real numerical models",
+  "original_data_modified": false,
+  "test_set_evaluated": false,
+  "model_api_called": false,
+  "import_review_snapshot": {
+    "accepted": 1,
+    "confirmation_idempotent": true,
+    "pending_excluded": true,
+    "same_label_review_not_fake_correction": true,
+    "snapshot_changes_after_review": true
+  },
+  "selection_restart_rollback": {
+    "selected_does_not_fake_loaded": true,
+    "new_process_loads_candidate": true,
+    "rollback_restores_previous_run": true
+  },
+  "public": {
+    "readonly_even_with_token": true,
+    "private_rows_not_exported": true,
+    "selected_run_only": true,
+    "frontend_http": 200,
+    "actual_inference": true,
+    "scope": "20 warmed localhost requests, not capacity or public latency benchmark",
+    "median_ms": 0.883,
+    "max_ms": 1.348,
+    "observed_process_rss_kib": 62416
+  },
+  "status": "passed"
+}

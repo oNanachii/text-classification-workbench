@@ -2,6 +2,8 @@
 
 代码由AI辅助实现。下面用于本人实际讲解和修改验收，生成文档不代表已掌握，也不要求手写全部系统。
 
+2026-11-01 路径已更新：当前流程在 `textlab/`，v1 兼容入口在 `legacy/`。旧最终评估代码由 `v2.0-final-eval` tag 保留，后续源码改动需通过等价校验。
+
 ## 一次运行的讲解顺序
 
 先用一条英文短信预测，指出返回的模型、run和snapshot版本。然后进入本地审核页，说明原UCI标签只是源数据标签，不是逐条人工验收；新增CSV需要预览、确认和复核才进入训练快照。
@@ -14,16 +16,16 @@
 
 | 问题 | 入口 |
 | --- | --- |
-| 数据如何划分，近重复规则覆盖到什么程度 | dataflow.py中的template_key、char_grams、DataStore.prepare |
+| 数据如何划分，近重复规则覆盖到什么程度 | textlab/dataflow.py中的template_key、char_grams、DataStore.prepare |
 | 预览为何不直接入训练，重复确认如何处理 | DataStore.preview_csv、confirm_import、review |
 | 并发修改与事务历史 | DataStore.review的expected_revision及transaction |
-| 训练究竟用了哪批标签 | DataStore.snapshot、load_snapshot与experiments.train的snapshot_id |
-| 向量器为何不能看验证或测试文本拟合 | experiments.train中fit_transform仅用于快照，transform用于固定验证 |
-| 模型怎样在无Torch的服务里推断 | safe_model.py中的SafeModel，JSON词表与allow_pickle=False的NPZ权重 |
-| 候选为何不会立即改变当前预测 | experiments.select/rollback及app_v2.py启动时load_selected |
-| 最终测试为何只能执行一次 | evaluation.py冻结依赖、版本和候选，evaluate_final在推断前O_EXCL保留尝试记录 |
+| 训练究竟用了哪批标签 | DataStore.snapshot、load_snapshot与textlab.experiments.train的snapshot_id |
+| 向量器为何不能看验证或测试文本拟合 | textlab.experiments.train中fit_transform仅用于快照，transform用于固定验证 |
+| 模型怎样在无Torch的服务里推断 | textlab/safe_model.py中的SafeModel，JSON词表与allow_pickle=False的NPZ权重 |
+| 候选为何不会立即改变当前预测 | textlab.experiments.select/rollback及textlab/app_v2.py启动时load_selected |
+| 最终测试为何只能执行一次 | textlab/evaluation.py冻结依赖、版本和候选，evaluate_final在推断前O_EXCL保留尝试记录 |
 | 迟到的预览响应为何不能导入旧内容 | frontend/src/importGuard.js及App.vue的importChanged与guardedPreview |
-| 公网如何避免匿名修改 | app_v2.py的writable及SMS_LAB_PUBLIC模式；公开包没有工作库 |
+| 公网如何避免匿名修改 | textlab/app_v2.py的writable及SMS_LAB_PUBLIC模式；公开包没有工作库 |
 
 ## 本人需要完成的三个练习
 

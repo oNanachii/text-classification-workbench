@@ -1,0 +1,19 @@
+test_corrupted_existing_destination_is_preserved (legacy.verify_training_snapshot.SnapshotChecks.test_corrupted_existing_destination_is_preserved)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+test_failed_history_insert_rolls_back_label_and_snapshot_stays_identical (legacy.verify_training_snapshot.SnapshotChecks.test_failed_history_insert_rolls_back_label_and_snapshot_stays_identical)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+test_identical_export_reuses_version_and_correction_creates_new_version (legacy.verify_training_snapshot.SnapshotChecks.test_identical_export_reuses_version_and_correction_creates_new_version)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+test_missing_database_is_not_created (legacy.verify_training_snapshot.SnapshotChecks.test_missing_database_is_not_created)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+test_missing_history_and_mismatched_database_provenance_are_rejected (legacy.verify_training_snapshot.SnapshotChecks.test_missing_history_and_mismatched_database_provenance_are_rejected)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+test_non_training_row_and_changed_source_text_are_rejected (legacy.verify_training_snapshot.SnapshotChecks.test_non_training_row_and_changed_source_text_are_rejected)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+test_publish_failure_leaves_no_partial_snapshot (legacy.verify_training_snapshot.SnapshotChecks.test_publish_failure_leaves_no_partial_snapshot)
+Verify an isolated boundary with synthetic fixtures to preserve v1 behavior. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.024s
+
+OK

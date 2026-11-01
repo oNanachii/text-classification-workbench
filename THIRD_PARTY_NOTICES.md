@@ -4,3 +4,5 @@
 - Vue、Vite及其构建依赖通过npm官方包安装，遵守各包自身许可；锁文件保留精确依赖。本项目不包含外部CDN脚本、字体或图片。
 - Python/FastAPI、NumPy、scikit-learn、PyTorch及其依赖分别遵守各项目许可。公开数值推断无需Torch或pickle加载。
 - examples/authored_sms.csv是AI辅助编写的烟测输入，不属于UCI原数据，也不代表外部用户标注或质量收益。
+
+源码目录整理后，数据归一化与下载入口为 `textlab/data.py`（`python -m textlab.data download`）；`data/` 中的来源文件、摘要和原 readme 仍在原位置，许可与归属不因目录调整改变。

@@ -1,5 +1,7 @@
 # Text Model Lab 前端设计交接
 
+> 2026-11-01 迁移说明：本文保留 2026-10-29 前端任务及其原始摘要。当前后端入口为 `textlab.app_v2:create_app`，当前模块位于 `textlab/`，v1 入口位于 `legacy/`。最终评估证据冻结在 tag `v2.0-final-eval`；之后的改动必须通过等价校验。本文当时的数据访问、文件冻结与部署限制仅属于原前端任务，不覆盖仓库所有者后续明确授权；现行规则见根目录 `CLAUDE.md` 和 `PROJECT_STATUS.md`。
+
 2026-10-29。本文是用户操作 Claude Code 的实现入口，不是新视觉设计或部署已完成的声明。已有 v2 工作台和 Jev 单条判断接口可供设计接入；本轮以源码与模拟检查为依据，没有发起真实付费 Jev 请求。
 
 ## 产品应该让人完成什么
@@ -33,10 +35,10 @@
 | `frontend/src/components/LossChart.vue` | 当前使用的真实历史曲线组件 |
 | `frontend/src/style.css` | 当前样式；可整体整理但保留可访问状态 |
 | `frontend/src/components/PredictionPanel.vue` 等旧三个面板、`frontend/src/api.js` | 历史组件，不是当前主流程；不能仅改旧文件 |
-| `app_v2.py` | 当前API、权限、CSP、静态生产构建挂载 |
-| `decision.py` | 固定TypeSafe端点、Jev契约校验、TLS/权限/额度、临时判断结果 |
+| `textlab/app_v2.py` | 当前API、权限、CSP、静态生产构建挂载 |
+| `textlab/decision.py` | 固定TypeSafe端点、Jev契约校验、TLS/权限/额度、临时判断结果 |
 
-Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使用同源 `/api/*`。不要把v1 `app.py` 与旧接口当作新页面的后端。
+Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使用同源 `/api/*`。不要把v1 `legacy/app.py` 与旧接口当作新页面的后端。
 
 ## API与状态保留
 
@@ -80,9 +82,9 @@ Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使
 
 ## 不可变范围与隐私
 
-五个冻结依赖必须保持字节不变：
+原前端交接当时要求五个依赖保持字节不变，原路径和摘要如下，供 tag 历史核查；当前对应模块均在 `textlab/`，之后的改动按现行等价校验规则执行：
 
-| 文件 | 交接时SHA-256 |
+| tag 内原路径 | 交接时SHA-256 |
 | --- | --- |
 | `evaluation.py` | `394ce1081ecc772c3213e3144c8ee15f09ccab80612bd7a19b417a6967cfa4ef` |
 | `safe_model.py` | `babee416eab7a9c8c14c1545bf7964e7f9e8f42f8d4cfe4fc0640c605010abec` |
@@ -90,7 +92,7 @@ Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使
 | `experiments.py` | `91f61ed718b6e4315bf659528f8f83544721b017ea7205efc95a36b45fbee65c` |
 | `dataflow.py` | `6e0849d45c29ed0dfa472e60d972d7b8ab9b908b96b2d869d0c7b47aec3e3dcf` |
 
-不读取真实`.env`、`var/`、工作库、历史CSV、原始短信、正式快照或留出文本；不改权重、阈值、冻结计划、尝试记录和历史报告。禁止重跑757条最终测试。不要运行`train`、`prepare`、`download`、`freeze-final`、`evaluate-final`或`verify_jev.py --live`。不要部署或重启线上服务。
+当时前端任务的限制：不读取真实`.env`、`var/`、工作库、历史CSV、原始短信、正式快照或留出文本；不改权重、阈值、冻结计划、尝试记录和历史报告。禁止重跑757条最终测试。不要运行`train`、`prepare`、`download`、`freeze-final`、`evaluate-final`或`verify_jev.py --live`。不要部署或重启线上服务。
 
 ## 默认设计演示与验收
 
@@ -105,7 +107,9 @@ Vite的生产base是 `/workbench/`，后端挂载 `frontend/dist`。前端API使
 npm test --prefix frontend
 npm run build --prefix frontend
 .venv/bin/python scripts/verify_jev.py
-shasum -a 256 evaluation.py safe_model.py data.py experiments.py dataflow.py
+git rev-parse v2.0-final-eval
+ruff check .
+ruff format --check .
 ```
 
 优先使用已安装环境，不默认重装依赖。`verify_jev.py`最后不带`--live`，只输出自编样例的请求准备摘要，零网络调用。现有软件测试里的最终评估保护用例使用两条合成fixture，不是旧757条测试。

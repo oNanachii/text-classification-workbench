@@ -1,0 +1,218 @@
+{
+  "status": "passed",
+  "evidence_tag": "v2.0-final-eval",
+  "evidence_commit": "81feb90c5f55cb5706826c73e6950952d83af45c",
+  "verification_script": "scripts/verify_refactor.py",
+  "current_source_sha256": {
+    "legacy/__init__.py": "672f7de237cf60f544eec2f0a65d088b56312c38af930f04eae9ce4d3cf89810",
+    "legacy/app.py": "d5868063c275b94182985d33c5e06aa9a968b25518e6c3773820f83ca5fc6985",
+    "legacy/baseline.py": "bafa044568db882bd9f044b84c821f65364c9ea0f0d54f77344ea3fc71ffed3f",
+    "legacy/storage.py": "10e078e848e5d02cd63ffc515f02485ae5cad565f4726a5cf65911eb18e60198",
+    "legacy/train_mlp.py": "f8aae7d8f2f2b26e1b684c19f614e9951086b7913828ea040154739d3af15a17",
+    "legacy/training_snapshot.py": "377a1da667303f7399f87843e75d4ae3958d2dc4f05ae9be86933f7d37cbfd47",
+    "legacy/verify_api.py": "6adf2a5107e2f480874be777801429bac7b9978bec09e62f1cee4fe0ee838b48",
+    "legacy/verify_storage.py": "5e695971ea95ddc60b3c46fbb3dabed0ff5e0c58154caf9f18c6f9cfb33bac9d",
+    "legacy/verify_training_snapshot.py": "c64451d3219afe75c868fc43fd237b90da2854d5036bebbd261dee7068e12ede",
+    "scripts/verify_refactor.py": "4b891139ec9d21ef13e1327e88a0abc49314133e07f18bc81fa6032f84b02e8a",
+    "textlab/__init__.py": "2f109eb5a65bba5fa4f86cbf60b45d10bf431a46cd9d18bf1fd08dba7a602b28",
+    "textlab/app_v2.py": "288337004935e2ab86903ca39de69c67bd1a438c3c156473ffc6c28dbb871130",
+    "textlab/data.py": "12a848fffb0e6707319b50a1c59800ce6d9112303ced1101c09fa2a9a4371a39",
+    "textlab/dataflow.py": "083d6c9a572d4dfa29a32d839a3a44a6a98e3ffa4ce09c9a094a4b85fdc62f62",
+    "textlab/decision.py": "42d493e488cb74f6ace0e95a08be54f8b2797b870d322b57817b531c3490105c",
+    "textlab/evaluation.py": "8efcc5f7e8f34bc1aad20587ca3117796da849ef126e649e080e61fa5cc574d9",
+    "textlab/experiments.py": "a926476d5bf0b6d08e22124776a2705eb40f1b4aac19753c23c1ac3acf19dbfc",
+    "textlab/safe_model.py": "be2f29b2ba97c5c6e8b5b65b0ca1a9bc4ab41dcca26c0529ffcc599e3288a32a",
+    "textlab/workbench.py": "e5fe7d717338fc86ccb7f93123edd7fb8a735afce2f33bd9cbff4a72f45479c6"
+  },
+  "runtime": {
+    "python": [
+      3,
+      13,
+      3
+    ],
+    "numpy": "2.5.4"
+  },
+  "final_plan_dependencies_match_tag": true,
+  "tagged_dependency_sha256": {
+    "evaluation.py": "394ce1081ecc772c3213e3144c8ee15f09ccab80612bd7a19b417a6967cfa4ef",
+    "safe_model.py": "babee416eab7a9c8c14c1545bf7964e7f9e8f42f8d4cfe4fc0640c605010abec",
+    "data.py": "ba44ca677ae7b287faf8366057465f982e1ca8b0f721ddbc66c7b86fd35ac2a1",
+    "experiments.py": "91f61ed718b6e4315bf659528f8f83544721b017ea7205efc95a36b45fbee65c",
+    "dataflow.py": "6e0849d45c29ed0dfa472e60d972d7b8ab9b908b96b2d869d0c7b47aec3e3dcf"
+  },
+  "openapi": {
+    "unchanged": true,
+    "sha256": "4a3842980de1965a061257ade9e7b472f083ac2471d7ce4c960ca7a535471c1d"
+  },
+  "tolerance_strictly_less_than": 1e-09,
+  "validation": {
+    "v2-base-seed42/lr": {
+      "rows_compared": 783,
+      "max_absolute_difference": 0.0,
+      "before_scores_sha256": "1b04ae9a8ded738bfb698f0f7863e8edbb2bcc9a14a31c0cc161b3985134f56c",
+      "after_scores_sha256": "1b04ae9a8ded738bfb698f0f7863e8edbb2bcc9a14a31c0cc161b3985134f56c"
+    },
+    "v2-base-seed42/mlp16": {
+      "rows_compared": 783,
+      "max_absolute_difference": 0.0,
+      "before_scores_sha256": "af58ac7d9823ff0d5ea21373d5298e6e0c87824dda23b0a583c049f1c9a1fb9f",
+      "after_scores_sha256": "af58ac7d9823ff0d5ea21373d5298e6e0c87824dda23b0a583c049f1c9a1fb9f"
+    },
+    "v2-import-reviewed-seed42/lr": {
+      "rows_compared": 783,
+      "max_absolute_difference": 0.0,
+      "before_scores_sha256": "a4cd58ba46e0bf25488acb4345b0843709d236b7bcebfc1a772539bfa23d3951",
+      "after_scores_sha256": "a4cd58ba46e0bf25488acb4345b0843709d236b7bcebfc1a772539bfa23d3951"
+    },
+    "v2-import-reviewed-seed42/mlp16": {
+      "rows_compared": 783,
+      "max_absolute_difference": 0.0,
+      "before_scores_sha256": "71274b5e36156bad0ff92f72f85c9e2925c19bd39a2e66287f7718bf9dc3dd5f",
+      "after_scores_sha256": "71274b5e36156bad0ff92f72f85c9e2925c19bd39a2e66287f7718bf9dc3dd5f"
+    }
+  },
+  "validation_sha256": "5555522e81fcef991033bc756376c1d7167d5c0f0340f7194164fba243b2ef3c",
+  "split": {
+    "sample_count": 5159,
+    "changed_assignments": 0,
+    "membership_sha256": "b9cc344f9a5457c2134bab7f5375f598dae703e80b7eda60a5f094d228d62d96",
+    "raw_sha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+    "manifest": {
+      "schema_version": 2,
+      "source": "UCI SMS Spam Collection",
+      "raw_sha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+      "normalization": "casefold + collapse whitespace + trim",
+      "rule": "predeclared template union + blocked character-5gram Jaccard>=0.85; deterministic group SHA256 seed42 70/15/15",
+      "near_duplicate_scope": "conservative blocked lexical/template audit, not all semantic paraphrases",
+      "counts": {
+        "train": {
+          "spam": 462,
+          "ham": 3157
+        },
+        "validation": {
+          "ham": 706,
+          "spam": 77
+        },
+        "test": {
+          "spam": 103,
+          "ham": 654
+        }
+      },
+      "raw_rows": 5574,
+      "unique_rows": 5159,
+      "duplicates_removed": 415,
+      "conflicts_quarantined": 0,
+      "mixed_group_rows_quarantined": 0,
+      "near_candidate_pairs_linked": 244,
+      "groups": 5004,
+      "test_model_evaluated": false,
+      "dataset_id": "sms-v2-c2206636983886cfee78"
+    }
+  },
+  "formal_data": {
+    "access": "read-only; mutation audit guard enabled in workers",
+    "contents_and_metadata_unchanged": true,
+    "inventory_sha256": "ef2acf670fb5efea4338699a07d6e267ccc2543ccbf5d0b6c406c1752d11eec9"
+  },
+  "heldout_test": {
+    "model_inference_rows": 0,
+    "evaluated": false,
+    "usage": "Raw repartition and ID membership only; no model inputs"
+  },
+  "live": {
+    "status": "pending_explicit_upload_approval",
+    "before": {
+      "url": "https://textlab.madokanun.top",
+      "texts": [
+        "Please bring the blue notebook to our project meeting tomorrow afternoon.",
+        "Congratulations you won a free cash prize, claim your exclusive offer now!",
+        "The appointment is confirmed for Friday, call me when you arrive."
+      ],
+      "health": {
+        "status": "ok",
+        "model_ready": true,
+        "public": true,
+        "loaded": {
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "kind": "mlp16",
+          "run_id": "v2-import-reviewed-seed42",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "threshold": 0.5,
+          "vocabulary_sha256": "3baedee047a4acfc70d9529e976e503b8d1659d3c98568f153319694979eb4da",
+          "weights_sha256": "ca92490975bb2e0c91330a5c6fbc186f2d6e1217eab1cb06cc732c3d458d61e8"
+        },
+        "runtime": "numpy numeric format; no torch or pickle inference"
+      },
+      "predictions": [
+        {
+          "label": "ham",
+          "spam_score": 0.011803210712969303,
+          "threshold": 0.5,
+          "model_version": "v2-import-reviewed-seed42",
+          "model": "mlp16",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "scope": "English SMS example; no live-traffic accuracy guarantee"
+        },
+        {
+          "label": "spam",
+          "spam_score": 0.9946208000183105,
+          "threshold": 0.5,
+          "model_version": "v2-import-reviewed-seed42",
+          "model": "mlp16",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "scope": "English SMS example; no live-traffic accuracy guarantee"
+        },
+        {
+          "label": "ham",
+          "spam_score": 0.013418788090348244,
+          "threshold": 0.5,
+          "model_version": "v2-import-reviewed-seed42",
+          "model": "mlp16",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "scope": "English SMS example; no live-traffic accuracy guarantee"
+        }
+      ],
+      "external_model_called": false
+    },
+    "after": null,
+    "reason": "Automatic approval rejected transferring the code archive and deployment script to the existing VPS twice; no upload or restart performed."
+  },
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "python_unittest": {
+      "passed": 36,
+      "failed": 0
+    },
+    "legacy_synthetic_snapshot_tests": {
+      "passed": 7,
+      "failed": 0
+    },
+    "frontend_tests": {
+      "passed": 45,
+      "failed": 0
+    },
+    "frontend_build": "passed",
+    "jev": "dry-run only; zero paid calls",
+    "http_integration": "passed in isolated /tmp source and data copies",
+    "v1_openapi_unchanged": true,
+    "historical_reports_modified": false,
+    "evidence_directory": "artifacts/refactor-verification"
+  },
+  "deployment": {
+    "status": "pending_explicit_upload_approval",
+    "site": "https://textlab.madokanun.top",
+    "service": "text-workbench",
+    "entrypoint": "textlab.app_v2:create_app",
+    "candidate_archive_sha256": "0e360e6654caef6aaa80a922da4309dac07966b840ba16a9f6a16af0b3af7660",
+    "candidate_source_count": 9,
+    "model_weights_included": false,
+    "formal_data_included": false,
+    "credentials_included": false,
+    "uploaded": false,
+    "restarted": false
+  }
+}
