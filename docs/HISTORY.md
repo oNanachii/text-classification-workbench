@@ -77,5 +77,5 @@ README 中列出的软件检查使用自编临时数据、数值权重或明确�
 ## 其他资料
 
 - [首版完成范围](../PROJECT_SCOPE.md)（2026-10-28 确定的范围与停止标准）
-- [讲解与关键修改练习](INTERVIEW_WALKTHROUGH.md)
-- 交接文档、启动提示和交付记录：[docs/process/](process/)
+- [讲解与关键修改练习](process/INTERVIEW_WALKTHROUGH.md)
+- AI 协作过程文件（交接文档、启动提示、交付记录和上面的讲解练习）：[docs/process/](process/)
