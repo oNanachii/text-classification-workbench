@@ -18,3 +18,7 @@ artifacts/mlp_*/vectorizer.joblib
 
 # Keep content-bearing training snapshots private; publish only numeric inference and summaries.
 artifacts/training_snapshots/
+
+# External SMS contents remain private; publish attribution instructions only.
+data/external/*
+!data/external/README.md

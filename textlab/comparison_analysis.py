@@ -353,8 +353,35 @@ def _best_observed_key(strategy: Record) -> tuple[float, Decimal, float, float]:
     return negative_quality, cost, width, lower
 
 
-def summarize(rows: Sequence[Record]) -> JsonObject:
-    """Analyze paired predictions and cached cascades without reading data or calling any model."""
+def _validated_bands(bands: Sequence[Sequence[float]]) -> tuple[tuple[float, float], ...]:
+    if not isinstance(bands, Sequence) or isinstance(bands, (str, bytes)) or not bands:
+        raise ValueError("Cascade bands must be a nonempty sequence of endpoint pairs")
+    result = []
+    for band in bands:
+        if (
+            not isinstance(band, Sequence)
+            or isinstance(band, (str, bytes))
+            or len(band) != 2
+            or any(
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+                for value in band
+            )
+        ):
+            raise ValueError("Each cascade band must contain two finite numeric endpoints")
+        low, high = float(band[0]), float(band[1])
+        if not 0 <= low <= high <= 1 or (low, high) in result:
+            raise ValueError("Cascade bands must be distinct and within ordered bounds [0, 1]")
+        result.append((low, high))
+    return tuple(result)
+
+
+def summarize(
+    rows: Sequence[Record], *, bands: Sequence[Sequence[float]] = CASCADE_BANDS
+) -> JsonObject:
+    """Analyze only the supplied bands so a frozen external test cannot expand its search."""
+    checked_bands = _validated_bands(bands)
     _validate(rows)
     truths = [row["truth"] for row in rows]
     local_outputs = [row["local"] for row in rows]
@@ -364,7 +391,7 @@ def summarize(rows: Sequence[Record]) -> JsonObject:
     local["threshold"] = LOCAL_THRESHOLD
     remote = _summary(truths, remote_outputs, remote_outputs)
     remote["strategy_id"] = "deepseek"
-    cascades = [_cascade(rows, low, high) for low, high in CASCADE_BANDS]
+    cascades = [_cascade(rows, low, high) for low, high in checked_bands]
     eligible = [strategy for strategy in cascades if strategy["eligible_for_recommendation"]]
     baseline_quality = _quality(local)
     improved = [

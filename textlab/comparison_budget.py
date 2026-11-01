@@ -1,4 +1,4 @@
-"""Keep a durable CNY cap for validation-only calls without storing SMS or credentials."""
+"""Keep an explicitly authorized CNY cap without storing SMS or credentials."""
 
 from __future__ import annotations
 
@@ -21,6 +21,7 @@ PEAK_RATES = {"cache_hit": "0.04", "cache_miss": "2", "output": "8"}
 OFFPEAK_RATES = {"cache_hit": "0.02", "cache_miss": "1", "output": "4"}
 MILLION = Decimal(1_000_000)
 MAX_CAP_YUAN = Decimal("1")
+MAX_AUTHORIZED_CAP_YUAN = Decimal("4")
 FRAMING_TOKEN_ALLOWANCE = 4096
 MAX_REQUESTED_OUTPUT_TOKENS = 4096
 HEURISTIC_BYTES_PER_TOKEN = 4
@@ -169,12 +170,22 @@ def _sanitized_result(result: dict[str, Any]) -> dict[str, Any]:
 class Ledger:
     """Track single dispatches and cost exposure; the caller holds the evaluation process lock."""
 
-    def __init__(self, path: Path, cap_yuan: Decimal, identity_sha256: str) -> None:
-        """Open matching state so restarts cannot reset the cap or retry rows."""
+    def __init__(
+        self,
+        path: Path,
+        cap_yuan: Decimal,
+        identity_sha256: str,
+        *,
+        authorized_max_cap_yuan: Decimal = MAX_CAP_YUAN,
+    ) -> None:
+        """Open matching authority and cap so restarts cannot raise budgets or retry rows."""
         self.path = Path(path)
         self.cap = _decimal(cap_yuan)
-        if not 0 < self.cap <= MAX_CAP_YUAN:
-            raise ValueError("Comparison spending cap must be in (0, 1] CNY")
+        self.authorized_max_cap_yuan = _decimal(authorized_max_cap_yuan)
+        if not 0 < self.authorized_max_cap_yuan <= MAX_AUTHORIZED_CAP_YUAN:
+            raise ValueError("The explicit authorized maximum must be in (0, 4] CNY")
+        if not 0 < self.cap <= self.authorized_max_cap_yuan:
+            raise ValueError("Comparison spending cap exceeds the explicitly authorized maximum")
         if not isinstance(identity_sha256, str) or not SHA256.fullmatch(identity_sha256):
             raise ValueError("Comparison identity must be a SHA-256 digest")
         self.identity_sha256 = identity_sha256
@@ -196,6 +207,8 @@ class Ledger:
             value.get("schema_version") != SCHEMA_VERSION
             or value.get("identity_sha256") != self.identity_sha256
             or _decimal(value.get("cap_yuan")) != self.cap
+            or _decimal(value.get("authorized_max_cap_yuan", MAX_CAP_YUAN))
+            != self.authorized_max_cap_yuan
             or not isinstance(value.get("records"), dict)
         ):
             raise ValueError("Existing comparison ledger configuration differs")
@@ -220,6 +233,7 @@ class Ledger:
             "schema_version": SCHEMA_VERSION,
             "identity_sha256": self.identity_sha256,
             "cap_yuan": str(self.cap),
+            "authorized_max_cap_yuan": str(self.authorized_max_cap_yuan),
             "pricing_url": PRICING_URL,
             "pricing_checked_date": PRICING_CHECKED_DATE,
             "cost_is_tariff_estimate": True,
@@ -336,6 +350,7 @@ class Ledger:
             "unknown_reserved_yuan": str(reserved),
             "cap_exposure_yuan": str(peak + reserved),
             "cap_yuan": str(self.cap),
+            "authorized_max_cap_yuan": str(self.authorized_max_cap_yuan),
             "attempt_count": len(self.records),
             "known_usage_count": len(known),
             "unknown_usage_count": len(unknown),

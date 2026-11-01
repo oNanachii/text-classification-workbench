@@ -6,7 +6,7 @@ import json
 from typing import Any
 import unittest
 
-from textlab.comparison_analysis import summarize
+from textlab.comparison_analysis import CASCADE_BANDS, summarize
 
 
 def authored_row(
@@ -227,6 +227,47 @@ class ComparisonAnalysisTests(unittest.TestCase):
         self.assertFalse(report["cascades"][0]["eligible_for_recommendation"])
         self.assertEqual(report["deepseek"]["coverage"], 1.0)
         self.assertEqual(report["deepseek"]["cost"]["unpriced_attempt_count"], 1)
+
+    def test_explicit_frozen_band_does_not_search_the_validation_band_grid(self) -> None:
+        """Evaluate one predeclared external interval while retaining the old default unchanged."""
+        rows = [
+            authored_row("ham", "ham", 0.1, "ham"),
+            authored_row("spam", "spam", 0.5, "spam"),
+        ]
+        default = summarize(rows)
+        self.assertEqual(default, summarize(rows, bands=CASCADE_BANDS))
+        self.assertEqual(len(default["cascades"]), 6)
+        explicit = summarize(rows, bands=((0.2, 0.8),))
+        self.assertEqual(len(explicit["cascades"]), 1)
+        self.assertEqual(explicit["cascades"][0]["band"], [0.2, 0.8])
+        self.assertEqual(explicit["cascades"][0]["strategy_id"], "cascade[0.2,0.8]")
+        self.assertEqual(explicit["local"], default["local"])
+        self.assertEqual(explicit["deepseek"], default["deepseek"])
+        self.assertEqual(
+            explicit["cascades"][0],
+            next(item for item in default["cascades"] if item["band"] == [0.2, 0.8]),
+        )
+
+    def test_explicit_bands_reject_invalid_or_duplicate_endpoints(self) -> None:
+        """Reject ambiguous test protocols before computing any candidate metrics."""
+        invalid = [
+            None,
+            [],
+            "0.2,0.8",
+            ((0.2,),),
+            ((0.2, 0.8, 0.9),),
+            ((0.8, 0.2),),
+            ((-0.1, 0.8),),
+            ((0.2, 1.1),),
+            ((True, 0.8),),
+            ((0.2, float("nan")),),
+            ((0.2, float("inf")),),
+            (("0.2", 0.8),),
+            ((0.2, 0.8), (0.2, 0.8)),
+        ]
+        for bands in invalid:
+            with self.subTest(bands=bands), self.assertRaises(ValueError):
+                summarize([], bands=bands)
 
     def test_empty_input_is_json_serializable_without_spurious_metrics(self) -> None:
         """No requested rows must produce null rates rather than a false quality claim."""

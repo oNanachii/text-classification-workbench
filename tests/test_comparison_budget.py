@@ -143,6 +143,69 @@ class LedgerTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             Ledger(self.path, Decimal("1"), OTHER_IDENTITY)
 
+    def test_four_yuan_requires_explicit_authority_and_persists_it(self) -> None:
+        """Keep one-yuan validation callers unchanged while allowing the authorized external run."""
+        with self.assertRaises(ValueError):
+            Ledger(self.path, Decimal("4"), IDENTITY)
+        self.assertFalse(self.path.exists())
+        ledger = Ledger(self.path, Decimal("4"), IDENTITY, authorized_max_cap_yuan=Decimal("4"))
+        persisted = json.loads(self.path.read_text())
+        self.assertEqual(persisted["authorized_max_cap_yuan"], "4")
+        self.assertEqual(ledger.summary()["authorized_max_cap_yuan"], "4")
+        reloaded = Ledger(self.path, Decimal("4"), IDENTITY, authorized_max_cap_yuan=Decimal("4"))
+        self.assertEqual(reloaded.summary(), ledger.summary())
+        with self.assertRaises(ValueError):
+            Ledger(self.path, Decimal("4"), IDENTITY)
+        for maximum in ["0", "-1", "4.0000001", "NaN", "Infinity"]:
+            other = self.path.parent / "invalid-authority.json"
+            with self.subTest(maximum=maximum), self.assertRaises(ValueError):
+                Ledger(
+                    other,
+                    Decimal("1"),
+                    IDENTITY,
+                    authorized_max_cap_yuan=Decimal(maximum),
+                )
+        self.assertFalse(other.exists())
+
+    def test_restart_cannot_raise_authority_even_when_the_cap_is_unchanged(self) -> None:
+        """Require authority to match persisted state instead of silently widening old ledgers."""
+        Ledger(self.path, Decimal("1"), IDENTITY)
+        with self.assertRaises(ValueError):
+            Ledger(self.path, Decimal("1"), IDENTITY, authorized_max_cap_yuan=Decimal("4"))
+        before = self.path.read_bytes()
+        with self.assertRaises(ValueError):
+            Ledger(self.path, Decimal("4"), IDENTITY, authorized_max_cap_yuan=Decimal("4"))
+        self.assertEqual(self.path.read_bytes(), before)
+
+    def test_legacy_ledgers_without_authority_remain_limited_to_one_yuan(self) -> None:
+        """Keep old records readable under their original one-yuan authority."""
+        ledger = Ledger(self.path, Decimal("1"), IDENTITY)
+        ledger.reserve("sample-1", PAYLOAD)
+        previous = json.loads(self.path.read_text())
+        previous.pop("authorized_max_cap_yuan")
+        previous["summary"].pop("authorized_max_cap_yuan")
+        self.path.write_text(json.dumps(previous))
+        reloaded = Ledger(self.path, Decimal("1"), IDENTITY)
+        self.assertEqual(reloaded.records, ledger.records)
+        self.assertEqual(reloaded.summary()["authorized_max_cap_yuan"], "1")
+        with self.assertRaises(ValueError):
+            Ledger(self.path, Decimal("1"), IDENTITY, authorized_max_cap_yuan=Decimal("4"))
+
+    def test_explicit_four_yuan_cap_still_reserves_before_refusing_excess(self) -> None:
+        """Exercise a real reservation above one yuan without issuing any model requests."""
+        payload = {
+            **PAYLOAD,
+            "messages": [{"role": "user", "content": "x" * 600_000}],
+        }
+        ledger = Ledger(self.path, Decimal("4"), IDENTITY, authorized_max_cap_yuan=Decimal("4"))
+        self.assertTrue(ledger.reserve("first", payload))
+        self.assertGreater(Decimal(ledger.summary()["cap_exposure_yuan"]), Decimal("1"))
+        self.assertTrue(ledger.reserve("second", payload))
+        self.assertTrue(ledger.reserve("third", payload))
+        self.assertFalse(ledger.reserve("fourth", payload))
+        self.assertLessEqual(Decimal(ledger.summary()["cap_exposure_yuan"]), Decimal("4"))
+        self.assertNotIn("fourth", ledger.records)
+
     def test_exact_cap_is_allowed_and_excess_is_not_dispatched(self) -> None:
         """Permit equality exactly while recording nothing for a request refused before dispatch."""
         reserve = Decimal(estimate_request(PAYLOAD)["reservation_peak_yuan"])
