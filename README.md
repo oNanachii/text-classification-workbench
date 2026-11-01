@@ -17,12 +17,18 @@ Python · FastAPI · SQLite · scikit-learn · PyTorch · NumPy · Vue 3
 ## 怎么工作
 
 ```mermaid
-flowchart LR
-  A[导入 CSV 并预检] --> B[人工审核标签]
-  B --> C[生成不可变训练快照]
-  C --> D[训练 LR 与 MLP]
-  D --> E[验证集选模型，测试集只评估一次]
-  E --> F[发布 / 回退]
+flowchart TB
+  subgraph R1 [" "]
+    direction LR
+    A[导入 CSV 并预检] --> B[人工审核标签] --> C[生成不可变训练快照]
+  end
+  subgraph R2 [" "]
+    direction LR
+    D[训练 LR 与 MLP] --> E[验证集选模型，测试集只评估一次] --> F[发布 / 回退]
+  end
+  R1 --> R2
+  style R1 fill:none,stroke:none
+  style R2 fill:none,stroke:none
 ```
 
 每次训练都记录用了哪个快照、什么配置、得到什么指标；线上预测会返回实际加载的模型版本。
