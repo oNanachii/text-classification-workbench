@@ -120,7 +120,7 @@
     "usage": "Raw repartition and ID membership only; no model inputs"
   },
   "live": {
-    "status": "pending_explicit_upload_approval",
+    "status": "passed",
     "before": {
       "url": "https://textlab.madokanun.top",
       "texts": [
@@ -177,8 +177,63 @@
       ],
       "external_model_called": false
     },
-    "after": null,
-    "reason": "Automatic approval rejected transferring the code archive and deployment script to the existing VPS twice; no upload or restart performed."
+    "after": {
+      "url": "https://textlab.madokanun.top",
+      "texts": [
+        "Please bring the blue notebook to our project meeting tomorrow afternoon.",
+        "Congratulations you won a free cash prize, claim your exclusive offer now!",
+        "The appointment is confirmed for Friday, call me when you arrive."
+      ],
+      "health": {
+        "status": "ok",
+        "model_ready": true,
+        "public": true,
+        "loaded": {
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "kind": "mlp16",
+          "run_id": "v2-import-reviewed-seed42",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "threshold": 0.5,
+          "vocabulary_sha256": "3baedee047a4acfc70d9529e976e503b8d1659d3c98568f153319694979eb4da",
+          "weights_sha256": "ca92490975bb2e0c91330a5c6fbc186f2d6e1217eab1cb06cc732c3d458d61e8"
+        },
+        "runtime": "numpy numeric format; no torch or pickle inference"
+      },
+      "predictions": [
+        {
+          "label": "ham",
+          "spam_score": 0.011803210712969303,
+          "threshold": 0.5,
+          "model_version": "v2-import-reviewed-seed42",
+          "model": "mlp16",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "scope": "English SMS example; no live-traffic accuracy guarantee"
+        },
+        {
+          "label": "spam",
+          "spam_score": 0.9946208000183105,
+          "threshold": 0.5,
+          "model_version": "v2-import-reviewed-seed42",
+          "model": "mlp16",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "scope": "English SMS example; no live-traffic accuracy guarantee"
+        },
+        {
+          "label": "ham",
+          "spam_score": 0.013418788090348244,
+          "threshold": 0.5,
+          "model_version": "v2-import-reviewed-seed42",
+          "model": "mlp16",
+          "snapshot_id": "snapshot-90c9c536c9218964776905a4e6a707b4a8acabb0bdaeec86a19ccb4f8876bd37",
+          "dataset_id": "sms-v2-c2206636983886cfee78",
+          "scope": "English SMS example; no live-traffic accuracy guarantee"
+        }
+      ],
+      "external_model_called": false
+    },
+    "max_absolute_difference": 0.0
   },
   "checks": {
     "ruff_check": "passed",
@@ -203,7 +258,6 @@
     "evidence_directory": "artifacts/refactor-verification"
   },
   "deployment": {
-    "status": "pending_explicit_upload_approval",
     "site": "https://textlab.madokanun.top",
     "service": "text-workbench",
     "entrypoint": "textlab.app_v2:create_app",
@@ -212,7 +266,19 @@
     "model_weights_included": false,
     "formal_data_included": false,
     "credentials_included": false,
-    "uploaded": false,
-    "restarted": false
+    "uploaded": true,
+    "restarted": true,
+    "release": "20261101-package-refactor-01",
+    "only_text_workbench_restarted": true,
+    "protected_models_unchanged": true,
+    "protected_model_file_count": 6,
+    "frontend_files_unchanged": true,
+    "candidate_source_hashes_verified": true,
+    "candidate_authored_sms_scores_equal": true,
+    "paid_model_calls": 0,
+    "source_commit": "e4a281dafe4c04f7a3fd6fc4a9eefe2ffe1d5147",
+    "user_explicit_upload_and_deployment_authorization": true,
+    "post_deployment_live_max_absolute_difference": 0.0,
+    "status": "passed"
   }
 }

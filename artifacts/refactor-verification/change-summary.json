@@ -75,7 +75,6 @@
     "evidence_directory": "artifacts/refactor-verification"
   },
   "deployment": {
-    "status": "pending_explicit_upload_approval",
     "site": "https://textlab.madokanun.top",
     "service": "text-workbench",
     "entrypoint": "textlab.app_v2:create_app",
@@ -84,7 +83,19 @@
     "model_weights_included": false,
     "formal_data_included": false,
     "credentials_included": false,
-    "uploaded": false,
-    "restarted": false
+    "uploaded": true,
+    "restarted": true,
+    "release": "20261101-package-refactor-01",
+    "only_text_workbench_restarted": true,
+    "protected_models_unchanged": true,
+    "protected_model_file_count": 6,
+    "frontend_files_unchanged": true,
+    "candidate_source_hashes_verified": true,
+    "candidate_authored_sms_scores_equal": true,
+    "paid_model_calls": 0,
+    "source_commit": "e4a281dafe4c04f7a3fd6fc4a9eefe2ffe1d5147",
+    "user_explicit_upload_and_deployment_authorization": true,
+    "post_deployment_live_max_absolute_difference": 0.0,
+    "status": "passed"
   }
 }

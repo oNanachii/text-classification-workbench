@@ -1,9 +1,8 @@
 # Text Model Lab 当前状态
 
-## 2026-11-01：可读性重构与评估证据标记（本地完成，部署待确认）
+## 2026-11-01：可读性重构与评估证据标记（已部署并完成等价验收）
 
 757 条最终测试对应这个 tag 的代码：`v2.0-final-eval`（`81feb90c5f55cb5706826c73e6950952d83af45c`）。最终评估证据冻结在 tag v2.0-final-eval；之后的改动必须通过等价校验。本次已由仓库所有者授权修改五个原冻结文件，只读访问正式数据进行 783 条验证集分数与原始数据划分归属比较；不得对 757 条测试集进行推断或评估，权重、阈值与历史报告保持原样。
-
 
 当前 Python 流程已移入 `textlab/`，v1 兼容实现已移入 `legacy/`；共享下载入口为 `python -m textlab.data download`，管理 CLI 为 `python -m textlab.workbench`，服务入口为 `textlab.app_v2:create_app`。默认数据、模型与产物仍使用原仓库根目录。`运行说明.txt` 已合并进 README 与 `docs/LEGACY.md`，部署模板为 `deploy/text-workbench.service`。
 
@@ -11,7 +10,7 @@
 
 `artifacts/refactor-equivalence.json`：两次既有 run 的 LR、MLP16 共四组模型分别比较同一份 783 条验证样本，最大分数差值均为 0（要求 < 1e-9）；5159 条去重样本的重新划分归属全部相同，完整 manifest 相同。正式 `var/` 内容、权限与修改时间前后相同，验证进程另有写入审计保护。757 条测试没有模型推断或再次评估；权重、阈值、原评估证据及历史报告未改。
 
-部署前已保存三条自编短信的真实线上分数，发布包已校验，准备仅更新当前 Text Model Lab 服务并保留回退。自动审批两次拒绝上传该源码包和部署脚本，要求用户明确确认具体 VPS 与文件；当前未上传、未部署、未重启，部署后三条线上对比分数尚待完成。该状态与历史已上线版本严格区分。
+仓库所有者明确确认具体上传包和现有 VPS 后，已部署代码提交 `e4a281dafe4c04f7a3fd6fc4a9eefe2ffe1d5147`，发布目录为 `20261101-package-refactor-01`。仅重启 `text-workbench`，六个线上公开模型与报告文件的字节、权限和修改时间不变，前端文件与其他服务进程状态不变；保留旧 release 和服务配置用于回退。公网三条自编短信部署前后分数分别为 `0.011803210712969303`、`0.9946208000183105`、`0.013418788090348244`，逐条完全相同，最大差值 0。HTTPS、工作台入口、公开只读、服务器 Key 关闭及 CSP/API no-store 检查通过；未调用付费模型。最终记录见 `artifacts/refactor-equivalence.json` 和 `artifacts/refactor-verification/deployment.json`。
 
 ## 2026-11-01：README与首次说明卡已合并上线
 

@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "https": true,
+  "workbench_status": 200,
+  "private_reads_denied_even_with_token": true,
+  "public": true,
+  "server_key_available": false,
+  "api_cache_control": "no-store",
+  "csp": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+  "paid_model_calls": 0
+}
