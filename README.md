@@ -1,5 +1,7 @@
 # Text Model Lab
 
+[![CI](https://github.com/oNanachii/text-classification-workbench/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/oNanachii/text-classification-workbench/actions/workflows/ci.yml)
+
 **从数据审核到模型上线的文本分类平台。**
 
 Python · FastAPI · SQLite · scikit-learn · PyTorch · NumPy · Vue 3
@@ -113,6 +115,12 @@ npm test --prefix frontend
 npm run build --prefix frontend
 .venv/bin/python scripts/verify_jev.py
 ```
+
+## 持续集成
+
+[CI 工作流](.github/workflows/ci.yml)在每次推送和 Pull Request 时运行 Python 单元测试、前端测试及构建，也支持手动触发。测试只使用临时自编数据和模拟接口，不依赖 `var/`，不调用付费接口，也不运行旧的 757 条最终测试。CPU 版 PyTorch 仅用于既有失败路径测试的导入依赖，拟合阶段已被模拟为失败。
+
+`ruff check` 按 [pyproject.toml](pyproject.toml) 报告代码问题，本阶段历史违规不阻断 CI；配置错误、测试或构建失败仍会阻断。徽章展示 GitHub 实际运行结果，不把本地通过视为云端通过。
 
 ## 文档
 
