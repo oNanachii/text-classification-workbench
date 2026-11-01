@@ -1,0 +1,31 @@
+{
+  "known_cost_yuan": "0.123766",
+  "conservative_peak_yuan": "0.247532",
+  "unknown_reserved_yuan": "0",
+  "cap_exposure_yuan": "0.247532",
+  "cap_yuan": "4",
+  "authorized_max_cap_yuan": "4",
+  "attempt_count": 733,
+  "known_usage_count": 733,
+  "unknown_usage_count": 0,
+  "stopped": false,
+  "stop_reason": null,
+  "usage": {
+    "prompt_tokens": 107814,
+    "completion_tokens": 3988,
+    "total_tokens": 111802,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 107814
+  },
+  "returned_models": [
+    "deepseek-flash"
+  ],
+  "system_fingerprints": [
+    "bc19ba97cbe016479903222bb1578db6"
+  ],
+  "data_integrity": {
+    "heldout_test_files_opened": 0,
+    "blocked_formal_accesses": 0,
+    "protected_files_unchanged": true
+  }
+}

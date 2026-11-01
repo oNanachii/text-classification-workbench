@@ -1,0 +1,57 @@
+
+> text-model-workbench@1.0.0 test
+> node --test tests/*.test.js
+
+✔ BYOK goes to the fixed same-origin header, never the request body (1.622541ms)
+✔ missing consent and missing BYOK produce zero requests (0.12225ms)
+✔ clear removes key and text, aborts, and discards a late successful response (0.17825ms)
+✔ editing input invalidates old response and cannot replace new result (2.243917ms)
+✔ unknown and rejected responses are not retried or copied into errors (0.457292ms)
+✔ explicit operator server credential never includes the BYOK value (0.149125ms)
+✔ local requests do not send either credential or external consent (0.138334ms)
+✔ remote HTTP and public loopback cannot transmit a key even before backend validation (0.118292ms)
+✔ stopping the wait keeps no late result and never claims the call was free (0.213ms)
+✔ only two successful engines form an agreement or disagreement (1.532083ms)
+✔ failure or unknown on either side is never shown as a valid comparison (0.135458ms)
+✔ unknown outcomes are distinguished from definite errors (0.076375ms)
+✔ engine errors use fixed copy, never provider text (0.762792ms)
+✔ submit blockers mirror the session guards for each engine (0.504792ms)
+✔ percent formatting never invents a value (0.0745ms)
+✔ the guide shows until this browser closes it, and only that choice is stored (0.897708ms)
+✔ blocked or missing storage never throws and keeps showing the guide (0.469792ms)
+✔ the guide component reads the stored choice and remembers closing (20.856166ms)
+✔ the guide still closes for this page when the browser refuses to store it (2.01525ms)
+✔ late preview cannot replace a newly edited CSV/source draft (1.328625ms)
+✔ exact body comparison rejects drift even if an input event was missed (0.113875ms)
+✔ clearing protected state invalidates pending preview and file read tickets (0.088542ms)
+✔ a second file selection or manual edit invalidates the first asynchronous file read (1.262834ms)
+✔ unchanged current draft accepts the corresponding preview (0.302042ms)
+✔ review keeps the saving sample selected and blocks a second record until the write is confirmed (36.432667ms)
+✔ a confirmed review cannot erase an edit made after that request was captured (5.94125ms)
+✔ late import confirmation preserves a newer CSV and source draft (7.186375ms)
+✔ unknown import keeps the original preview identity and blocks a fresh preview until reconciled (3.048042ms)
+✔ an older login completion cannot clear the newer login identity (7.065791ms)
+✔ same-label approval is a confirmation, never a correction (0.793042ms)
+✔ a label change is a correction and requires a reason (0.080292ms)
+✔ an already reviewed sample with an unchanged label has nothing to save (0.452583ms)
+✔ unknown save is reconciled from a fresh server read, not assumed (0.328958ms)
+✔ review status keeps original corpus labels apart from human review (0.100375ms)
+✔ same-label review removes the approved row from pending list while preserving saved detail/draft (1.276333ms)
+✔ removing the only row on last page reloads the previous valid page (0.190875ms)
+✔ confirmed import refreshes matching pending count and rows (1.640625ms)
+✔ late list response cannot replace rows for a newer search/filter draft (0.155625ms)
+✔ a newer refresh wins even when an older identical-query response arrives last (0.126917ms)
+✔ credential clear invalidates in-flight private rows including a range-reconciliation read (3.45175ms)
+✔ operator token travels only as the same-origin Authorization header (1.372083ms)
+✔ a response that arrives after an identity change is discarded (0.69725ms)
+✔ 401 with a credential clears identity once and rejects later responses of the old identity (1.524708ms)
+✔ a write without confirmation is unknown; a read failure is not (0.692041ms)
+✔ server errors map to fixed copy and never echo arbitrary payload text (0.132542ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 45
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 220.614625

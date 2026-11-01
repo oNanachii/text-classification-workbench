@@ -1,0 +1,8 @@
+{
+  "study_id": "mendeley-f45bkkt8pr-v1-external-20261101",
+  "plan_sha256": "ec430d1988cedbf68576cf0db3492121ce455ebac073a969764bce2d61d5a2fd",
+  "document_sha256": "8fa6f20b7ae6f76bff98b99c9ec8c762f0b8d70c6c0a4f4fae05d2751f79311a",
+  "started_at_utc": "2026-11-01T19:25:38.731565+00:00",
+  "execution_commit": "ba8e68f589b35eeda22f8977b635f934d3adfff3",
+  "policy": "One study attempt; no repeat, retry, new band or model selection"
+}

@@ -4,6 +4,14 @@
 
 涉及前端或 Jev 时，再读 `docs/process/CLAUDE_FRONTEND_HANDOFF.md`、`docs/JEV_API_CONTRACT.md` 与 `docs/JEV_EVALUATION_PLAN.md`。保持现有功能与证据边界。Claude Code 由用户本人操作。
 
+## 2026-11-01 冻结外部公开数据测试
+
+本次仓库所有者另行授权使用外部公开短信、费用上限人民币 4 元，沿用既有提示、`mlp16 / 0.5` 与包含端点的 `[0.2, 0.8]`。已在独立 `var/external-test-20261101/` 完成唯一一轮；该授权不扩展至任何重跑或新批次。
+
+`docs/EXTERNAL_TEST_PLAN.md` 与对应 plan/audit/cohort 已于任何预测前冻结在 `ba8e68f589b35eeda22f8977b635f934d3adfff3` 并先推送 GitHub，之后不得修改。原始 ZIP、CSV、正文及私有规范化副本不提交。来源与 CC BY 4.0 条件见 `data/external/README.md`。去重只读 UCI 训练／验证文本及额外 4 条自编训练样例；为隔离来源中的旧测试重复，仅使用 `var/split-index.json` 的 ID／模板摘要元数据，不打开封存测试原文或排除原文库，不重评旧 757 条。
+
+结果见 `docs/EXTERNAL_TEST.md` 和 `artifacts/external-test/`，仅说明这份按规则过滤的外部批次；不声称 DeepSeek 预训练未见过公开语料，不推广到线上或中文。不得根据此结果调整冻结提示、区间、阈值或模型。默认仅可用 `python -m textlab.external_test --root artifacts/external-test --replay` 离线重放；全局尝试标记会拒绝该计划的第二次真实评估。
+
 ## 2026-11-01 验证集开发比较
 
 本次仓库所有者另行授权真实 DeepSeek 对比：只用 v2 的 783 条验证集，以当前线上 `mlp16 / 0.5` 为本地对照；在独立 `var/llm-comparison-20261101/` 运行，整轮费用上限人民币 1 元，先 dry-run、逐次持久化预留、无自动重试。此授权覆盖该次已经完成的请求，不扩展到任何新批次或其他付费接口。不得读取 757 条测试或 heldout/exclusion 文件，正式数据、权重、阈值和历史报告保持不变。

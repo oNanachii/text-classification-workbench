@@ -1,0 +1,28 @@
+{
+  "python_unit_tests": {
+    "passed": 125,
+    "failed": 0
+  },
+  "legacy_synthetic_snapshot_tests": {
+    "passed": 7,
+    "failed": 0
+  },
+  "frontend_tests": {
+    "passed": 45,
+    "failed": 0
+  },
+  "frontend_build": "passed",
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "independent_numeric_verification": "passed",
+  "preregistered_plan_and_cohort": "byte-identical to ba8e68f",
+  "protected_formal_inputs": "unchanged",
+  "private_ledger_reload": "schema and all733records preserved",
+  "raw_sms_committed": false,
+  "additional_or_retried_live_requests": 0,
+  "live_dispatch_count": 733,
+  "only_frozen_cascade_band": [
+    0.2,
+    0.8
+  ]
+}

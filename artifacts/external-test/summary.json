@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "requested_rows": 733,
+  "cohort_policy": "Every strategy uses the same supplied sample IDs and truth labels.",
+  "local": {
+    "requested_count": 733,
+    "attempted_count": 733,
+    "completed_count": 733,
+    "unknown_count": 0,
+    "not_attempted_count": 0,
+    "failure_count": 0,
+    "failure_fraction_requested": 0.0,
+    "failure_fraction_attempted": 0.0,
+    "unknown_fraction_requested": 0.0,
+    "not_attempted_fraction_requested": 0.0,
+    "failure_count_scope": "Failure flags can overlap unknown status; counts are not additive.",
+    "coverage": 1.0,
+    "attempt_fraction": 1.0,
+    "completed_only_metrics": {
+      "denominator": 733,
+      "macro_f1": 0.844854714780914,
+      "spam_precision": 0.9954337899543378,
+      "spam_recall": 0.6749226006191951,
+      "ham_precision": 0.7957198443579766,
+      "ham_recall": 0.9975609756097561,
+      "accuracy": 0.8553888130968622,
+      "false_positive_ham_count": 1,
+      "confusion": {
+        "true_positive": 218,
+        "true_negative": 409,
+        "false_positive": 1,
+        "false_negative": 105
+      },
+      "abstention_count_by_truth": {
+        "ham": 0,
+        "spam": 0
+      },
+      "class_false_negative_counts": {
+        "spam": 105,
+        "ham": 1
+      },
+      "abstention_policy": "Metrics exclude abstentions; coverage and the full denominator are separate.",
+      "macro_f1_label_set": [
+        "ham",
+        "spam"
+      ],
+      "undefined_class_f1": 0.0
+    },
+    "full_denominator_conservative_metrics": {
+      "denominator": 733,
+      "macro_f1": 0.844854714780914,
+      "spam_precision": 0.9954337899543378,
+      "spam_recall": 0.6749226006191951,
+      "ham_precision": 0.7957198443579766,
+      "ham_recall": 0.9975609756097561,
+      "accuracy": 0.8553888130968622,
+      "false_positive_ham_count": 1,
+      "confusion": {
+        "true_positive": 218,
+        "true_negative": 409,
+        "false_positive": 1,
+        "false_negative": 105
+      },
+      "abstention_count_by_truth": {
+        "ham": 0,
+        "spam": 0
+      },
+      "class_false_negative_counts": {
+        "spam": 105,
+        "ham": 1
+      },
+      "abstention_policy": "Each abstention is a false negative for its true class and an accuracy error; no predicted label or false positive is invented.",
+      "macro_f1_label_set": [
+        "ham",
+        "spam"
+      ],
+      "undefined_class_f1": 0.0
+    },
+    "abstention_diagnostics": {
+      "correct_completed_count": 627,
+      "incorrect_completed_count": 106,
+      "abstention_count": 0,
+      "accuracy_lower_bound": 0.8553888130968622,
+      "accuracy_upper_bound": 0.8553888130968622,
+      "bound_scope": "Unknown predictions could all be wrong or all be correct; no imputation."
+    },
+    "latency_ms": {
+      "requested_rows_denominator": 733,
+      "completed": {
+        "status_denominator": 733,
+        "measurement_count": 733,
+        "missing_measurement_count": 0,
+        "p50": 0.024417182430624962,
+        "p95": 0.032783206552267075,
+        "quantile_method": "linear interpolation at (n - 1) * quantile"
+      },
+      "attempted": {
+        "status_denominator": 733,
+        "measurement_count": 733,
+        "missing_measurement_count": 0,
+        "p50": 0.024417182430624962,
+        "p95": 0.032783206552267075,
+        "quantile_method": "linear interpolation at (n - 1) * quantile"
+      }
+    },
+    "cost": {
+      "known_cost_yuan": "0",
+      "known_cost_yuan_per_1000_requested_rows": "0",
+      "requested_rows_denominator": 733,
+      "priced_attempt_count": 0,
+      "returned_usage_count": 0,
+      "unpriced_attempt_count": 0,
+      "unknown_reserved_yuan": "0",
+      "known_plus_unknown_reservation_yuan": "0",
+      "scope": "External API cost is zero for local-only inference; local compute is not priced."
+    },
+    "strategy_id": "local",
+    "threshold": 0.5
+  },
+  "deepseek": {
+    "requested_count": 733,
+    "attempted_count": 733,
+    "completed_count": 733,
+    "unknown_count": 0,
+    "not_attempted_count": 0,
+    "failure_count": 0,
+    "failure_fraction_requested": 0.0,
+    "failure_fraction_attempted": 0.0,
+    "unknown_fraction_requested": 0.0,
+    "not_attempted_fraction_requested": 0.0,
+    "failure_count_scope": "Failure flags can overlap unknown status; counts are not additive.",
+    "coverage": 1.0,
+    "attempt_fraction": 1.0,
+    "completed_only_metrics": {
+      "denominator": 733,
+      "macro_f1": 0.9806275013214528,
+      "spam_precision": 0.978328173374613,
+      "spam_recall": 0.978328173374613,
+      "ham_precision": 0.9829268292682927,
+      "ham_recall": 0.9829268292682927,
+      "accuracy": 0.9809004092769441,
+      "false_positive_ham_count": 7,
+      "confusion": {
+        "true_positive": 316,
+        "true_negative": 403,
+        "false_positive": 7,
+        "false_negative": 7
+      },
+      "abstention_count_by_truth": {
+        "ham": 0,
+        "spam": 0
+      },
+      "class_false_negative_counts": {
+        "spam": 7,
+        "ham": 7
+      },
+      "abstention_policy": "Metrics exclude abstentions; coverage and the full denominator are separate.",
+      "macro_f1_label_set": [
+        "ham",
+        "spam"
+      ],
+      "undefined_class_f1": 0.0
+    },
+    "full_denominator_conservative_metrics": {
+      "denominator": 733,
+      "macro_f1": 0.9806275013214528,
+      "spam_precision": 0.978328173374613,
+      "spam_recall": 0.978328173374613,
+      "ham_precision": 0.9829268292682927,
+      "ham_recall": 0.9829268292682927,
+      "accuracy": 0.9809004092769441,
+      "false_positive_ham_count": 7,
+      "confusion": {
+        "true_positive": 316,
+        "true_negative": 403,
+        "false_positive": 7,
+        "false_negative": 7
+      },
+      "abstention_count_by_truth": {
+        "ham": 0,
+        "spam": 0
+      },
+      "class_false_negative_counts": {
+        "spam": 7,
+        "ham": 7
+      },
+      "abstention_policy": "Each abstention is a false negative for its true class and an accuracy error; no predicted label or false positive is invented.",
+      "macro_f1_label_set": [
+        "ham",
+        "spam"
+      ],
+      "undefined_class_f1": 0.0
+    },
+    "abstention_diagnostics": {
+      "correct_completed_count": 719,
+      "incorrect_completed_count": 14,
+      "abstention_count": 0,
+      "accuracy_lower_bound": 0.9809004092769441,
+      "accuracy_upper_bound": 0.9809004092769441,
+      "bound_scope": "Unknown predictions could all be wrong or all be correct; no imputation."
+    },
+    "latency_ms": {
+      "requested_rows_denominator": 733,
+      "completed": {
+        "status_denominator": 733,
+        "measurement_count": 733,
+        "missing_measurement_count": 0,
+        "p50": 1051.446,
+        "p95": 1293.8458,
+        "quantile_method": "linear interpolation at (n - 1) * quantile"
+      },
+      "attempted": {
+        "status_denominator": 733,
+        "measurement_count": 733,
+        "missing_measurement_count": 0,
+        "p50": 1051.446,
+        "p95": 1293.8458,
+        "quantile_method": "linear interpolation at (n - 1) * quantile"
+      }
+    },
+    "cost": {
+      "known_cost_yuan": "0.123766",
+      "known_cost_yuan_per_1000_requested_rows": "0.1688485675306957708049113233",
+      "requested_rows_denominator": 733,
+      "priced_attempt_count": 733,
+      "returned_usage_count": 733,
+      "unpriced_attempt_count": 0,
+      "unknown_reserved_yuan": "0",
+      "known_plus_unknown_reservation_yuan": "0.123766",
+      "scope": "Known cost uses returned token-priced charges. Unknown reservations are separate budget holds, not measured charges or a billing guarantee."
+    },
+    "strategy_id": "deepseek"
+  },
+  "cascades": [
+    {
+      "requested_count": 733,
+      "attempted_count": 733,
+      "completed_count": 733,
+      "unknown_count": 0,
+      "not_attempted_count": 0,
+      "failure_count": 0,
+      "failure_fraction_requested": 0.0,
+      "failure_fraction_attempted": 0.0,
+      "unknown_fraction_requested": 0.0,
+      "not_attempted_fraction_requested": 0.0,
+      "failure_count_scope": "Failure flags can overlap unknown status; counts are not additive.",
+      "coverage": 1.0,
+      "attempt_fraction": 1.0,
+      "completed_only_metrics": {
+        "denominator": 733,
+        "macro_f1": 0.9147145516599442,
+        "spam_precision": 1.0,
+        "spam_recall": 0.8142414860681114,
+        "ham_precision": 0.8723404255319149,
+        "ham_recall": 1.0,
+        "accuracy": 0.9181446111869032,
+        "false_positive_ham_count": 0,
+        "confusion": {
+          "true_positive": 263,
+          "true_negative": 410,
+          "false_positive": 0,
+          "false_negative": 60
+        },
+        "abstention_count_by_truth": {
+          "ham": 0,
+          "spam": 0
+        },
+        "class_false_negative_counts": {
+          "spam": 60,
+          "ham": 0
+        },
+        "abstention_policy": "Metrics exclude abstentions; coverage and the full denominator are separate.",
+        "macro_f1_label_set": [
+          "ham",
+          "spam"
+        ],
+        "undefined_class_f1": 0.0
+      },
+      "full_denominator_conservative_metrics": {
+        "denominator": 733,
+        "macro_f1": 0.9147145516599442,
+        "spam_precision": 1.0,
+        "spam_recall": 0.8142414860681114,
+        "ham_precision": 0.8723404255319149,
+        "ham_recall": 1.0,
+        "accuracy": 0.9181446111869032,
+        "false_positive_ham_count": 0,
+        "confusion": {
+          "true_positive": 263,
+          "true_negative": 410,
+          "false_positive": 0,
+          "false_negative": 60
+        },
+        "abstention_count_by_truth": {
+          "ham": 0,
+          "spam": 0
+        },
+        "class_false_negative_counts": {
+          "spam": 60,
+          "ham": 0
+        },
+        "abstention_policy": "Each abstention is a false negative for its true class and an accuracy error; no predicted label or false positive is invented.",
+        "macro_f1_label_set": [
+          "ham",
+          "spam"
+        ],
+        "undefined_class_f1": 0.0
+      },
+      "abstention_diagnostics": {
+        "correct_completed_count": 673,
+        "incorrect_completed_count": 60,
+        "abstention_count": 0,
+        "accuracy_lower_bound": 0.9181446111869032,
+        "accuracy_upper_bound": 0.9181446111869032,
+        "bound_scope": "Unknown predictions could all be wrong or all be correct; no imputation."
+      },
+      "latency_ms": {
+        "requested_rows_denominator": 733,
+        "completed": {
+          "status_denominator": 733,
+          "measurement_count": 733,
+          "missing_measurement_count": 0,
+          "p50": 0.024625100195407867,
+          "p95": 1115.6664584001896,
+          "quantile_method": "linear interpolation at (n - 1) * quantile"
+        },
+        "attempted": {
+          "status_denominator": 733,
+          "measurement_count": 733,
+          "missing_measurement_count": 0,
+          "p50": 0.024625100195407867,
+          "p95": 1115.6664584001896,
+          "quantile_method": "linear interpolation at (n - 1) * quantile"
+        }
+      },
+      "cost": {
+        "known_cost_yuan": "0.018117",
+        "known_cost_yuan_per_1000_requested_rows": "0.02471623465211459754433833561",
+        "requested_rows_denominator": 733,
+        "priced_attempt_count": 99,
+        "returned_usage_count": 99,
+        "unpriced_attempt_count": 0,
+        "unknown_reserved_yuan": "0",
+        "known_plus_unknown_reservation_yuan": "0.018117",
+        "scope": "Known cost uses returned token-priced charges. Unknown reservations are separate budget holds, not measured charges or a billing guarantee."
+      },
+      "strategy_id": "cascade[0.2,0.8]",
+      "band": [
+        0.2,
+        0.8
+      ],
+      "selection_rule": "Escalate when low <= local spam_score <= high, endpoints included.",
+      "planned_escalation_count": 99,
+      "planned_escalation_fraction": 0.13506139154160982,
+      "escalation_attempted_count": 99,
+      "escalation_attempted_fraction_requested": 0.13506139154160982,
+      "escalation_attempted_fraction_planned": 1.0,
+      "escalation_completed_count": 99,
+      "escalation_completed_fraction_planned": 1.0,
+      "escalation_unknown_count": 0,
+      "escalation_not_attempted_count": 0,
+      "escalation_failure_count": 0,
+      "all_planned_escalations_completed": true,
+      "fallback_count": 0,
+      "fallback_completed_count": 0,
+      "fallback_policy": "Retain the local label when an escalated output is missing or unknown.",
+      "latency_scope": "Counterfactual replay of cached per-row measurements: local latency plus external latency for escalated rows. Missing external attempts have unknown cascade latency. These are not actual sequential cascade trials, scheduling or capacity measurements.",
+      "eligible_for_recommendation": true
+    }
+  ],
+  "interpretation": "Completed-only metrics describe returned predictions, not the full cohort. Conservative metrics retain every requested row and count abstentions as true-class false negatives. Costs per 1000 always divide by requested rows, never only successes.",
+  "selection_performed": false,
+  "fixed_cascade_band": [
+    0.2,
+    0.8
+  ],
+  "budget": {
+    "known_cost_yuan": "0.123766",
+    "conservative_peak_yuan": "0.247532",
+    "unknown_reserved_yuan": "0",
+    "cap_exposure_yuan": "0.247532",
+    "cap_yuan": "4",
+    "authorized_max_cap_yuan": "4",
+    "attempt_count": 733,
+    "known_usage_count": 733,
+    "unknown_usage_count": 0,
+    "stopped": false,
+    "stop_reason": null,
+    "usage": {
+      "prompt_tokens": 107814,
+      "completion_tokens": 3988,
+      "total_tokens": 111802,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 107814
+    },
+    "returned_models": [
+      "deepseek-flash"
+    ],
+    "system_fingerprints": [
+      "bc19ba97cbe016479903222bb1578db6"
+    ],
+    "data_integrity": {
+      "heldout_test_files_opened": 0,
+      "blocked_formal_accesses": 0,
+      "protected_files_unchanged": true
+    }
+  },
+  "plan_sha256": "ec430d1988cedbf68576cf0db3492121ce455ebac073a969764bce2d61d5a2fd",
+  "external_sha256": "1757b0ea8809a96be65bc5b03c35b0f7977069714963d809a31cb16d54b8d2d6"
+}

@@ -166,6 +166,7 @@ npm run build --prefix frontend
 
 ## 文档
 
+- [冻结外部短信测试](docs/EXTERNAL_TEST.md)与[开跑前冻结计划](docs/EXTERNAL_TEST_PLAN.md)：公开来源去重后的 733 条固定批次，沿用原提示和级联区间。
 - [本地模型、DeepSeek 与级联的验证集开发对比](docs/LLM_VS_LOCAL.md)：783 条真实 API 对比、费用、时延与冻结配置；不作为新的最终测试成绩。
 - [v1 兼容说明](docs/LEGACY.md)：旧命令、接口与历史运行说明
 - [Jev 接口约定](docs/JEV_API_CONTRACT.md)与 [Jev 评测计划](docs/JEV_EVALUATION_PLAN.md)

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="500" viewBox="0 0 1040 500" role="img" aria-labelledby="title desc">
+<title id="title">Frozen strategies: validation vs external macro-F1</title>
+<desc id="desc">Three preregistered strategies only, with no new band search. Full-denominator conservative macro-F1. Y axis starts at zero.</desc>
+<rect width="1040" height="500" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#243044">
+<text x="42" y="38" font-size="23" font-weight="700">Frozen strategies: validation vs external</text>
+<text x="42" y="64" font-size="14">Fixed local weights / prompt / threshold / band; remote model is an alias; cohorts differ</text>
+<path d="M 82 388.00 H 995" stroke="#dce3ed"/><text x="68" y="393.00" font-size="13" text-anchor="end">0.0</text>
+<path d="M 82 332.00 H 995" stroke="#dce3ed"/><text x="68" y="337.00" font-size="13" text-anchor="end">0.2</text>
+<path d="M 82 276.00 H 995" stroke="#dce3ed"/><text x="68" y="281.00" font-size="13" text-anchor="end">0.4</text>
+<path d="M 82 220.00 H 995" stroke="#dce3ed"/><text x="68" y="225.00" font-size="13" text-anchor="end">0.6</text>
+<path d="M 82 164.00 H 995" stroke="#dce3ed"/><text x="68" y="169.00" font-size="13" text-anchor="end">0.8</text>
+<path d="M 82 108.00 H 995" stroke="#dce3ed"/><text x="68" y="113.00" font-size="13" text-anchor="end">1.0</text>
+<rect x="165" y="115.18" width="60" height="272.82" fill="#176c66" rx="3"/><text x="195" y="106.18" text-anchor="middle" font-size="14">0.97435</text>
+<rect x="235" y="151.44" width="60" height="236.56" fill="#2169b0" rx="3"/><text x="265" y="142.44" text-anchor="middle" font-size="14">0.84485</text>
+<text x="230" y="417" text-anchor="middle" font-size="15">Local</text>
+<rect x="465" y="118.55" width="60" height="269.45" fill="#176c66" rx="3"/><text x="495" y="109.55" text-anchor="middle" font-size="14">0.96234</text>
+<rect x="535" y="113.42" width="60" height="274.58" fill="#2169b0" rx="3"/><text x="565" y="104.42" text-anchor="middle" font-size="14">0.98063</text>
+<text x="530" y="417" text-anchor="middle" font-size="15">DeepSeek</text>
+<rect x="765" y="114.12" width="60" height="273.88" fill="#176c66" rx="3"/><text x="795" y="105.12" text-anchor="middle" font-size="14">0.97814</text>
+<rect x="835" y="131.88" width="60" height="256.12" fill="#2169b0" rx="3"/><text x="865" y="122.88" text-anchor="middle" font-size="14">0.91471</text>
+<text x="830" y="417" text-anchor="middle" font-size="15">Cascade [0.2, 0.8]</text>
+<text x="24" y="246" transform="rotate(-90 24 246)" font-size="14" text-anchor="middle">Macro-F1 (all requested rows)</text>
+<rect x="680" y="437" width="14" height="14" fill="#176c66"/><text x="701" y="449" font-size="13">Validation</text>
+<rect x="820" y="437" width="14" height="14" fill="#2169b0"/><text x="841" y="449" font-size="13">External</text>
+<text x="42" y="467" font-size="12" fill="#606d80">Observed cohort differences only; not causal effects or a new selection exercise.</text>
+</g></svg>

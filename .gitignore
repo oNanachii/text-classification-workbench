@@ -22,3 +22,6 @@ artifacts/training_snapshots/
 # External SMS contents remain private; publish attribution instructions only.
 data/external/*
 !data/external/README.md
+
+# Offline report replay uses a local lock, never a published artifact.
+artifacts/external-test/.external-study.lock
