@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      SMS_LAB_JEV_ENABLED: 'false'
+      SMS_LAB_JEV_SERVER_KEY_ENABLED: 'false'
+      SMS_LAB_ADMIN_TOKEN: ''
+      TYPESAFE_API_KEY: ''
+      DEEPSEEK_API_KEY: ''
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Verify checkout has no local runtime data or credentials
+        run: |
+          test ! -e var
+          test ! -e .env
+          echo "SMS_LAB_ROOT=$RUNNER_TEMP/text-model-lab-ci" >> "$GITHUB_ENV"
+      - name: Install CPU-only PyTorch for the failure-path unit test
+        # The test mocks fitting to fail before training. It still imports torch.
+        run: python -m pip install 'torch==2.14.1+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Install Python test and lint dependencies
+        run: python -m pip install -r requirements-backend.txt 'ruff==0.17.3'
+      - name: Ruff report (existing violations are non-blocking)
+        # --exit-zero reports lint violations but still fails on invalid configuration.
+        run: ruff check --output-format=github --exit-zero .
+      - name: Python unit tests (temporary synthetic fixtures only)
+        # Includes a two-row synthetic final-evaluation guard test, never the old 757 rows.
+        run: python -m unittest discover -s tests -v
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+      - name: Frontend tests
+        run: npm test
+        working-directory: frontend
+      - name: Frontend production build
+        run: npm run build
+        working-directory: frontend
+      - name: Verify checks did not create repository runtime data
+        if: always()
+        run: test ! -e var
